@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 
 public class FlowAlgorithmParser {
 	public static FlowAlgorithmInstance parse(String filepath) throws Exception {
@@ -19,7 +18,7 @@ public class FlowAlgorithmParser {
 		for (int i = 0; i < E; i++) {
 			line = br.readLine();
 			data = line.split(" ");
-			distMatrix[data[0]][data[1]]=data[2];
+			distMatrix[Integer.parseInt(data[0])][Integer.parseInt(data[1])]=Integer.parseInt(data[2]);
 		}
 		
 		br.close();
