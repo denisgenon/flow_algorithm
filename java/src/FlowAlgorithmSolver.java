@@ -17,7 +17,7 @@ public class FlowAlgorithmSolver {
 		} 
 		else {
 			try {
-				instance = FlowAlgorithmParser.parse("input.txt");
+				instance = FlowAlgorithmParser.parse(args[0]);
 				printMatrix(instance.distMatrix);
 
 			} catch (Exception e) {
