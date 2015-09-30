@@ -13,7 +13,6 @@ public class FlowAlgorithmParser {
 		int V = Integer.parseInt(data[0]);
 		int E = Integer.parseInt(data[1]);
 		int [][] distMatrix = new int [V][V];
-		
 		// Parse the items
 		for (int i = 0; i < E; i++) {
 			line = br.readLine();
