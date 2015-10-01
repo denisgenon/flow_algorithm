@@ -1,6 +1,7 @@
 public class FlowAlgorithmInstance {
 	
 	public int [][] distMatrix;
+	public int [][] bestflot;
 	public Vertex [] vertices;
 	public int V;
 	public int E;
@@ -10,5 +11,6 @@ public class FlowAlgorithmInstance {
 		this.vertices = vertices;
 		this.V = V;
 		this.E = E;
+		bestflot = new int [V][V];
 	}
 }

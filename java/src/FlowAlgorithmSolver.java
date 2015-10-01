@@ -9,18 +9,6 @@ public class FlowAlgorithmSolver {
 	static int [] parents;
 	
 	public static void printMatrix(int [][] matrix) {
-		System.out.println("Il y a "+instance.V+" sommets");
-		System.out.println("Il y a "+instance.E+" arêtes");
-		
-		for(int i=0; i<instance.V; i++) {
-			System.out.print("Voisin de "+instance.vertices[i]+" : ");
-			for(Vertex v : instance.vertices[i].adjacents) {
-				System.out.print(v.id+" ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("Matrice des distances :");
 		for(int i=0; i<matrix.length; i++) {
 			for(int j=0; j<matrix[0].length; j++) {
 				System.out.print(matrix[i][j] + " ");
@@ -54,8 +42,8 @@ public class FlowAlgorithmSolver {
 			mypath.add(instance.vertices[parents[indexpath]]);
 			indexpath=parents[indexpath];
 		}
-		
-		return mypath.toArray(new Vertex [mypath.size()]);
+		if(indexpath==0) return mypath.toArray(new Vertex [mypath.size()]);
+		return null;
 	}
 	
 	public static void visitDFS(int index) {
@@ -69,12 +57,30 @@ public class FlowAlgorithmSolver {
 		colors[index]=2;	
 	}
 	
-	public static void FordFulkerson(int [][] matrix) {
-		/**
-		 * while (chemin augmentant) {
-		 * 		augmenter le flot
-		 * }
-		 */
+	public static int getMinFlow(Vertex [] path) {
+		int minFlow=Integer.MAX_VALUE;
+		for(int i=0; i<path.length-1; i++) {
+			minFlow=Math.min(minFlow,instance.distMatrix[path[i+1].id][path[i].id]);
+		}
+		return minFlow;
+	}
+	
+	public static void applyPath(int capa,Vertex [] path) {
+		for(int i=0; i<path.length-1; i++) {
+			instance.distMatrix[path[i+1].id][path[i].id]-=capa;
+			instance.bestflot[path[i+1].id][path[i].id]+=capa;
+			if(instance.distMatrix[path[i+1].id][path[i].id]==0) {
+				path[i+1].adjacents.remove(path[i]);
+			}
+		}
+	}
+	
+	public static void FordFulkerson() {
+		Vertex [] myPath = getPathDFS();
+		while(myPath!=null) {
+			applyPath(getMinFlow(myPath),myPath);
+			myPath = getPathDFS();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -85,7 +91,8 @@ public class FlowAlgorithmSolver {
 			try {
 				instance = FlowAlgorithmParser.parse(args[0]);
 				//printMatrix(instance.distMatrix);
-				printPath(getPathDFS());
+				FordFulkerson();
+				printMatrix(instance.bestflot);
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
