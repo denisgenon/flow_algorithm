@@ -67,10 +67,18 @@ public class FlowAlgorithmSolver {
 	
 	public static void applyPath(int capa,Vertex [] path) {
 		for(int i=0; i<path.length-1; i++) {
-			instance.distMatrix[path[i+1].id][path[i].id]-=capa;
-			instance.bestflot[path[i+1].id][path[i].id]+=capa;
+			instance.distMatrix[path[i+1].id][path[i].id]-=capa; // on enleve la capa dans le bon sens
+			instance.distMatrix[path[i].id][path[i+1].id]+=capa; // on rajoute la capa dans le sens inverse
+			instance.bestflot[path[i+1].id][path[i].id]+=capa;	// on augmente le flot courant
+			
+			// On enleve l'arête si la capa dispo est 0
 			if(instance.distMatrix[path[i+1].id][path[i].id]==0) {
 				path[i+1].adjacents.remove(path[i]);
+			}
+			
+			// On rajoute une arête dans le sens inverse si c'est la premiere fois qu'on ajoute de la capa sur elle
+			if(instance.distMatrix[path[i].id][path[i+1].id]==capa) {
+				path[i].adjacents.add(path[i+1]);
 			}
 		}
 	}
@@ -90,7 +98,6 @@ public class FlowAlgorithmSolver {
 		else {
 			try {
 				instance = FlowAlgorithmParser.parse(args[0]);
-				//printMatrix(instance.distMatrix);
 				FordFulkerson();
 				printMatrix(instance.bestflot);
 
