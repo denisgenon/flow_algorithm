@@ -83,6 +83,14 @@ public class FlowAlgorithmSolver {
 		}
 	}
 	
+	public static int getFlotValue(int [][] matrix) {
+		int value = 0;
+		for(int i=0; i<matrix[0].length;i++){
+			value+=matrix[0][i];
+		}
+		return value;
+	}
+	
 	public static void FordFulkerson() {
 		Vertex [] myPath = getPathDFS();
 		while(myPath!=null) {
@@ -100,6 +108,7 @@ public class FlowAlgorithmSolver {
 				instance = FlowAlgorithmParser.parse(args[0]);
 				FordFulkerson();
 				printMatrix(instance.bestflot);
+				System.out.println("Max flot : "+getFlotValue(instance.bestflot));
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
