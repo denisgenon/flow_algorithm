@@ -1,9 +1,10 @@
+package object;
 import java.util.ArrayList;
 
 
 public class Vertex {
-	int id;
-	ArrayList<Vertex> adjacents;
+	public int id;
+	public ArrayList<Vertex> adjacents;
 	
 	public Vertex(int id) {
 		this.id = id;

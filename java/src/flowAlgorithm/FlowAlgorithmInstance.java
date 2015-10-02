@@ -1,3 +1,6 @@
+package flowAlgorithm;
+import object.Vertex;
+
 public class FlowAlgorithmInstance {
 	
 	public int [][] distMatrix;

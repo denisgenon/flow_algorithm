@@ -1,5 +1,9 @@
+package flowAlgorithm;
 import java.io.BufferedReader;
 import java.io.FileReader;
+
+
+import object.Vertex;
 
 public class FlowAlgorithmParser {
 	public static FlowAlgorithmInstance parse(String filepath) throws Exception {
