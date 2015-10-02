@@ -16,10 +16,10 @@ public class FordFulkerson {
 	
 	public FordFulkerson(FlowAlgorithmInstance instance) {
 		this.instance = instance;
-		Vertex [] myPath = getPathDFS();
+		Vertex [] myPath = getPath();
 		while(myPath!=null) {
 			applyPath(getMinFlow(myPath),myPath);
-			myPath = getPathDFS();
+			myPath = getPath();
 		}
 	}
 	
@@ -28,7 +28,7 @@ public class FordFulkerson {
 		System.out.println("Max flot : "+getFlotValue(instance.bestflot));
 	}
 	
-	public Vertex [] getPathDFS() {
+	public Vertex [] getPath() {
 		colors = new int [instance.V]; // Blanc=0, Gris=1, Noir=2
 		parents = new int [instance.V];
 		
