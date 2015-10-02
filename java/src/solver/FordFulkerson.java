@@ -3,7 +3,6 @@ package solver;
 import java.util.ArrayList;
 
 import flowAlgorithm.FlowAlgorithmInstance;
-import flowAlgorithm.FlowAlgorithmSolver;
 
 import object.Vertex;
 
@@ -24,7 +23,7 @@ public class FordFulkerson {
 	}
 	
 	public void getResult() {
-		FlowAlgorithmSolver.printMatrix(instance.bestflot);
+		//FlowAlgorithmSolver.printMatrix(instance.bestflot);
 		System.out.println("Max flot : "+getFlotValue(instance.bestflot));
 	}
 	
