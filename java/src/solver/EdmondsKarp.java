@@ -9,7 +9,7 @@ public class EdmondsKarp extends FordFulkerson {
 		super(instance);
 	}
 	
-	public Vertex [] getPath () {
+	public Vertex [] getPath() {
 		
 		// TODO faire le BFS
 		return null;
