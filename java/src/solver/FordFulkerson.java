@@ -74,12 +74,12 @@ public class FordFulkerson {
 			instance.distMatrix[path[i].id][path[i+1].id]+=capa; // on rajoute la capa dans le sens inverse
 			instance.bestflot[path[i+1].id][path[i].id]+=capa;	// on augmente le flot courant
 			
-			// On enleve l'arête si la capa dispo est 0
+			// On enleve l'arï¿½te si la capa dispo est 0
 			if(instance.distMatrix[path[i+1].id][path[i].id]==0) {
 				path[i+1].adjacents.remove(path[i]);
 			}
 			
-			// On rajoute une arête dans le sens inverse si c'est la premiere fois qu'on ajoute de la capa sur elle
+			// On rajoute une arï¿½te dans le sens inverse si c'est la premiere fois qu'on ajoute de la capa sur elle
 			if(instance.distMatrix[path[i].id][path[i+1].id]==capa) {
 				path[i].adjacents.add(path[i+1]);
 			}
