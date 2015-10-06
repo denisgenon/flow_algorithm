@@ -17,7 +17,7 @@ public class GeneratorInstance {
 			FileWriter fw = new FileWriter (f);
 			fw.write(V+" "+E+"\n");
 
-			//au moins 1% des arêtes partent de la source
+			//au moins 1% des arï¿½tes partent de la source, min 2
 			for(int i=0; i<Math.max(2, E/100); i++){
 				int rdm = (int) (Math.random()*(V));
 				while(rdm==0) {
@@ -33,7 +33,7 @@ public class GeneratorInstance {
 				}
 			}
 
-			//au moins 1% des arêtes arrivent à la destination
+			//au moins 1% des arï¿½tes arrivent ï¿½ la destination, min 2
 			for(int i=0; i<Math.max(2, E/100); i++){
 				int rdm = (int) (Math.random()*(V));
 				while(rdm==V-1) {
@@ -75,6 +75,6 @@ public class GeneratorInstance {
 	}
 
 	public static void main (String [] args) {
-		generateInstance(10000,10000,100,"instance6");
+		generateInstance(100000,100000,1000,"instance7");
 	}
 }

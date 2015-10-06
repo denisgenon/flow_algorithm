@@ -1,19 +1,20 @@
 package flowAlgorithm;
+import object.Tuple;
 import object.Vertex;
 
 public class FlowAlgorithmInstance {
 	
-	public int [][] distMatrix;
-	public int [][] bestflot;
+	public Tuple[] capaMatrix;
+	public Tuple[] bestflot;
 	public Vertex [] vertices;
 	public int V;
 	public int E;
 	
-	public FlowAlgorithmInstance(int [][] distMatrix, Vertex [] vertices, int V, int E) {
-		this.distMatrix = distMatrix;
+	public FlowAlgorithmInstance(Tuple [] capaMatrix, Vertex [] vertices, int V, int E) {
+		this.capaMatrix = capaMatrix;
 		this.vertices = vertices;
 		this.V = V;
 		this.E = E;
-		bestflot = new int [V][V];
+		bestflot = new Tuple[V];
 	}
 }

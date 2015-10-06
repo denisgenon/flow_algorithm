@@ -2,7 +2,7 @@ package flowAlgorithm;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-
+import object.Tuple;
 import object.Vertex;
 
 public class FlowAlgorithmParser {
@@ -16,7 +16,7 @@ public class FlowAlgorithmParser {
 		String[] data = line.split(" ");
 		int V = Integer.parseInt(data[0]);
 		int E = Integer.parseInt(data[1]);
-		int [][] distMatrix = new int [V][V];
+		Tuple [] capaMatrix = new Tuple [V];
 		Vertex [] vertices = new Vertex[V];
 		
 		// Parse the items
@@ -39,12 +39,11 @@ public class FlowAlgorithmParser {
 			vertices[idVertex1].adjacents.add(vertices[idVertex2]);
 			
 			// On ajoute la distance dans la matrice des distances
-			distMatrix[idVertex1][idVertex2] = capa;
+			Tuple.addNode(idVertex1, idVertex2, capa, capaMatrix);
 			
 		}
-		
 		br.close();
 		
-		return new FlowAlgorithmInstance(distMatrix, vertices, V, E);
+		return new FlowAlgorithmInstance(capaMatrix, vertices, V, E);
 	}
 }

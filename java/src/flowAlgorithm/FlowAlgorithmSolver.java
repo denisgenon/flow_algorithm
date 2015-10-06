@@ -1,22 +1,28 @@
 package flowAlgorithm;
+import object.Tuple;
 import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
 
+@SuppressWarnings("unused")
 public class FlowAlgorithmSolver {
-	
-	public static void printMatrix(int [][] matrix) {
-		for(int i=0; i<matrix.length; i++) {
-			for(int j=0; j<matrix[0].length; j++) {
-				System.out.print(matrix[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-	
+
 	public static void printPath(Vertex [] mypath) {
 		for(Vertex v : mypath){
 			System.out.print(v + " ");
+		}
+		System.out.println();
+	}
+	
+	public static void printNodes(Tuple [] capaMatrix) {
+		for(int i=0; i<capaMatrix.length; i++) {
+			Tuple current = capaMatrix[i];
+			System.out.print(i+" : ");
+			while(current!=null){
+				System.out.print(current+ " ");
+				current=current.next;
+			}
+			System.out.println();
 		}
 		System.out.println();
 	}
@@ -27,10 +33,10 @@ public class FlowAlgorithmSolver {
 		} 
 		else {
 			try {
-				//FordFulkerson ff = new FordFulkerson(FlowAlgorithmParser.parse(args[0]));
-				//ff.getResult();
-				EdmondsKarp ek = new EdmondsKarp(FlowAlgorithmParser.parse(args[0]));
-				ek.getResult();
+				FordFulkerson ff = new FordFulkerson(FlowAlgorithmParser.parse(args[0]));
+				ff.getResult();
+				/*EdmondsKarp ek = new EdmondsKarp(FlowAlgorithmParser.parse(args[0]));
+				ek.getResult();*/
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
