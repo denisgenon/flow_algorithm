@@ -1,5 +1,5 @@
 package flowAlgorithm;
-import object.Tuple;
+import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
@@ -14,9 +14,9 @@ public class FlowAlgorithmSolver {
 		System.out.println();
 	}
 	
-	public static void printNodes(Tuple [] capaMatrix) {
+	public static void printNodes(Node [] capaMatrix) {
 		for(int i=0; i<capaMatrix.length; i++) {
-			Tuple current = capaMatrix[i];
+			Node current = capaMatrix[i];
 			System.out.print(i+" : ");
 			while(current!=null){
 				System.out.print(current+ " ");

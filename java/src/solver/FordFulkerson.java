@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import flowAlgorithm.FlowAlgorithmInstance;
 
-import object.Tuple;
+import object.Node;
 import object.Vertex;
 
 public class FordFulkerson {
@@ -63,42 +63,42 @@ public class FordFulkerson {
 	public int getMinFlow(Vertex [] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow,Tuple.getNode(path[i+1].id, path[i].id,instance.capaMatrix).capa);
+			minFlow=Math.min(minFlow,Node.getNode(path[i+1].id, path[i].id,instance.capaMatrix).capa);
 		}
 		return minFlow;
 	}
 	
 	public void applyPath(int capa,Vertex [] path) {
 		for(int i=0; i<path.length-1; i++) {
-			Tuple myT = Tuple.getNode(path[i+1].id, path[i].id,instance.capaMatrix);
+			Node myT = Node.getNode(path[i+1].id, path[i].id,instance.capaMatrix);
 			if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
-				Tuple.removeNode(path[i+1].id, path[i].id,instance.capaMatrix);
+				Node.removeNode(path[i+1].id, path[i].id,instance.capaMatrix);
 				path[i+1].adjacents.remove(path[i]);
 			}
 			else { // on enleve la capa dans le bon sens sinon
 				myT.capa-=capa;
 			}
 			
-			myT = Tuple.getNode(path[i].id, path[i+1].id,instance.capaMatrix);
+			myT = Node.getNode(path[i].id, path[i+1].id,instance.capaMatrix);
 			if(myT==null) { // on crée l'arete si elle n'existe pas
-				Tuple.addNode(path[i].id, path[i+1].id,capa,instance.capaMatrix); 
+				Node.addNode(path[i].id, path[i+1].id,capa,instance.capaMatrix); 
 				path[i].adjacents.add(path[i+1]);
 			}
 			else { // on rajoute la capa dans le sens inverse sinon
 				myT.capa+=capa;
 			}
 			
-			myT = Tuple.getNode(path[i].id, path[i+1].id,instance.bestflot); // on augmente le flot courant	
-			if(myT==null) Tuple.addNode(path[i].id, path[i+1].id,capa,instance.bestflot); 
+			myT = Node.getNode(path[i].id, path[i+1].id,instance.bestflot); // on augmente le flot courant	
+			if(myT==null) Node.addNode(path[i].id, path[i+1].id,capa,instance.bestflot); 
 			else {
 				myT.capa+=capa;
 			}
 		}
 	}
 	
-	public static int getFlotValue(Tuple[] capaMatrix) {
+	public static int getFlotValue(Node[] capaMatrix) {
 		int value = 0;
-		Tuple t = capaMatrix[capaMatrix.length-1];
+		Node t = capaMatrix[capaMatrix.length-1];
 		while(t!=null){
 			value+=t.capa;
 			t=t.next;
