@@ -17,40 +17,43 @@ public class GeneratorInstance {
 			FileWriter fw = new FileWriter (f);
 			fw.write(V+" "+E+"\n");
 
-			//au moins 1% des ar�tes partent de la source, min 2
-			for(int i=0; i<Math.max(2, E/100); i++){
+			// les arêtes qui sortent
+			for(int i=0; i<V; i++) {
 				int rdm = (int) (Math.random()*(V));
-				while(rdm==0) {
+				while(rdm==i) {
 					rdm = (int) (Math.random()*(V));
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
-				if(!couples.contains(new Couple(0,rdm))) {
-					fw.write(0+" "+rdm+" "+rdmcapa+"\n");
-					couples.add(new Couple(0,rdm));
+
+				if(!couples.contains(new Couple(i,rdm))) {
+					fw.write(i+" "+rdm+" "+rdmcapa+"\n");
+					couples.add(new Couple(i,rdm));
 				}
 				else {
 					i--;
 				}
 			}
+			E=E-V;
 
-			//au moins 1% des ar�tes arrivent � la destination, min 2
-			for(int i=0; i<Math.max(2, E/100); i++){
+			// les arêtes qui rentrent
+			for(int i=0; i<V; i++) {
 				int rdm = (int) (Math.random()*(V));
-				while(rdm==V-1) {
+				while(rdm==i) {
 					rdm = (int) (Math.random()*(V));
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
-				if(!couples.contains(new Couple(rdm,(V-1)))) {
-					fw.write(rdm+" "+(V-1)+" "+rdmcapa+"\n");
-					couples.add(new Couple(rdm,(V-1)));
+
+				if(!couples.contains(new Couple(rdm,i))) {
+					fw.write(rdm+" "+i+" "+rdmcapa+"\n");
+					couples.add(new Couple(rdm,i));
 				}
 				else {
 					i--;
 				}
 			}
+			E=E-V;
 
-
-			for(int i=0; i<E-2*(Math.max(2, E/100)); i++){
+			for(int i=0; i<E; i++){
 				int rdm1 = (int) (Math.random()*(V));
 				int rdm2 = (int) (Math.random()*(V));
 				while(rdm2==rdm1) {
@@ -66,6 +69,7 @@ public class GeneratorInstance {
 					i--;
 				}
 			}
+			
 			fw.close();
 		}
 		catch (IOException exception)
@@ -75,6 +79,6 @@ public class GeneratorInstance {
 	}
 
 	public static void main (String [] args) {
-		generateInstance(100000,100000,1000,"instance7");
+		generateInstance(10,100000,1000,"instance7");
 	}
 }

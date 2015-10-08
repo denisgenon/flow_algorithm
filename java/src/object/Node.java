@@ -16,26 +16,30 @@ public class Node {
 		return ("["+index + ", " + capa+"]");
 	}
 	
-	public static void removeNode(int x, int y, Node [] capaMatrix) {
+	// Retourne la valeur du node enlevé
+	public static int removeNode(int x, int y, Node [] capaMatrix) {
 		Node current = capaMatrix[x];
-		boolean flag = true;
+		int res=-1;
 		if(current==null){
 			System.out.println("La liste est vide");
-			return;
+			return res;
 		}
 		if(current.index==y){
 			capaMatrix[x]=current.next;
-			flag=false;
+			return current.capa;
 		}
-		while(current.next!=null && flag) {
+		while(current.next!=null) {
 			if(current.next.index==y) {
+				res=current.next.capa;
 				current.next = current.next.next;
-				flag = false;
+				return res;
 			}
 			else {
 				current = current.next;
 			}
 		}
+		
+		return res;
 	}
 
 	public static void addNode(int x, int y, int capa, Node [] capaMatrix){
