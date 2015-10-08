@@ -33,10 +33,10 @@ public class FlowAlgorithmSolver {
 		} 
 		else {
 			try {
-				FordFulkerson ff = new FordFulkerson(FlowAlgorithmParser.parse(args[0]));
-				ff.getResult();
-				/*EdmondsKarp ek = new EdmondsKarp(FlowAlgorithmParser.parse(args[0]));
-				ek.getResult();*/
+				/*FordFulkerson ff = new FordFulkerson(FlowAlgorithmParser.parse(args[0]));
+				ff.getResult();*/
+				EdmondsKarp ek = new EdmondsKarp(FlowAlgorithmParser.parse(args[0]));
+				ek.getResult();
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());

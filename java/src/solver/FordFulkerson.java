@@ -57,7 +57,7 @@ public class FordFulkerson {
 				visitDFS(v.id);
 			}
 		}
-		colors[index]=2;	
+		colors[index]=2;
 	}
 	
 	public int getMinFlow(Vertex [] path) {

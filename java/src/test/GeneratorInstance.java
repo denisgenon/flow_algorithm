@@ -25,7 +25,7 @@ public class GeneratorInstance {
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
 
-				if(!couples.contains(new Couple(i,rdm))) {
+				if(!couples.contains(new Couple(i,rdm)) && !couples.contains(new Couple(rdm,i))) {
 					fw.write(i+" "+rdm+" "+rdmcapa+"\n");
 					couples.add(new Couple(i,rdm));
 				}
@@ -43,7 +43,7 @@ public class GeneratorInstance {
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
 
-				if(!couples.contains(new Couple(rdm,i))) {
+				if(!couples.contains(new Couple(i,rdm)) && !couples.contains(new Couple(rdm,i))) {
 					fw.write(rdm+" "+i+" "+rdmcapa+"\n");
 					couples.add(new Couple(rdm,i));
 				}
@@ -61,7 +61,7 @@ public class GeneratorInstance {
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
 
-				if(!couples.contains(new Couple(rdm1,rdm2))) {
+				if(!couples.contains(new Couple(rdm1,rdm2)) && !couples.contains(new Couple(rdm2,rdm1))) {
 					fw.write(rdm1+" "+rdm2+" "+rdmcapa+"\n");
 					couples.add(new Couple(rdm1,rdm2));
 				}
@@ -79,6 +79,6 @@ public class GeneratorInstance {
 	}
 
 	public static void main (String [] args) {
-		generateInstance(10,100000,1000,"instance7");
+		generateInstance(100000,450000,10000,"instance5");
 	}
 }
