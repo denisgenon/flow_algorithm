@@ -5,7 +5,6 @@ import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
 
-@SuppressWarnings("unused")
 public class FlowAlgorithmSolver {
 
 	public static void printPath(Vertex [] mypath) {
