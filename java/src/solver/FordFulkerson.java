@@ -21,7 +21,9 @@ public class FordFulkerson {
 	}
 	
 	public void getResult() {
-		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("|V| : "+g.getV());
+		System.out.println("|E| : "+g.getE());
+		System.out.println("Max flot : " + g.getFlowValue()+"\n");
 	}
 	
 	public Vertex [] getPath() {

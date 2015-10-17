@@ -10,6 +10,8 @@ public interface AugmentingPathGraph { // TODO change name for FF et ED?
 	
 	public int getV();
 	
+	public int getE();
+	
 	public List<Vertex> getNeighbors(Vertex vertex);
 	
 	public void setNeighbors(Vertex u, List<Vertex> vertices);

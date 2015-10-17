@@ -71,6 +71,11 @@ public class AdjacencyListGraph implements AugmentingPathGraph {
 	public int getV() {
 		return V;
 	}
+	
+	@Override
+	public int getE() {
+		return E;
+	}
 
 	@Override
 	public ArrayList<Vertex> getNeighbors(Vertex vertex) {

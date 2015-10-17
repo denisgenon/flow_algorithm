@@ -1,4 +1,6 @@
 package flowAlgorithm;
+import java.io.File;
+
 import models.AdjacencyListGraph;
 import models.AugmentingPathGraph;
 import object.Node;
@@ -34,9 +36,20 @@ public class FlowAlgorithmSolver {
 		} 
 		else {
 			try {
-				AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
-				FordFulkerson ff = new FordFulkerson(g);
-				ff.getResult();
+				if(args[0].equals("all")) {
+					File directoryToScan = new File("instances"); 
+					for(File f : directoryToScan.listFiles()){
+						System.out.println(f.getName()+" : ");
+						AugmentingPathGraph g = new AdjacencyListGraph(f.getPath());
+						/*FordFulkerson ff = new FordFulkerson(g);
+						ff.getResult();*/
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();
+					}
+				}
+				//AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
+				//FordFulkerson ff = new FordFulkerson(g);
+				//ff.getResult();
 				//EdmondsKarp ek = new EdmondsKarp(g);
 				//ek.getResult();
 
