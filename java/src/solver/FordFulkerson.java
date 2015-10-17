@@ -25,6 +25,7 @@ public class FordFulkerson {
 	}
 	
 	public Vertex [] getPath() {
+		
 		colors = new int [g.getV()]; // Blanc=0, Gris=1, Noir=2
 		parents = new int [g.getV()];
 		
@@ -34,7 +35,7 @@ public class FordFulkerson {
 		}
 		
 		visitDFS(0);
-		
+
 		ArrayList<Vertex> mypath = new ArrayList<Vertex>();
 		int indexpath = g.getV() - 1;
 		mypath.add(g.getVertex(indexpath)); // TODO Cast Vertex ?

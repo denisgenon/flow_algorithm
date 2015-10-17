@@ -4,6 +4,7 @@ import models.AugmentingPathGraph;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
+import solver.FordFulkerson;
 
 public class FlowAlgorithmSolver {
 
@@ -34,10 +35,10 @@ public class FlowAlgorithmSolver {
 		else {
 			try {
 				AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
-				//FordFulkerson ff = new FordFulkerson(g);
-				//ff.getResult();
-				EdmondsKarp ek = new EdmondsKarp(g);
-				ek.getResult();
+				FordFulkerson ff = new FordFulkerson(g);
+				ff.getResult();
+				//EdmondsKarp ek = new EdmondsKarp(g);
+				//ek.getResult();
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
