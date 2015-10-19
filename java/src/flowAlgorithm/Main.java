@@ -9,7 +9,8 @@ import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
 
-public class FlowAlgorithmSolver {
+@SuppressWarnings("unused")
+public class Main {
 
 	public static void printPath(Vertex [] mypath) {
 		for(Vertex v : mypath){
