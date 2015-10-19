@@ -9,7 +9,7 @@ import java.util.List;
 import object.Node;
 import object.Vertex;
 
-public class AdjacencyListGraph implements AugmentingPathGraph {
+public class AdjacencyListGraph implements Graph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow;
 	public Vertex [] vertices;
@@ -153,6 +153,12 @@ public class AdjacencyListGraph implements AugmentingPathGraph {
 				myT.capa+=capacity;
 			}
 		}
+	}
+
+	@Override
+	public Vertex[] getVertices() {
+		
+		return vertices;
 	}
 
 }

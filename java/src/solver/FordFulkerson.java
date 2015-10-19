@@ -2,16 +2,16 @@ package solver;
 
 import java.util.ArrayList;
 
-import models.AugmentingPathGraph;
+import models.Graph;
 import object.Vertex;
 
 public class FordFulkerson {
-	public AugmentingPathGraph g;
+	public Graph g;
 	// For getPath
 	public int [] colors;
 	public int [] parents;
 	
-	public FordFulkerson(AugmentingPathGraph g) {
+	public FordFulkerson(Graph g) {
 		this.g = g;
 		Vertex [] myPath = getPath();
 		while(myPath!=null) {

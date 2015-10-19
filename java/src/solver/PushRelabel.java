@@ -2,32 +2,32 @@ package solver;
 
 import java.util.ArrayList;
 
-import flowAlgorithm.FlowAlgorithmInstance;
+import models.Graph;
 import object.Node;
 import object.Vertex;
 
 public class PushRelabel {
-	public FlowAlgorithmInstance instance;
+	public Graph instance;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 
 	public void preProcess() {
 		computeDistanceLabel();
-		for(Vertex v : instance.vertices[0].adjacents) {
-			chargeMax(instance.vertices[0],v);
+		for(Vertex v : instance.getVertex(0).adjacents) {
+			chargeMax(instance.getVertex(0),v);
 		}
-		instance.vertices[0].h=instance.E;
+		instance.getVertex(0).h = instance.getE();
 	}
 	
 	public void computeDistanceLabel() {
 		// Faire un Dijkstra à l'envers
-		Vertex[] invertedVertices = new Vertex[instance.V];
+		Vertex[] invertedVertices = new Vertex[instance.getV()];
 		
-		for (int i = 0; i < instance.vertices.length; i++) {
+		for (int i = 0; i < instance.getV(); i++) {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
 		
-		for (Vertex v : instance.vertices) {
+		for (Vertex v : instance.getVertices()) {
 			for (Vertex u : v.adjacents) {
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
 				invertedVertices[u.id].adjacents.add(new Vertex(v.id));
@@ -40,7 +40,8 @@ public class PushRelabel {
 			notS.add(v);
 			v.h = Integer.MAX_VALUE;
 		}
-		invertedVertices[instance.V - 1].h = 0;
+		
+		invertedVertices[instance.getV() - 1].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
@@ -52,7 +53,7 @@ public class PushRelabel {
 		}
 		
 		for (int i = 0; i < invertedVertices.length; i++) {
-			instance.vertices[i].h = invertedVertices[i].h;
+			instance.getVertex(i).h = invertedVertices[i].h;
 		}				
 	}
 	
@@ -68,7 +69,7 @@ public class PushRelabel {
 		return minVertex;
 	}
 
-	public void process(FlowAlgorithmInstance instance) {
+	public void process(Graph instance) {
 		this.instance = instance;
 		preProcess();
 		while(!actifV.isEmpty()){

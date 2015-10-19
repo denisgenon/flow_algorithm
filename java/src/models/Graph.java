@@ -4,7 +4,7 @@ import java.util.List;
 
 import object.Vertex;
 
-public interface AugmentingPathGraph { // TODO change name for FF et ED?
+public interface Graph { // TODO change name for FF et ED?
 	
 	public void parse(String filePath);
 	
@@ -17,6 +17,8 @@ public interface AugmentingPathGraph { // TODO change name for FF et ED?
 	public void setNeighbors(Vertex u, List<Vertex> vertices);
 	
 	public Vertex getVertex(int id);
+	
+	public Vertex[] getVertices();
 	
 	public int getMinFlow(Vertex[] path);
 	
