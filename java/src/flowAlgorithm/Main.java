@@ -9,7 +9,6 @@ import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
 
-@SuppressWarnings("unused")
 public class Main {
 
 	public static void printPath(Vertex [] mypath) {
@@ -49,11 +48,14 @@ public class Main {
 						ek.getResult();
 					}
 				}
-				//AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
-				//FordFulkerson ff = new FordFulkerson(g);
-				//ff.getResult();
-				//EdmondsKarp ek = new EdmondsKarp(g);
-				//ek.getResult();
+				else {
+					AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
+					FordFulkerson ff = new FordFulkerson(g);
+					ff.getResult();
+					//EdmondsKarp ek = new EdmondsKarp(g);
+					//ek.getResult();
+				}
+				
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
