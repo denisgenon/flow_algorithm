@@ -1,8 +1,9 @@
 package flowAlgorithm;
+import interfaces.AugmentingPathGraph;
+
 import java.io.File;
 
-import models.AdjacencyListGraph;
-import models.AugmentingPathGraph;
+import models.AugmentingPath.AdjacencyListGraph;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;

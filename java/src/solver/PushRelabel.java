@@ -1,19 +1,19 @@
 package solver;
 
+import interfaces.PushRelabelGraph;
+
 import java.util.ArrayList;
 
-import models.Graph;
-import object.Node;
 import object.Vertex;
 
 public class PushRelabel {
-	public Graph instance;
+	public PushRelabelGraph instance;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 
 	public void preProcess() {
 		computeDistanceLabel();
 		for(Vertex v : instance.getVertex(0).adjacents) {
-			chargeMax(instance.getVertex(0),v);
+			instance.chargeMax(instance.getVertex(0),v, actifV);
 		}
 		instance.getVertex(0).h = instance.getE();
 	}
@@ -69,7 +69,7 @@ public class PushRelabel {
 		return minVertex;
 	}
 
-	public void process(Graph instance) {
+	public void process(PushRelabelGraph instance) {
 		this.instance = instance;
 		preProcess();
 		while(!actifV.isEmpty()){
@@ -83,47 +83,10 @@ public class PushRelabel {
 		for(Vertex u : v.adjacents) {
 			hMin=Math.min(hMin, u.h);
 			if (u.h-1 == v.h) {
-				chargeCapa(v,u,Math.min(v.e,Node.getNode(v.id,u.id,instance.capaMatrix).capa)); // push
+				instance.chargeCapa(v,u,Math.min(v.e,instance.getCapacity(v, u)),actifV); // push
 				return;
 			}
 		}
 		v.h=hMin+1;
-	}
-
-	public void chargeCapa(Vertex origin, Vertex desti, int capa) {
-		Node myT = Node.getNode(origin.id, desti.id, instance.capaMatrix);
-		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
-			Node.removeNode(origin.id, desti.id,instance.capaMatrix);
-			origin.adjacents.remove(desti);
-		}
-		else { // on enleve la capa dans le bon sens sinon
-			myT.capa-=capa;
-		}
-
-		origin.e-=capa;
-		if(origin.e<=0) actifV.remove(origin);
-		desti.e+=capa;
-		if(desti.e>0) actifV.add(desti);
-
-		myT = Node.getNode(desti.id, origin.id,instance.capaMatrix);
-		if(myT==null) { // on crée l'arete si elle n'existe pas
-			Node.addNode(desti.id, origin.id,capa,instance.capaMatrix); 
-			desti.adjacents.add(origin);
-		}
-		else { // on rajoute la capa dans le sens inverse sinon
-			myT.capa+=capa;
-		}
-	}
-
-	public void chargeMax(Vertex origin, Vertex desti) {
-
-		int newCapa = Node.removeNode(origin.id, desti.id, instance.capaMatrix);
-		Node.addNode(desti.id,origin.id,newCapa,instance.capaMatrix);
-
-		origin.adjacents.remove(desti);
-		if(!desti.adjacents.contains(origin)) desti.adjacents.add(origin);
-		
-		desti.e+=newCapa;
-		if(desti.e>0) actifV.add(desti);
 	}
 }

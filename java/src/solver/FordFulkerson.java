@@ -1,17 +1,18 @@
 package solver;
 
+import interfaces.AugmentingPathGraph;
+
 import java.util.ArrayList;
 
-import models.Graph;
 import object.Vertex;
 
 public class FordFulkerson {
-	public Graph g;
+	public AugmentingPathGraph g;
 	// For getPath
 	public int [] colors;
 	public int [] parents;
 	
-	public FordFulkerson(Graph g) {
+	public FordFulkerson(AugmentingPathGraph g) {
 		this.g = g;
 		Vertex [] myPath = getPath();
 		while(myPath!=null) {
@@ -51,7 +52,7 @@ public class FordFulkerson {
 	
 	public void visitDFS(int index) {
 		colors[index]=1;
-		for(Vertex v : g.getNeighbors(g.getVertex(index))) {
+		for(Vertex v : g.getVertex(index).adjacents) {
 			// TODO Prend ton un object Vertex ?
 			if(colors[v.id]==0) {
 				parents[v.id]=index;

@@ -1,15 +1,16 @@
 package solver;
 
+import interfaces.AugmentingPathGraph;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import models.Graph;
 import object.Vertex;
 
 public class EdmondsKarp extends FordFulkerson {
 	private static final int INFINITY = Integer.MAX_VALUE;
 
-	public EdmondsKarp(Graph g) {
+	public EdmondsKarp(AugmentingPathGraph g) {
 		super(g);
 	}
 	
