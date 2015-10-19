@@ -11,14 +11,12 @@ import interfaces.PushRelabelGraph;
 
 public class AdjacencyListGraph implements PushRelabelGraph {
 	public Node[] capaMatrix;
-	public Node[] bestFlow;
 	public Vertex [] vertices;
 	public int V;
 	public int E;
 	
 	public AdjacencyListGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new Node[V];
 	}
 	
 	@Override
