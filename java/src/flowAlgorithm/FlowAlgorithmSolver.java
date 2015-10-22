@@ -2,11 +2,12 @@ package flowAlgorithm;
 import java.io.File;
 
 import models.AdjacencyListGraph;
-import models.AugmentingPathGraph;
+import models.Graph;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
+import solver.PushRelabel;
 
 public class FlowAlgorithmSolver {
 
@@ -40,7 +41,7 @@ public class FlowAlgorithmSolver {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						AugmentingPathGraph g = new AdjacencyListGraph(f.getPath());
+						Graph g = new AdjacencyListGraph(f.getPath());
 						/*FordFulkerson ff = new FordFulkerson(g);
 						ff.getResult();*/
 						EdmondsKarp ek = new EdmondsKarp(g);
@@ -52,6 +53,9 @@ public class FlowAlgorithmSolver {
 				//ff.getResult();
 				//EdmondsKarp ek = new EdmondsKarp(g);
 				//ek.getResult();
+				
+				
+				PushRelabel pr = new PushRelabel(g);
 
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
