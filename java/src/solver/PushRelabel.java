@@ -3,7 +3,6 @@ package solver;
 import interfaces.PushRelabelGraph;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import object.Vertex;
 
@@ -13,8 +12,8 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		for(Vertex v : instance.getVertex(0).adjacents) {
-			instance.chargeMax(instance.getVertex(0), v, actifV);
+		while(instance.getVertex(0).adjacents.size()>0) {
+			instance.chargeMax(instance.getVertex(0), instance.getVertex(0).adjacents.get(0), actifV);
 		}
 		instance.getVertex(0).h = instance.getE();
 	}
@@ -75,7 +74,7 @@ public class PushRelabel {
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
 			pushRelabel(elu);
-			//System.out.println("Excedent ..");
+			
 		}
 	}
 	
@@ -89,7 +88,7 @@ public class PushRelabel {
 		int hMin=Integer.MAX_VALUE;
 		for(Vertex u : v.adjacents) {
 			hMin = Math.min(hMin, u.h);
-			if (u.h-1 == v.h) {
+			if (v.h-1 == u.h) {
 				instance.chargeCapa(v,u,Math.min(v.e,instance.getCapacity(v, u)),actifV); // push
 				return;
 			}

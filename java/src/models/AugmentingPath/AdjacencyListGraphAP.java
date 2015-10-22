@@ -9,14 +9,14 @@ import java.io.IOException;
 import object.Node;
 import object.Vertex;
 
-public class AdjacencyListGraph implements AugmentingPathGraph {
+public class AdjacencyListGraphAP implements AugmentingPathGraph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow;
 	public Vertex [] vertices;
 	public int V;
 	public int E;
 
-	public AdjacencyListGraph(String filePath) {
+	public AdjacencyListGraphAP(String filePath) {
 		parse(filePath);
 		bestFlow = new Node[V];
 	}

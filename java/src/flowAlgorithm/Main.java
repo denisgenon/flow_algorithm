@@ -4,7 +4,8 @@ import java.io.File;
 import interfaces.AugmentingPathGraph;
 import interfaces.Graph;
 import interfaces.PushRelabelGraph;
-import models.PushRelabel.AdjacencyListGraph;
+import models.PushRelabel.AdjacencyListGraphPR;
+import models.AugmentingPath.AdjacencyListGraphAP;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
@@ -43,17 +44,21 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						PushRelabelGraph g = new AdjacencyListGraph(f.getPath());
+						PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
 						pr.getResult();
-						//EdmondsKarp ek = new EdmondsKarp(g);
-						//ek.getResult();
+						/*AugmentingPathGraph g = new AdjacencyListGraphAP(f.getPath());
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();*/
 					}
 				}
 
 				else {
-					//PushRelabelGraph g = new AdjacencyListGraph(args[0]);
+					PushRelabelGraph g = new AdjacencyListGraphPR(args[0]);
+					PushRelabel pr = new PushRelabel();
+					pr.process(g);
+					pr.getResult();
 					//FordFulkerson ff = new FordFulkerson(g);
 					//ff.getResult();
 					//EdmondsKarp ek = new EdmondsKarp(g);

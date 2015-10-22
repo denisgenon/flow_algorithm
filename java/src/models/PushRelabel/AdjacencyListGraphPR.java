@@ -9,16 +9,16 @@ import object.Node;
 import object.Vertex;
 import interfaces.PushRelabelGraph;
 
-public class AdjacencyListGraph implements PushRelabelGraph {
+public class AdjacencyListGraphPR implements PushRelabelGraph {
 	public Node[] capaMatrix;
 	public Vertex [] vertices;
 	public int V;
 	public int E;
-	
-	public AdjacencyListGraph(String filePath) {
+
+	public AdjacencyListGraphPR(String filePath) {
 		parse(filePath);
 	}
-	
+
 	@Override
 	public void parse(String filePath) {
 		try {
@@ -83,16 +83,6 @@ public class AdjacencyListGraph implements PushRelabelGraph {
 	public Vertex[] getVertices() {
 		return vertices;
 	}
-	
-	public int getFlowValue() {
-		int value = 0;
-		Node t = capaMatrix[capaMatrix.length-1];
-		while(t != null){
-			value += t.capa;
-			t = t.next;
-		}
-		return value;
-	}
 
 	@Override
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
@@ -106,13 +96,13 @@ public class AdjacencyListGraph implements PushRelabelGraph {
 		}
 
 		origin.e-=capa;
-		//System.out.println(origin.e);
 		if(origin.e<=0) {
 			actifV.remove(origin);
-			System.out.println("Remove from actiV");
 		}
 		desti.e+=capa;
-		if(desti.e>0) actifV.add(desti);
+		if(desti.e>0 && desti.id!=V-1 && desti.id!=0 && !actifV.contains(desti)) {
+			actifV.add(desti);
+		}
 
 		myT = Node.getNode(desti.id, origin.id,capaMatrix);
 		if(myT==null) { // on crée l'arete si elle n'existe pas
@@ -123,7 +113,7 @@ public class AdjacencyListGraph implements PushRelabelGraph {
 			myT.capa+=capa;
 		}
 	}
-	
+
 	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
 
 		int newCapa = Node.removeNode(origin.id, desti.id, capaMatrix);
@@ -131,14 +121,21 @@ public class AdjacencyListGraph implements PushRelabelGraph {
 
 		origin.adjacents.remove(desti);
 		if(!desti.adjacents.contains(origin)) desti.adjacents.add(origin);
-		
+
 		desti.e+=newCapa;
-		if(desti.e>0) actifV.add(desti);
+		if(desti.e>0) {
+			actifV.add(desti);
+		}
 	}
 
 	@Override
 	public int getCapacity(Vertex v, Vertex u) {
 		return Node.getNode(v.id,u.id,capaMatrix).capa;
+	}
+
+	@Override
+	public int getFlowValue() {
+		return vertices[V-1].e;
 	}
 
 }
