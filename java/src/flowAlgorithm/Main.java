@@ -1,15 +1,17 @@
 package flowAlgorithm;
 import java.io.File;
 
-import models.AdjacencyListGraph;
-import models.Graph;
+import interfaces.AugmentingPathGraph;
+import interfaces.Graph;
+import interfaces.PushRelabelGraph;
+import models.PushRelabel.AdjacencyListGraph;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
 import solver.FordFulkerson;
 import solver.PushRelabel;
 
-public class FlowAlgorithmSolver {
+public class Main {
 
 	public static void printPath(Vertex [] mypath) {
 		for(Vertex v : mypath){
@@ -41,22 +43,23 @@ public class FlowAlgorithmSolver {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						Graph g = new AdjacencyListGraph(f.getPath());
-						/*FordFulkerson ff = new FordFulkerson(g);
-						ff.getResult();*/
-						EdmondsKarp ek = new EdmondsKarp(g);
-						ek.getResult();
+						PushRelabelGraph g = new AdjacencyListGraph(f.getPath());
+						PushRelabel pr = new PushRelabel();
+						pr.process(g);
+						pr.getResult();
+						//EdmondsKarp ek = new EdmondsKarp(g);
+						//ek.getResult();
 					}
 				}
-				//AugmentingPathGraph g = new AdjacencyListGraph(args[0]);
-				//FordFulkerson ff = new FordFulkerson(g);
-				//ff.getResult();
-				//EdmondsKarp ek = new EdmondsKarp(g);
-				//ek.getResult();
-				
-				
-				PushRelabel pr = new PushRelabel(g);
 
+				else {
+					//PushRelabelGraph g = new AdjacencyListGraph(args[0]);
+					//FordFulkerson ff = new FordFulkerson(g);
+					//ff.getResult();
+					//EdmondsKarp ek = new EdmondsKarp(g);
+					//ek.getResult();
+				}
+				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}

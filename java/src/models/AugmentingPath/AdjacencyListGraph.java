@@ -1,15 +1,15 @@
-package models;
+package models.AugmentingPath;
+
+import interfaces.AugmentingPathGraph;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import object.Node;
 import object.Vertex;
 
-public class AdjacencyListGraph implements Graph {
+public class AdjacencyListGraph implements AugmentingPathGraph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow;
 	public Vertex [] vertices;
@@ -76,24 +76,18 @@ public class AdjacencyListGraph implements Graph {
 	public int getE() {
 		return E;
 	}
-
+	
 	@Override
-	public ArrayList<Vertex> getNeighbors(Vertex vertex) {
-		Vertex v = (Vertex) vertex;
-		return v.adjacents;
+	public Vertex[] getVertices() {
+		return vertices;
 	}
-
-	@Override
-	public void setNeighbors(Vertex u, List<Vertex> vertices) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public Vertex getVertex(int id) {
 		return vertices[id];
 	}
 
+	
 	@Override
 	public int getMinFlow(Vertex[] path) {
 		int minFlow=Integer.MAX_VALUE;
@@ -101,18 +95,6 @@ public class AdjacencyListGraph implements Graph {
 			minFlow=Math.min(minFlow, Node.getNode(path[i+1].id, path[i].id, capaMatrix).capa);
 		}
 		return minFlow;
-	}
-
-	@Override
-	public int getCapacity(Vertex u, Vertex v) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setCapacity(Vertex u, Vertex v, int c) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -153,12 +135,6 @@ public class AdjacencyListGraph implements Graph {
 				myT.capa+=capacity;
 			}
 		}
-	}
-
-	@Override
-	public Vertex[] getVertices() {
-		
-		return vertices;
 	}
 
 }
