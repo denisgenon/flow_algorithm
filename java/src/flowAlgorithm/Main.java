@@ -45,7 +45,7 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						PushRelabelGraph g = new SparseSetGraphPR(f.getPath());
+						PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
 						pr.getResult();

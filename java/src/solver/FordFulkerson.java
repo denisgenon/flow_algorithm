@@ -12,8 +12,11 @@ public class FordFulkerson {
 	public int [] colors;
 	public int [] parents;
 	
+	public long timeStart;
+	
 	public FordFulkerson(AugmentingPathGraph g) {
 		this.g = g;
+		timeStart=System.currentTimeMillis();
 		Vertex [] myPath = getPath();
 		while(myPath!=null) {
 			g.applyPath(g.getMinFlow(myPath),myPath);
@@ -24,7 +27,8 @@ public class FordFulkerson {
 	public void getResult() {
 		System.out.println("|V| : "+g.getV());
 		System.out.println("|E| : "+g.getE());
-		System.out.println("Max flot : " + g.getFlowValue()+"\n");
+		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	
 	public Vertex [] getPath() {

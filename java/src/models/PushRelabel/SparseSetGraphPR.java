@@ -96,6 +96,7 @@ public class SparseSetGraphPR implements PushRelabelGraph{
 		else { // on enleve la capa dans le bon sens sinon
 			myT.capa-=capa;
 		}
+		
 		origin.e-=capa;
 		if(origin.e<=0) {
 			actifV.remove(origin);
@@ -144,7 +145,7 @@ public class SparseSetGraphPR implements PushRelabelGraph{
 	
 	public Tuple getTuple(Vertex u, Vertex v) {
 		int index=-1;
-		for(int i=0; i<capaMatrix[u.id].map.length; i++){
+		for(int i=0; i<capaMatrix[u.id].size; i++){
 			if(capaMatrix[u.id].map[i]==v.id) {
 				index=i;
 				i=capaMatrix[u.id].map.length;

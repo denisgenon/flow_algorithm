@@ -9,13 +9,14 @@ import object.Vertex;
 public class PushRelabel {
 	public PushRelabelGraph instance;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
+	public long timeStart;
 
 	public void preProcess() {
 		computeDistanceLabel();
 		while(instance.getAdjacent(instance.getVertex(0)).size()>0) {
 			instance.chargeMax(instance.getVertex(0), instance.getAdjacent(instance.getVertex(0)).get(0), actifV);
 		}
-		instance.getVertex(0).h = instance.getE();
+		instance.getVertex(0).h = instance.getV();
 	}
 	
 	public void computeDistanceLabel() {
@@ -70,6 +71,7 @@ public class PushRelabel {
 
 	public void process(PushRelabelGraph instance) {
 		this.instance = instance;
+		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
@@ -80,7 +82,8 @@ public class PushRelabel {
 	public void getResult() {
 		System.out.println("|V| : " + instance.getV());
 		System.out.println("|E| : " + instance.getE());
-		System.out.println("Max flot : " + instance.getFlowValue()+"\n");
+		System.out.println("Max flot : " + instance.getFlowValue());
+		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 
 	public void pushRelabel(Vertex v) {

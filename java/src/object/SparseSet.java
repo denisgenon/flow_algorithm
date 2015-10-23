@@ -32,10 +32,7 @@ public class SparseSet {
 			}
 		}
 		int newIndex = size-1;
-		if(index>newIndex) {
-			System.out.println("! L'élement est déjà à droite de la séparation !");
-			return;
-		}
+		
 		Tuple t = dom[index];
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
@@ -49,17 +46,14 @@ public class SparseSet {
 	
 	public void add(int i, int capa){
 		int index=-1;
-		for(int in=0; in<map.length; in++){
+		for(int in=size; in<map.length; in++){
 			if(map[in]==i) {
 				index=in;
 				in=map.length;
 			}
 		}
 		int newIndex = size;
-		if(index<newIndex) {
-			System.out.println("! L'élement est déjà à gauche de la séparation !");
-			return;
-		}
+
 		Tuple t = dom[index];
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
