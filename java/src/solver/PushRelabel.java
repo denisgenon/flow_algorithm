@@ -12,8 +12,8 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		while(instance.getVertex(0).adjacents.size()>0) {
-			instance.chargeMax(instance.getVertex(0), instance.getVertex(0).adjacents.get(0), actifV);
+		while(instance.getAdjacent(instance.getVertex(0)).size()>0) {
+			instance.chargeMax(instance.getVertex(0), instance.getAdjacent(instance.getVertex(0)).get(0), actifV);
 		}
 		instance.getVertex(0).h = instance.getE();
 	}
@@ -28,9 +28,9 @@ public class PushRelabel {
 		}
 		
 		for (Vertex v : instance.getVertices()) {
-			for (Vertex u : v.adjacents) {
+			for (Vertex u : instance.getAdjacent(v)) {
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
-				invertedVertices[u.id].adjacents.add(new Vertex(v.id));
+				invertedVertices[u.id].adjacents.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
 		
@@ -46,7 +46,7 @@ public class PushRelabel {
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
-			for (Vertex j : i.adjacents) {
+			for (Vertex j : instance.getAdjacent(i)) {
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
 				//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
 					//j.h = i.h + 1;
@@ -74,7 +74,6 @@ public class PushRelabel {
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
 			pushRelabel(elu);
-			
 		}
 	}
 	
@@ -86,7 +85,7 @@ public class PushRelabel {
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		for(Vertex u : v.adjacents) {
+		for(Vertex u : instance.getAdjacent(v)) {
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
 				instance.chargeCapa(v,u,Math.min(v.e,instance.getCapacity(v, u)),actifV); // push

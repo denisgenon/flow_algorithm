@@ -15,4 +15,6 @@ public interface PushRelabelGraph extends Graph {
 	
 	public int getFlowValue();
 
+	public ArrayList<Vertex> getAdjacent(Vertex vertex);
+
 }

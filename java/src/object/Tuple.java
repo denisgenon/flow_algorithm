@@ -24,4 +24,10 @@ public class Tuple {
 	public void setVertex(int vertex) {
 		this.vertex = vertex;
 	}
+	
+	@Override
+	public String toString() {
+		return ("[->"+vertex+": "+capa+"]");
+	}
+	
 }

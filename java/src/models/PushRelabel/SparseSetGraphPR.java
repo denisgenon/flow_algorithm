@@ -5,17 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import object.Node;
+import object.SparseSet;
+import object.Tuple;
 import object.Vertex;
 import interfaces.PushRelabelGraph;
 
-public class AdjacencyListGraphPR implements PushRelabelGraph {
-	public Node[] capaMatrix;
+public class SparseSetGraphPR implements PushRelabelGraph{
 	public Vertex [] vertices;
+	public SparseSet[] capaMatrix;
 	public int V;
 	public int E;
-
-	public AdjacencyListGraphPR(String filePath) {
+	
+	public SparseSetGraphPR(String filePath) {
 		parse(filePath);
 	}
 
@@ -23,7 +24,6 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 	public void parse(String filePath) {
 		try {
 			BufferedReader br;
-
 			br = new BufferedReader(new FileReader(filePath));
 
 			String line = br.readLine();
@@ -32,8 +32,8 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 			String[] data = line.split(" ");
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
-			capaMatrix = new Node [V];
 			vertices = new Vertex[V];
+			capaMatrix = new SparseSet[V];
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -51,12 +51,15 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
 
-				// On ajoute les voisins dans les vertices
-				vertices[idVertex1].adjacents.add(vertices[idVertex2]);
-
-				// On ajoute la distance dans la matrice des distances
-				Node.addNode(idVertex1, idVertex2, capa, capaMatrix);
-
+				// On ajoute le voisin+distance dans le tableau de sparse Set
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new SparseSet();
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new SparseSet();
+				capaMatrix[idVertex1].add(new Tuple(capa,idVertex2));
+				capaMatrix[idVertex2].addFutur(new Tuple(0,idVertex1));
+			}
+			
+			for(SparseSet s : capaMatrix){
+				s.compile();
 			}
 			br.close();
 		} catch (IOException e) {
@@ -86,15 +89,13 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 
 	@Override
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
-		Node myT = Node.getNode(origin.id, desti.id, capaMatrix);
+		Tuple myT = getTuple(origin, desti);
 		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
-			Node.removeNode(origin.id, desti.id,capaMatrix);
-			origin.adjacents.remove(desti);
+			capaMatrix[origin.id].remove(desti.id);
 		}
 		else { // on enleve la capa dans le bon sens sinon
 			myT.capa-=capa;
 		}
-
 		origin.e-=capa;
 		if(origin.e<=0) {
 			actifV.remove(origin);
@@ -104,33 +105,53 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 			actifV.add(desti);
 		}
 
-		myT = Node.getNode(desti.id, origin.id,capaMatrix);
+		myT = getTuple(desti, origin);
 		if(myT==null) { // on crée l'arete si elle n'existe pas
-			Node.addNode(desti.id, origin.id,capa,capaMatrix); 
-			desti.adjacents.add(origin);
+			capaMatrix[desti.id].add(origin.id,capa); 
 		}
 		else { // on rajoute la capa dans le sens inverse sinon
 			myT.capa+=capa;
 		}
+
 	}
 
+	@Override
 	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
+		// On enleve desti des voisins de origin
+		int capa = getCapacity(origin, desti);
+		capaMatrix[origin.id].remove(desti.id);
 
-		int newCapa = Node.removeNode(origin.id, desti.id, capaMatrix);
-		Node.addNode(desti.id,origin.id,newCapa,capaMatrix);
+		// On ajoute origin aux voisins de desti
+		capaMatrix[desti.id].add(origin.id, capa);
 
-		origin.adjacents.remove(desti);
-		if(!desti.adjacents.contains(origin)) desti.adjacents.add(origin);
-
-		desti.e+=newCapa;
+		desti.e+=capa;
 		if(desti.e>0) {
 			actifV.add(desti);
 		}
 	}
 
 	@Override
-	public int getCapacity(Vertex v, Vertex u) {
-		return Node.getNode(v.id,u.id,capaMatrix).capa;
+	public int getCapacity(Vertex u, Vertex v) {
+		int index=-1;
+		for(int i=0; i<capaMatrix[u.id].map.length; i++){
+			if(capaMatrix[u.id].map[i]==v.id) {
+				index=i;
+				i=capaMatrix[u.id].map.length;
+			}
+		}
+		return capaMatrix[u.id].dom[index].getCapa();
+	}
+	
+	public Tuple getTuple(Vertex u, Vertex v) {
+		int index=-1;
+		for(int i=0; i<capaMatrix[u.id].map.length; i++){
+			if(capaMatrix[u.id].map[i]==v.id) {
+				index=i;
+				i=capaMatrix[u.id].map.length;
+			}
+		}
+		if (index==-1) return null;
+		return capaMatrix[u.id].dom[index];
 	}
 
 	@Override
@@ -140,11 +161,10 @@ public class AdjacencyListGraphPR implements PushRelabelGraph {
 
 	@Override
 	public ArrayList<Vertex> getAdjacent(Vertex vertex) {
+		SparseSet s = capaMatrix[vertex.id];
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
-		Node n = capaMatrix[vertex.id];
-		while(n!=null){
-			adja.add(vertices[n.index]);
-			n = n.next;
+		for(int i=0; i<s.size; i++){
+			adja.add(vertices[s.dom[i].vertex]);
 		}
 		return adja;
 	}

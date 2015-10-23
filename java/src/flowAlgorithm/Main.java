@@ -5,6 +5,7 @@ import interfaces.AugmentingPathGraph;
 import interfaces.Graph;
 import interfaces.PushRelabelGraph;
 import models.PushRelabel.AdjacencyListGraphPR;
+import models.PushRelabel.SparseSetGraphPR;
 import models.AugmentingPath.AdjacencyListGraphAP;
 import object.Node;
 import object.Vertex;
@@ -44,7 +45,7 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
+						PushRelabelGraph g = new SparseSetGraphPR(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
 						pr.getResult();
@@ -55,7 +56,7 @@ public class Main {
 				}
 
 				else {
-					PushRelabelGraph g = new AdjacencyListGraphPR(args[0]);
+					PushRelabelGraph g = new SparseSetGraphPR(args[0]);
 					PushRelabel pr = new PushRelabel();
 					pr.process(g);
 					pr.getResult();
