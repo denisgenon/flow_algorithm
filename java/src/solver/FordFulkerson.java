@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import object.Node;
+import object.Tuple;
 import object.Vertex;
 
 public class FordFulkerson {
@@ -64,7 +64,7 @@ public class FordFulkerson {
 	
 	public void applyPath(int capacity, Vertex[] path) {
 		for(int i=0; i<path.length-1; i++) {
-			Node myT = (Node) g.getTuple(path[i+1],  path[i],1);
+			Tuple myT = g.getTuple(path[i+1],  path[i],1);
 			if(myT.capa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.remove(path[i+1], path[i]);
 			}
@@ -72,7 +72,7 @@ public class FordFulkerson {
 				myT.capa-=capacity;
 			}
 
-			myT=(Node) g.getTuple(path[i],path[i+1],1);
+			myT = g.getTuple(path[i],path[i+1],1);
 			if(myT==null) { // on crée l'arete si elle n'existe pas
 				g.add(path[i], path[i+1], capacity,1);
 			}
@@ -80,8 +80,7 @@ public class FordFulkerson {
 				myT.capa+=capacity;
 			}
 			
-
-			myT = (Node) g.getTuple(path[i], path[i+1], 2); // on augmente le flot courant	
+			myT = g.getTuple(path[i], path[i+1], 2); // on augmente le flot courant	
 			if(myT==null) g.add(path[i], path[i+1], capacity, 2); 
 			else {
 				myT.capa+=capacity;
