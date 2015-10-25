@@ -1,27 +1,37 @@
 package solver;
 
-import interfaces.AugmentingPathGraph;
+import interfaces.Graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
+import object.Node;
 import object.Vertex;
 
 public class FordFulkerson {
-	public AugmentingPathGraph g;
+	public Graph g;
 	public int [] parents; // For getPath
 	public long timeStart;
 	
-	public FordFulkerson(AugmentingPathGraph g) {
+	public FordFulkerson(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
 		Vertex [] myPath = getPath();
 		while(myPath!=null) {
-			g.applyPath(g.getMinFlow(myPath),myPath);
+			applyPath(getMinFlow(myPath),myPath);
 			myPath = getPath();
 		}
+	}
+	
+	public int getMinFlow(Vertex[] path) {
+		int minFlow=Integer.MAX_VALUE;
+		for(int i=0; i<path.length-1; i++) {
+			
+			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i]));
+		}
+		return minFlow;
 	}
 	
 	public void getResult() {
@@ -52,6 +62,33 @@ public class FordFulkerson {
 		return null;
 	}
 	
+	public void applyPath(int capacity, Vertex[] path) {
+		for(int i=0; i<path.length-1; i++) {
+			Node myT = (Node) g.getTuple(path[i+1],  path[i],1);
+			if(myT.capa<=capacity) { // On enleve l'arete si la capa dispo est 0
+				g.remove(path[i+1], path[i]);
+			}
+			else { // on enleve la capa dans le bon sens sinon
+				myT.capa-=capacity;
+			}
+
+			myT=(Node) g.getTuple(path[i],path[i+1],1);
+			if(myT==null) { // on crée l'arete si elle n'existe pas
+				g.add(path[i], path[i+1], capacity,1);
+			}
+			else { // on rajoute la capa dans le sens inverse sinon
+				myT.capa+=capacity;
+			}
+			
+
+			myT = (Node) g.getTuple(path[i], path[i+1], 2); // on augmente le flot courant	
+			if(myT==null) g.add(path[i], path[i+1], capacity, 2); 
+			else {
+				myT.capa+=capacity;
+			}
+		}
+	}
+	
 	public void visitDFS(int index) {
 		Set<Integer> set = new HashSet<Integer>();
 	    Stack<Integer> stack = new Stack<Integer>();
@@ -59,7 +96,7 @@ public class FordFulkerson {
 	    while(!stack.isEmpty()){
 	    	int current = stack.pop();
 	    	set.add(current);
-	    	for(Vertex v : g.getVertex(current).adjacents) {
+	    	for(Vertex v : g.getAdjacents(g.getVertex(current))) {
 				if(!set.contains(v.id)) {
 					parents[v.id]=current;
 					if (!set.contains(v.id)) {

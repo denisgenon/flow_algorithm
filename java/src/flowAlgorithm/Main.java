@@ -1,12 +1,9 @@
 package flowAlgorithm;
 import java.io.File;
 
-import interfaces.AugmentingPathGraph;
 import interfaces.Graph;
-import interfaces.PushRelabelGraph;
-import models.PushRelabel.AdjacencyListGraphPR;
-import models.PushRelabel.SparseSetGraphPR;
-import models.AugmentingPath.AdjacencyListGraphAP;
+import models.AdjacencyListGraph;
+import models.SparseSetGraph;
 import object.Node;
 import object.Vertex;
 import solver.EdmondsKarp;
@@ -45,20 +42,20 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						/*PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
+						Graph g = new AdjacencyListGraph(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
-						pr.getResult();*/
-						AugmentingPathGraph g = new AdjacencyListGraphAP(f.getPath());
-						//EdmondsKarp ek = new EdmondsKarp(g);
-						//ek.getResult();
-						FordFulkerson ff = new FordFulkerson(g);
-						ff.getResult();
+						pr.getResult();
+						/*Graph g = new AdjacencyListGraph(f.getPath());
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();
+						//FordFulkerson ff = new FordFulkerson(g);
+						//ff.getResult();*/
 					}
 				}
 
 				else {
-					PushRelabelGraph g = new SparseSetGraphPR(args[0]);
+					Graph g = new SparseSetGraph(args[0]);
 					PushRelabel pr = new PushRelabel();
 					pr.process(g);
 					pr.getResult();

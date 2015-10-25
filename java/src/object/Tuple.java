@@ -2,32 +2,32 @@ package object;
 
 public class Tuple {
 	public int capa;
-	public int vertex;
+	public int index;
 	
-	public Tuple(int capa, int vertex){
+	public Tuple(int capa, int index){
 		this.capa=capa;
-		this.vertex=vertex;
+		this.index=index;
 	}
 	
 	public int getCapa() {
 		return capa;
 	}
 	
-	public int getVertex() {
-		return vertex;
+	public int getIndex() {
+		return index;
 	}
 	
 	public void setCapa(int capa) {
 		this.capa = capa;
 	}
 	
-	public void setVertex(int vertex) {
-		this.vertex = vertex;
+	public void setIndex(int index) {
+		this.index = index;
 	}
 	
 	@Override
 	public String toString() {
-		return ("[->"+vertex+": "+capa+"]");
+		return ("[->"+index+": "+capa+"]");
 	}
 	
 }

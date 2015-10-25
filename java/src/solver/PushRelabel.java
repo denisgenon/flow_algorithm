@@ -1,37 +1,38 @@
 package solver;
 
-import interfaces.PushRelabelGraph;
+import interfaces.Graph;
 
 import java.util.ArrayList;
 
+import object.Tuple;
 import object.Vertex;
 
 public class PushRelabel {
-	public PushRelabelGraph instance;
+	public Graph g;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
 
 	public void preProcess() {
 		computeDistanceLabel();
-		while(instance.getAdjacent(instance.getVertex(0)).size()>0) {
-			instance.chargeMax(instance.getVertex(0), instance.getAdjacent(instance.getVertex(0)).get(0), actifV);
+		while(g.getAdjacents(g.getVertex(0)).size()>0) {
+			chargeMax(g.getVertex(0), g.getAdjacents(g.getVertex(0)).get(0), actifV);
 		}
-		instance.getVertex(0).h = instance.getV();
+		g.getVertex(0).h = g.getV();
 	}
 	
 	public void computeDistanceLabel() {
 		// Faire un Dijkstra à l'envers
-		Vertex[] invertedVertices = new Vertex[instance.getV()];
+		Vertex[] invertedVertices = new Vertex[g.getV()];
 		
-		for (int i = 0; i < instance.getV(); i++) {
+		for (int i = 0; i < g.getV(); i++) {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
 		
-		for (Vertex v : instance.getVertices()) {
-			for (Vertex u : instance.getAdjacent(v)) {
+		for (Vertex v : g.getVertices()) {
+			for (Vertex u : g.getAdjacents(v)) {
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
-				invertedVertices[u.id].adjacents.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
+				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
 		
@@ -43,15 +44,15 @@ public class PushRelabel {
 			notS.add(invertedVertices[i]);
 		}
 		
-		invertedVertices[instance.getV() - 1].h = 0;
+		invertedVertices[g.getV() - 1].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
-			for (Vertex j : instance.getAdjacent(i)) {
+			for (Vertex j : g.getAdjacents(i)) {
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
 				//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
 					//j.h = i.h + 1;
-					instance.getVertex(j.id).h = invertedVertices[i.id].h + 1;
+					g.getVertex(j.id).h = invertedVertices[i.id].h + 1;
 					invertedVertices[j.id].h = invertedVertices[i.id].h + 1;
 				}
 			}
@@ -69,8 +70,8 @@ public class PushRelabel {
 		return minVertex;
 	}
 
-	public void process(PushRelabelGraph instance) {
-		this.instance = instance;
+	public void process(Graph g) {
+		this.g = g;
 		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()){
@@ -80,21 +81,60 @@ public class PushRelabel {
 	}
 	
 	public void getResult() {
-		System.out.println("|V| : " + instance.getV());
-		System.out.println("|E| : " + instance.getE());
-		System.out.println("Max flot : " + instance.getFlowValue());
+		System.out.println("|V| : " + g.getV());
+		System.out.println("|E| : " + g.getE());
+		System.out.println("Max flot : " + g.getFlowValue());
 		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		for(Vertex u : instance.getAdjacent(v)) {
+		for(Vertex u : g.getAdjacents(v)) {
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
-				instance.chargeCapa(v,u,Math.min(v.e,instance.getCapacity(v, u)),actifV); // push
+				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v, u)),actifV); // push
 				return;
 			}
 		}
 		v.h = hMin + 1;
+	}
+	
+	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
+
+		int newCapa = g.remove(origin,desti);
+		g.add(desti, origin, newCapa,1);
+
+		desti.e+=newCapa;
+		if(desti.e>0) {
+			actifV.add(desti);
+		}
+	}
+	
+	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
+		Tuple myT = g.getTuple(origin, desti,1);
+		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
+			g.remove(origin, desti);
+		}
+		else { // on enleve la capa dans le bon sens sinon
+			myT.capa-=capa;
+		}
+		
+		origin.e-=capa;
+		if(origin.e<=0) {
+			actifV.remove(origin);
+		}
+		desti.e+=capa;
+		if(desti.e>0 && desti.id!=(g.getV()-1) && desti.id!=0 && !actifV.contains(desti)) {
+			actifV.add(desti);
+		}
+
+		myT = g.getTuple(desti, origin,1);
+		if(myT==null) { // on crée l'arete si elle n'existe pas
+			g.add(desti, origin, capa,1);
+		}
+		else { // on rajoute la capa dans le sens inverse sinon
+			myT.capa+=capa;
+		}
+
 	}
 }

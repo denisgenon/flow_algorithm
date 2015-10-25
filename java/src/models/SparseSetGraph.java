@@ -1,4 +1,4 @@
-package models.PushRelabel;
+package models;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import object.SparseSet;
 import object.Tuple;
 import object.Vertex;
-import interfaces.PushRelabelGraph;
+import interfaces.Graph;
 
-public class SparseSetGraphPR implements PushRelabelGraph{
+public class SparseSetGraph implements Graph{
 	public Vertex [] vertices;
 	public SparseSet[] capaMatrix;
 	public int V;
 	public int E;
 	
-	public SparseSetGraphPR(String filePath) {
+	public SparseSetGraph(String filePath) {
 		parse(filePath);
 	}
 
@@ -88,50 +88,6 @@ public class SparseSetGraphPR implements PushRelabelGraph{
 	}
 
 	@Override
-	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
-		Tuple myT = getTuple(origin, desti);
-		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
-			capaMatrix[origin.id].remove(desti.id);
-		}
-		else { // on enleve la capa dans le bon sens sinon
-			myT.capa-=capa;
-		}
-		
-		origin.e-=capa;
-		if(origin.e<=0) {
-			actifV.remove(origin);
-		}
-		desti.e+=capa;
-		if(desti.e>0 && desti.id!=V-1 && desti.id!=0 && !actifV.contains(desti)) {
-			actifV.add(desti);
-		}
-
-		myT = getTuple(desti, origin);
-		if(myT==null) { // on crée l'arete si elle n'existe pas
-			capaMatrix[desti.id].add(origin.id,capa); 
-		}
-		else { // on rajoute la capa dans le sens inverse sinon
-			myT.capa+=capa;
-		}
-
-	}
-
-	@Override
-	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
-		// On enleve desti des voisins de origin
-		int capa = getCapacity(origin, desti);
-		capaMatrix[origin.id].remove(desti.id);
-
-		// On ajoute origin aux voisins de desti
-		capaMatrix[desti.id].add(origin.id, capa);
-
-		desti.e+=capa;
-		if(desti.e>0) {
-			actifV.add(desti);
-		}
-	}
-
-	@Override
 	public int getCapacity(Vertex u, Vertex v) {
 		int index=-1;
 		for(int i=0; i<capaMatrix[u.id].map.length; i++){
@@ -143,7 +99,8 @@ public class SparseSetGraphPR implements PushRelabelGraph{
 		return capaMatrix[u.id].dom[index].getCapa();
 	}
 	
-	public Tuple getTuple(Vertex u, Vertex v) {
+	// Type : utile seulement pour AP
+	public Tuple getTuple(Vertex u, Vertex v, int type) {
 		int index=-1;
 		for(int i=0; i<capaMatrix[u.id].size; i++){
 			if(capaMatrix[u.id].map[i]==v.id) {
@@ -161,13 +118,23 @@ public class SparseSetGraphPR implements PushRelabelGraph{
 	}
 
 	@Override
-	public ArrayList<Vertex> getAdjacent(Vertex vertex) {
+	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
 		SparseSet s = capaMatrix[vertex.id];
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
 		for(int i=0; i<s.size; i++){
-			adja.add(vertices[s.dom[i].vertex]);
+			adja.add(vertices[s.dom[i].index]);
 		}
 		return adja;
+	}
+
+	@Override
+	public int remove(Vertex u, Vertex v) {
+		return capaMatrix[u.id].remove(v.id);
+	}
+
+	@Override
+	public void add(Vertex u, Vertex v, int capa, int type) {
+		if(type==1) capaMatrix[u.id].add(v.id, capa);	
 	}
 
 }

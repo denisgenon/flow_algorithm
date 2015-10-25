@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class Vertex {
 	public int id;
-	public ArrayList<Vertex> adjacents;
+	public ArrayList<Vertex> adjaDijkstra;
 	public int h;
 	public int e;
 	
 	public Vertex(int id) {
 		this.id = id;
-		adjacents = new ArrayList<Vertex>();
+		adjaDijkstra = new ArrayList<Vertex>();
 		h=0;
 		e=0;
 	}

@@ -1,19 +1,18 @@
 package object;
 
-public class Node {
-	public int index;
-	public int capa;
+public class Node extends Tuple{
+	//public int index;
+	//public int capa;
 	public Node next;
 	
-	public Node(int index, int capa, Node next) {
-		this.index=index;
-		this.capa=capa;
+	public Node(int index, int capa, Node next){
+		super(capa, index);
 		this.next=next;
 	}
 	
 	@Override
 	public String toString() {
-		return ("["+index + ", " + capa+"]");
+		return ("["+super.index + ", " + capa+"]");
 	}
 	
 	// Retourne la valeur du node enlevé

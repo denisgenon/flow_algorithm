@@ -1,22 +1,24 @@
-package models.AugmentingPath;
+package models;
 
-import interfaces.AugmentingPathGraph;
+import interfaces.Graph;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import object.Node;
+import object.Tuple;
 import object.Vertex;
 
-public class AdjacencyListGraphAP implements AugmentingPathGraph {
+public class AdjacencyListGraph implements Graph {
 	public Node[] capaMatrix;
-	public Node[] bestFlow;
+	public Node[] bestFlow; // que pour Augmenting Path
 	public Vertex [] vertices;
 	public int V;
 	public int E;
 
-	public AdjacencyListGraphAP(String filePath) {
+	public AdjacencyListGraph(String filePath) {
 		parse(filePath);
 		bestFlow = new Node[V];
 	}
@@ -54,7 +56,7 @@ public class AdjacencyListGraphAP implements AugmentingPathGraph {
 				}
 
 				// On ajoute les voisins dans les vertices
-				vertices[idVertex1].adjacents.add(vertices[idVertex2]);
+				getAdjacents(vertices[idVertex1]);
 
 				// On ajoute la distance dans la matrice des distances
 				Node.addNode(idVertex1, idVertex2, capa, capaMatrix);
@@ -62,7 +64,6 @@ public class AdjacencyListGraphAP implements AugmentingPathGraph {
 			}
 			br.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -87,16 +88,6 @@ public class AdjacencyListGraphAP implements AugmentingPathGraph {
 		return vertices[id];
 	}
 
-	
-	@Override
-	public int getMinFlow(Vertex[] path) {
-		int minFlow=Integer.MAX_VALUE;
-		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow, Node.getNode(path[i+1].id, path[i].id, capaMatrix).capa);
-		}
-		return minFlow;
-	}
-
 	@Override
 	public int getFlowValue() {
 		int value = 0;
@@ -109,32 +100,36 @@ public class AdjacencyListGraphAP implements AugmentingPathGraph {
 	}
 
 	@Override
-	public void applyPath(int capacity, Vertex[] path) {
-		for(int i=0; i<path.length-1; i++) {
-			Node myT = Node.getNode(path[i+1].id, path[i].id, capaMatrix);
-			if(myT.capa<=capacity) { // On enleve l'arete si la capa dispo est 0
-				Node.removeNode(path[i+1].id, path[i].id, capaMatrix);
-				path[i+1].adjacents.remove(path[i]);
-			}
-			else { // on enleve la capa dans le bon sens sinon
-				myT.capa-=capacity;
-			}
-			
-			myT = Node.getNode(path[i].id, path[i+1].id, capaMatrix);
-			if(myT==null) { // on crée l'arete si elle n'existe pas
-				Node.addNode(path[i].id, path[i+1].id,capacity, capaMatrix); 
-				path[i].adjacents.add(path[i+1]);
-			}
-			else { // on rajoute la capa dans le sens inverse sinon
-				myT.capa+=capacity;
-			}
-			
-			myT = Node.getNode(path[i].id, path[i+1].id, bestFlow); // on augmente le flot courant	
-			if(myT==null) Node.addNode(path[i].id, path[i+1].id, capacity, bestFlow); 
-			else {
-				myT.capa+=capacity;
-			}
+	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
+		ArrayList<Vertex> adja = new ArrayList<Vertex>();
+		Node n = capaMatrix[vertex.id];
+		while(n!=null){
+			adja.add(vertices[n.index]);
+			n = n.next;
 		}
+		return adja;
 	}
 
+	@Override
+	public int remove(Vertex u, Vertex v) {
+		return Node.removeNode(u.id, v.id, capaMatrix);
+	}
+
+	@Override
+	public void add(Vertex u, Vertex v, int capa, int type) {
+		if (type==1) Node.addNode(u.id, v.id, capa, capaMatrix);
+		if (type==2) Node.addNode(u.id, v.id, capa, bestFlow);
+	}
+
+	@Override
+	public Tuple getTuple(Vertex u, Vertex v, int type) {
+		if (type==1) return Node.getNode(u.id, v.id, capaMatrix);
+		if (type==2) return Node.getNode(u.id, v.id, bestFlow);
+		return null;
+	}
+
+	@Override
+	public int getCapacity(Vertex v, Vertex u) {
+		return Node.getNode(v.id,u.id,capaMatrix).capa;
+	}
 }

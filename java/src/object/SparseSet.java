@@ -23,7 +23,10 @@ public class SparseSet {
 		futurAdjacents.add(t);
 	}
 	
-	public void remove(int i) {
+	public int remove(int i) {
+		
+		int oldCapa=-1;
+		
 		int index=-1;
 		for(int in=0; in<size; in++){
 			if(map[in]==i) {
@@ -34,6 +37,7 @@ public class SparseSet {
 		int newIndex = size-1;
 		
 		Tuple t = dom[index];
+		oldCapa=t.capa;
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
 		
@@ -42,6 +46,8 @@ public class SparseSet {
 		map[newIndex]=ind;
 		
 		size--;
+		
+		return oldCapa;
 	}
 	
 	public void add(int i, int capa){
@@ -82,7 +88,7 @@ public class SparseSet {
 		
 		map = new int [bigSize];
 		for(int i=0; i<map.length; i++){
-			map[i]=dom[i].vertex;
+			map[i]=dom[i].index;
 		}
 		adjacents=null;
 		futurAdjacents=null;

@@ -1,6 +1,6 @@
 package solver;
 
-import interfaces.AugmentingPathGraph;
+import interfaces.Graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import object.Vertex;
 public class EdmondsKarp extends FordFulkerson {
 	private static final int INFINITY = Integer.MAX_VALUE;
 
-	public EdmondsKarp(AugmentingPathGraph g) {
+	public EdmondsKarp(Graph g) {
 		super(g);
 	}
 	
@@ -31,7 +31,7 @@ public class EdmondsKarp extends FordFulkerson {
 		queue.add(super.g.getVertex(0));
 		while (!queue.isEmpty()) {
 			Vertex u = queue.removeFirst();
-			for (Vertex v : u.adjacents) {
+			for (Vertex v : g.getAdjacents(u)) {
 				if (distances[v.id] == INFINITY) {
 					distances[v.id] = distances[u.id] + 1;
 					parent[v.id] = u;
