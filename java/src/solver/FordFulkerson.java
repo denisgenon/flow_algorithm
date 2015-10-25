@@ -3,15 +3,15 @@ package solver;
 import interfaces.AugmentingPathGraph;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
 
 import object.Vertex;
 
 public class FordFulkerson {
 	public AugmentingPathGraph g;
-	// For getPath
-	public int [] colors;
-	public int [] parents;
-	
+	public int [] parents; // For getPath
 	public long timeStart;
 	
 	public FordFulkerson(AugmentingPathGraph g) {
@@ -33,11 +33,9 @@ public class FordFulkerson {
 	
 	public Vertex [] getPath() {
 		
-		colors = new int [g.getV()]; // Blanc=0, Gris=1, Noir=2
 		parents = new int [g.getV()];
 		
 		for(int i=0; i<g.getV(); i++) {
-			colors[i]=0;
 			parents[i]=-1;
 		}
 		
@@ -55,15 +53,20 @@ public class FordFulkerson {
 	}
 	
 	public void visitDFS(int index) {
-		colors[index]=1;
-		for(Vertex v : g.getVertex(index).adjacents) {
-			// TODO Prend ton un object Vertex ?
-			if(colors[v.id]==0) {
-				parents[v.id]=index;
-				visitDFS(v.id);
+		Set<Integer> set = new HashSet<Integer>();
+	    Stack<Integer> stack = new Stack<Integer>();
+	    stack.push(index);
+	    while(!stack.isEmpty()){
+	    	int current = stack.pop();
+	    	set.add(current);
+	    	for(Vertex v : g.getVertex(current).adjacents) {
+				if(!set.contains(v.id)) {
+					parents[v.id]=current;
+					if (!set.contains(v.id)) {
+		                stack.push(v.id);
+		            }
+				}
 			}
-		}
-		colors[index]=2;
+	    }
 	}
-
 }

@@ -45,13 +45,15 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
+						/*PushRelabelGraph g = new AdjacencyListGraphPR(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
-						pr.getResult();
-						/*AugmentingPathGraph g = new AdjacencyListGraphAP(f.getPath());
-						EdmondsKarp ek = new EdmondsKarp(g);
-						ek.getResult();*/
+						pr.getResult();*/
+						AugmentingPathGraph g = new AdjacencyListGraphAP(f.getPath());
+						//EdmondsKarp ek = new EdmondsKarp(g);
+						//ek.getResult();
+						FordFulkerson ff = new FordFulkerson(g);
+						ff.getResult();
 					}
 				}
 
