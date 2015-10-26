@@ -10,13 +10,13 @@ import object.Edge;
 import object.Vertex;
 import interfaces.Graph;
 
-public class SparseSetGraph implements Graph{
+public class SplitArrayGraph implements Graph{
 	public Vertex [] vertices;
 	public SplitArray[] capaMatrix;
 	public int V;
 	public int E;
 	
-	public SparseSetGraph(String filePath) {
+	public SplitArrayGraph(String filePath) {
 		parse(filePath);
 	}
 
