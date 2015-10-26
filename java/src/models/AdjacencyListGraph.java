@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import object.Node;
-import object.Tuple;
+import object.Edge;
 import object.Vertex;
 
 public class AdjacencyListGraph implements Graph {
@@ -104,25 +104,25 @@ public class AdjacencyListGraph implements Graph {
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
 		Node n = capaMatrix[vertex.id];
 		while(n!=null){
-			adja.add(vertices[n.index]);
+			adja.add(vertices[n.idDesti]);
 			n = n.next;
 		}
 		return adja;
 	}
 
 	@Override
-	public int remove(Vertex u, Vertex v) {
+	public int removeEdge(Vertex u, Vertex v) {
 		return Node.removeNode(u.id, v.id, capaMatrix);
 	}
 
 	@Override
-	public void add(Vertex u, Vertex v, int capa, int type) {
+	public void addEdge(Vertex u, Vertex v, int capa, int type) {
 		if (type==1) Node.addNode(u.id, v.id, capa, capaMatrix);
 		if (type==2) Node.addNode(u.id, v.id, capa, bestFlow);
 	}
 
 	@Override
-	public Tuple getTuple(Vertex u, Vertex v, int type) {
+	public Edge getEdge(Vertex u, Vertex v, int type) {
 		if (type==1) return Node.getNode(u.id, v.id, capaMatrix);
 		if (type==2) return Node.getNode(u.id, v.id, bestFlow);
 		return null;

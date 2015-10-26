@@ -2,8 +2,7 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.AdjacencyListGraph;
-import models.SparseSetGraph;
+import models.*;
 import object.Node;
 import object.Vertex;
 import solver.*;
@@ -41,15 +40,15 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						/*Graph g = new AdjacencyListGraph(f.getPath());
+						Graph g = new SparseSetGraph(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
-						pr.getResult();*/
-						Graph g = new AdjacencyListGraph(f.getPath());
+						pr.getResult();
+						//Graph g = new AdjacencyListGraph(f.getPath());
 						//EdmondsKarp ek = new EdmondsKarp(g);
 						//ek.getResult();
-						FordFulkerson ff = new FordFulkerson(g);
-						ff.getResult();
+						//FordFulkerson ff = new FordFulkerson(g);
+						//ff.getResult();
 					}
 				}
 

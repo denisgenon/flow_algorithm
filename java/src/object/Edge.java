@@ -1,20 +1,20 @@
 package object;
 
-public class Tuple {
+public class Edge {
 	public int capa;
-	public int index;
+	public int idDesti;
 	
-	public Tuple(int capa, int index){
+	public Edge(int capa, int index){
 		this.capa=capa;
-		this.index=index;
+		this.idDesti=index;
 	}
 	
-	public int getCapa() {
+	public int getCapacity() {
 		return capa;
 	}
 	
 	public int getIndex() {
-		return index;
+		return idDesti;
 	}
 	
 	public void setCapa(int capa) {
@@ -22,12 +22,12 @@ public class Tuple {
 	}
 	
 	public void setIndex(int index) {
-		this.index = index;
+		this.idDesti = index;
 	}
 	
 	@Override
 	public String toString() {
-		return ("[->"+index+": "+capa+"]");
+		return ("[->"+idDesti+": "+capa+"]");
 	}
 	
 }

@@ -5,14 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import object.SparseSet;
-import object.Tuple;
+import object.SplitArray;
+import object.Edge;
 import object.Vertex;
 import interfaces.Graph;
 
 public class SparseSetGraph implements Graph{
 	public Vertex [] vertices;
-	public SparseSet[] capaMatrix;
+	public SplitArray[] capaMatrix;
 	public int V;
 	public int E;
 	
@@ -33,7 +33,7 @@ public class SparseSetGraph implements Graph{
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
-			capaMatrix = new SparseSet[V];
+			capaMatrix = new SplitArray[V];
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -52,13 +52,13 @@ public class SparseSetGraph implements Graph{
 				}
 
 				// On ajoute le voisin+distance dans le tableau de sparse Set
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new SparseSet();
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new SparseSet();
-				capaMatrix[idVertex1].add(new Tuple(capa,idVertex2));
-				capaMatrix[idVertex2].addFutur(new Tuple(0,idVertex1));
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new SplitArray();
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new SplitArray();
+				capaMatrix[idVertex1].add(new Edge(capa,idVertex2));
+				capaMatrix[idVertex2].addFutur(new Edge(0,idVertex1));
 			}
 			
-			for(SparseSet s : capaMatrix){
+			for(SplitArray s : capaMatrix){
 				s.compile();
 			}
 			br.close();
@@ -89,27 +89,18 @@ public class SparseSetGraph implements Graph{
 
 	@Override
 	public int getCapacity(Vertex u, Vertex v) {
-		int index=-1;
-		for(int i=0; i<capaMatrix[u.id].map.length; i++){
-			if(capaMatrix[u.id].map[i]==v.id) {
-				index=i;
-				i=capaMatrix[u.id].map.length;
-			}
-		}
-		return capaMatrix[u.id].dom[index].getCapa();
+		return getEdge(u,v,1).getCapacity();
 	}
 	
 	// Type : utile seulement pour AP
-	public Tuple getTuple(Vertex u, Vertex v, int type) {
-		int index=-1;
-		for(int i=0; i<capaMatrix[u.id].size; i++){
-			if(capaMatrix[u.id].map[i]==v.id) {
-				index=i;
-				i=capaMatrix[u.id].map.length;
+	public Edge getEdge(Vertex u, Vertex v, int type) {
+		for(int i=0; i<capaMatrix[u.id].split; i++){
+			if(capaMatrix[u.id].dom[i].idDesti==v.id) {
+				return capaMatrix[u.id].dom[i];
 			}
 		}
-		if (index==-1) return null;
-		return capaMatrix[u.id].dom[index];
+		return null;
+		
 	}
 
 	@Override
@@ -119,21 +110,21 @@ public class SparseSetGraph implements Graph{
 
 	@Override
 	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
-		SparseSet s = capaMatrix[vertex.id];
+		SplitArray s = capaMatrix[vertex.id];
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
-		for(int i=0; i<s.size; i++){
-			adja.add(vertices[s.dom[i].index]);
+		for(int i=0; i<s.split; i++){
+			adja.add(vertices[s.dom[i].idDesti]);
 		}
 		return adja;
 	}
 
 	@Override
-	public int remove(Vertex u, Vertex v) {
+	public int removeEdge(Vertex u, Vertex v) {
 		return capaMatrix[u.id].remove(v.id);
 	}
 
 	@Override
-	public void add(Vertex u, Vertex v, int capa, int type) {
+	public void addEdge(Vertex u, Vertex v, int capa, int type) {
 		if(type==1) capaMatrix[u.id].add(v.id, capa);	
 	}
 

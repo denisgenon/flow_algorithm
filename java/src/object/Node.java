@@ -1,8 +1,6 @@
 package object;
 
-public class Node extends Tuple{
-	//public int index;
-	//public int capa;
+public class Node extends Edge{
 	public Node next;
 	
 	public Node(int index, int capa, Node next){
@@ -12,7 +10,7 @@ public class Node extends Tuple{
 	
 	@Override
 	public String toString() {
-		return ("["+super.index + ", " + capa+"]");
+		return ("["+super.idDesti + ", " + capa+"]");
 	}
 	
 	// Retourne la valeur du node enlevé
@@ -23,12 +21,12 @@ public class Node extends Tuple{
 			System.out.println("La liste est vide");
 			return res;
 		}
-		if(current.index==y){
+		if(current.idDesti==y){
 			capaMatrix[x]=current.next;
 			return current.capa;
 		}
 		while(current.next!=null) {
-			if(current.next.index==y) {
+			if(current.next.idDesti==y) {
 				res=current.next.capa;
 				current.next = current.next.next;
 				return res;
@@ -47,18 +45,18 @@ public class Node extends Tuple{
 		if(current==null) {
 			capaMatrix[x]=new Node(y,capa,null);
 		}
-		else if(current.index>y){
+		else if(current.idDesti>y){
 			capaMatrix[x]=new Node(y,capa,current);
 			flag=false;
 		}
 		else {
 			while(current.next!=null && flag) {
-				if(current.index>y) {
+				if(current.idDesti>y) {
 					Node newTuple = new Node(y,capa,current);
 					capaMatrix[x]=newTuple;
 					flag = false;
 				}
-				else if(current.next.index>y) {
+				else if(current.next.idDesti>y) {
 					Node newTuple = new Node(y,capa,current.next);
 					current.next=newTuple;
 					flag = false;
@@ -75,7 +73,7 @@ public class Node extends Tuple{
 	public static Node getNode(int x, int y, Node [] capaMatrix){
 		Node current = capaMatrix[x];
 		while(current!=null) {
-			if(current.index==y) {
+			if(current.idDesti==y) {
 				return current;
 			}
 			current=current.next;

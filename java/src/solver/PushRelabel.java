@@ -4,7 +4,7 @@ import interfaces.Graph;
 
 import java.util.ArrayList;
 
-import object.Tuple;
+import object.Edge;
 import object.Vertex;
 
 public class PushRelabel {
@@ -101,8 +101,8 @@ public class PushRelabel {
 	
 	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
 
-		int newCapa = g.remove(origin,desti);
-		g.add(desti, origin, newCapa,1);
+		int newCapa = g.removeEdge(origin,desti);
+		g.addEdge(desti, origin, newCapa,1);
 
 		desti.e+=newCapa;
 		if(desti.e>0) {
@@ -111,9 +111,9 @@ public class PushRelabel {
 	}
 	
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
-		Tuple myT = g.getTuple(origin, desti,1);
+		Edge myT = g.getEdge(origin, desti,1);
 		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
-			g.remove(origin, desti);
+			g.removeEdge(origin, desti);
 		}
 		else { // on enleve la capa dans le bon sens sinon
 			myT.capa-=capa;
@@ -128,9 +128,9 @@ public class PushRelabel {
 			actifV.add(desti);
 		}
 
-		myT = g.getTuple(desti, origin,1);
+		myT = g.getEdge(desti, origin,1);
 		if(myT==null) { // on crée l'arete si elle n'existe pas
-			g.add(desti, origin, capa,1);
+			g.addEdge(desti, origin, capa,1);
 		}
 		else { // on rajoute la capa dans le sens inverse sinon
 			myT.capa+=capa;
