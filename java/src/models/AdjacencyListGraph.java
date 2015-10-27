@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import object.Node;
-import object.Edge;
 import object.Vertex;
 
 public class AdjacencyListGraph implements Graph {
@@ -122,14 +121,26 @@ public class AdjacencyListGraph implements Graph {
 	}
 
 	@Override
-	public Edge getEdge(Vertex u, Vertex v, int type) {
-		if (type==1) return Node.getNode(u.id, v.id, capaMatrix);
-		if (type==2) return Node.getNode(u.id, v.id, bestFlow);
-		return null;
+	public int getCapacity(Vertex v, Vertex u, int type) {
+		if (type==1) {
+			Node myN = Node.getNode(v.id,u.id,capaMatrix);
+			if(myN!=null) return myN.capa;
+			else return -1;
+		}
+		if (type==2) {
+			Node myN = Node.getNode(v.id,u.id,bestFlow);
+			if(myN!=null) return myN.capa;
+			else return -1;
+		}
+		return -1;
 	}
 
 	@Override
-	public int getCapacity(Vertex v, Vertex u) {
-		return Node.getNode(v.id,u.id,capaMatrix).capa;
+	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
+		if (type==1) {
+			Node myN = Node.getNode(u.id,v.id,capaMatrix);
+			myN.capa=newCapa;
+		}
+		if (type==2) Node.getNode(u.id,v.id,bestFlow).capa=newCapa;
 	}
 }

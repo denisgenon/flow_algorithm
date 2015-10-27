@@ -4,7 +4,6 @@ import interfaces.Graph;
 
 import java.util.ArrayList;
 
-import object.Edge;
 import object.Vertex;
 
 public class PushRelabel {
@@ -92,7 +91,7 @@ public class PushRelabel {
 		for(Vertex u : g.getAdjacents(v)) {
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
-				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v, u)),actifV); // push
+				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v, u, 1)),actifV); // push
 				return;
 			}
 		}
@@ -111,14 +110,13 @@ public class PushRelabel {
 	}
 	
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
-		Edge myT = g.getEdge(origin, desti,1);
-		if(myT.capa<=capa) { // On enleve l'arete si la capa dispo est 0
+		int currentCapa = g.getCapacity(origin,desti,1);
+		if(currentCapa<=capa) { // On enleve l'arete si la capa dispo est 0
 			g.removeEdge(origin, desti);
 		}
 		else { // on enleve la capa dans le bon sens sinon
-			myT.capa-=capa;
+			g.setCapacity(origin, desti, currentCapa-capa, 1);
 		}
-		
 		origin.e-=capa;
 		if(origin.e<=0) {
 			actifV.remove(origin);
@@ -127,14 +125,13 @@ public class PushRelabel {
 		if(desti.e>0 && desti.id!=(g.getV()-1) && desti.id!=0 && !actifV.contains(desti)) {
 			actifV.add(desti);
 		}
-
-		myT = g.getEdge(desti, origin,1);
-		if(myT==null) { // on crée l'arete si elle n'existe pas
+		
+		currentCapa = g.getCapacity(desti, origin, 1);
+		if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 			g.addEdge(desti, origin, capa,1);
 		}
 		else { // on rajoute la capa dans le sens inverse sinon
-			myT.capa+=capa;
+			g.setCapacity(desti, origin, currentCapa+capa, 1);
 		}
-
 	}
 }

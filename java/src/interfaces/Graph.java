@@ -63,20 +63,20 @@ public interface Graph {
 	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
 	 */
 	public void addEdge(Vertex u, Vertex v, int capa, int type);
-
-	/**
-	 * @param u : Vertex à l'origine
-	 * @param v : Vertex à la destination
-	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
-	 * @return L'edge entre u et v
-	 */
-	public Edge getEdge(Vertex u, Vertex v, int type);
 	
 	/**
 	 * @param u : Vertex à l'origine
 	 * @param v : Vertex à la destination
 	 * @return La capacité entre u et v
 	 */
-	public int getCapacity(Vertex u, Vertex v);
+	public int getCapacity(Vertex u, Vertex v, int type);
+	
+	/**
+	 * 
+	 * @param u : Vertex à l'origine
+	 * @param v : Vertex à la destination
+	 * @param newCapa : la capacité entre u et v
+	 */
+	public void setCapacity(Vertex u, Vertex v, int newCapa, int type);
 	
 }

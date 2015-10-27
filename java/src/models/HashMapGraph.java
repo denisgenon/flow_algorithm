@@ -4,25 +4,26 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import object.SplitArray;
-import object.Edge;
+import object.MyHashMap;
 import object.Vertex;
 import interfaces.Graph;
 
-public class SplitArrayGraph implements Graph{
+public class HashMapGraph implements Graph {
 	public Vertex [] vertices;
-	public SplitArray[] capaMatrix;
+	public MyHashMap[] capaMatrix;
 	public int V;
 	public int E;
-	
-	public SplitArrayGraph(String filePath) {
+
+	public HashMapGraph(String filePath) {
 		parse(filePath);
 	}
 
 	@Override
 	public void parse(String filePath) {
-		try {
+		try{
 			BufferedReader br;
 			br = new BufferedReader(new FileReader(filePath));
 
@@ -33,7 +34,7 @@ public class SplitArrayGraph implements Graph{
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
-			capaMatrix = new SplitArray[V];
+			capaMatrix = new MyHashMap[V];
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -51,16 +52,11 @@ public class SplitArrayGraph implements Graph{
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
 
-				// On ajoute le voisin+distance dans le tableau de sparse Set
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new SplitArray();
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new SplitArray();
-				capaMatrix[idVertex1].add(new Edge(capa,idVertex2));
-				capaMatrix[idVertex2].addFutur(new Edge(0,idVertex1));
+				// On ajoute le voisin+distance dans le tableau
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new MyHashMap();
+				capaMatrix[idVertex1].map.put(idVertex2, capa);
 			}
-			
-			for(SplitArray s : capaMatrix){
-				s.compile();
-			}
+
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -88,22 +84,15 @@ public class SplitArrayGraph implements Graph{
 	}
 
 	@Override
-	public int getCapacity(Vertex u, Vertex v, int type) {
-		for(int i=0; i<capaMatrix[u.id].split; i++){
-			if(capaMatrix[u.id].dom[i].idDesti==v.id) {
-				return capaMatrix[u.id].dom[i].getCapacity();
-			}
+	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
+		HashMap<Integer, Integer> myMap = capaMatrix[vertex.id].map;
+		ArrayList<Vertex> myArray = new ArrayList<Vertex>(myMap.size());
+		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+		while(keySetIterator.hasNext()){ 
+			Integer key = keySetIterator.next();
+			myArray.add(vertices[key]);
 		}
-		return -1;
-	}
-	
-	@Override
-	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		for(int i=0; i<capaMatrix[u.id].split; i++){
-			if(capaMatrix[u.id].dom[i].idDesti==v.id) {
-				capaMatrix[u.id].dom[i].capa=newCapa;
-			}
-		}
+		return myArray;
 	}
 
 	@Override
@@ -112,23 +101,25 @@ public class SplitArrayGraph implements Graph{
 	}
 
 	@Override
-	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
-		SplitArray s = capaMatrix[vertex.id];
-		ArrayList<Vertex> adja = new ArrayList<Vertex>();
-		for(int i=0; i<s.split; i++){
-			adja.add(vertices[s.dom[i].idDesti]);
-		}
-		return adja;
-	}
-
-	@Override
 	public int removeEdge(Vertex u, Vertex v) {
-		return capaMatrix[u.id].remove(v.id);
+		return capaMatrix[u.id].map.remove(v.id);
 	}
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		if(type==1) capaMatrix[u.id].add(v.id, capa);	
+		capaMatrix[u.id].map.put(v.id, capa);
+	}
+
+	@Override
+	public int getCapacity(Vertex u, Vertex v, int type) {
+		Integer res = capaMatrix[u.id].map.get(v.id);
+		if (res==null) return -1;
+		return res;
+	}
+
+	@Override
+	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
+		capaMatrix[u.id].map.replace(v.id, newCapa);
 	}
 
 }
