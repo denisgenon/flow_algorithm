@@ -2,7 +2,6 @@ package interfaces;
 
 import java.util.ArrayList;
 
-import object.Edge;
 import object.Vertex;
 
 public interface Graph {
