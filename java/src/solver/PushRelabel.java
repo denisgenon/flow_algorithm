@@ -22,19 +22,17 @@ public class PushRelabel {
 	public void computeDistanceLabel() {
 		// Faire un Dijkstra à l'envers
 		Vertex[] invertedVertices = new Vertex[g.getV()];
-		
+
 		for (int i = 0; i < g.getV(); i++) {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
-		
 		for (Vertex v : g.getVertices()) {
 			for (Vertex u : g.getAdjacents(v)) {
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
 				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
-		
 		
 		//FlowAlgorithmInstance invertedInstance = new FlowAlgorithmInstance(invertedCapaMatrix, instance.vertices, instance.V, instance.E);
 		ArrayList<Vertex> notS = new ArrayList<>();
@@ -72,6 +70,7 @@ public class PushRelabel {
 	public void process(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
+		
 		preProcess();
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif

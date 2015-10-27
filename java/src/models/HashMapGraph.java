@@ -54,6 +54,7 @@ public class HashMapGraph implements Graph {
 
 				// On ajoute le voisin+distance dans le tableau
 				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new MyHashMap();
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new MyHashMap();
 				capaMatrix[idVertex1].map.put(idVertex2, capa);
 			}
 
@@ -86,12 +87,14 @@ public class HashMapGraph implements Graph {
 	@Override
 	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
 		HashMap<Integer, Integer> myMap = capaMatrix[vertex.id].map;
-		ArrayList<Vertex> myArray = new ArrayList<Vertex>(myMap.size());
+		ArrayList<Vertex> myArray = new ArrayList<Vertex>();
+
 		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
 		while(keySetIterator.hasNext()){ 
 			Integer key = keySetIterator.next();
 			myArray.add(vertices[key]);
 		}
+		
 		return myArray;
 	}
 
