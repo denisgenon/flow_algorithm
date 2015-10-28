@@ -18,8 +18,9 @@ public class PushRelabel {
 		}
 		g.getVertex(0).h = g.getV();
 	}
-	
+
 	public void computeDistanceLabel() {
+		// Faire un Dijkstra à l'envers	
 		// Faire un Dijkstra à l'envers
 		Vertex[] invertedVertices = new Vertex[g.getV()];
 
@@ -27,35 +28,37 @@ public class PushRelabel {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
+
 		for (Vertex v : g.getVertices()) {
 			for (Vertex u : g.getAdjacents(v)) {
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
 				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
-		
+
+
 		//FlowAlgorithmInstance invertedInstance = new FlowAlgorithmInstance(invertedCapaMatrix, instance.vertices, instance.V, instance.E);
 		ArrayList<Vertex> notS = new ArrayList<>();
 		for (int i = 0; i < invertedVertices.length; i++) {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
 			notS.add(invertedVertices[i]);
 		}
-		
+
 		invertedVertices[g.getV() - 1].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
 			for (Vertex j : g.getAdjacents(i)) {
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
-				//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
+					//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
 					//j.h = i.h + 1;
 					g.getVertex(j.id).h = invertedVertices[i.id].h + 1;
 					invertedVertices[j.id].h = invertedVertices[i.id].h + 1;
 				}
 			}
-		}			
+		}
 	}
-	
+
 	public Vertex findMinimumDistance(ArrayList<Vertex> vertices) {
 		Vertex minVertex = new Vertex(vertices.size());
 		minVertex.h = Integer.MAX_VALUE;
@@ -76,7 +79,7 @@ public class PushRelabel {
 			pushRelabel(elu);
 		}
 	}
-	
+
 	public void getResult() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
@@ -95,7 +98,7 @@ public class PushRelabel {
 		}
 		v.h = hMin + 1;
 	}
-	
+
 	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
 
 		int newCapa = g.removeEdge(origin,desti);
@@ -106,7 +109,7 @@ public class PushRelabel {
 			actifV.add(desti);
 		}
 	}
-	
+
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
 		int currentCapa = g.getCapacity(origin,desti,1);
 		if(currentCapa<=capa) { // On enleve l'arete si la capa dispo est 0
@@ -123,7 +126,7 @@ public class PushRelabel {
 		if(desti.e>0 && desti.id!=(g.getV()-1) && desti.id!=0 && !actifV.contains(desti)) {
 			actifV.add(desti);
 		}
-		
+
 		currentCapa = g.getCapacity(desti, origin, 1);
 		if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 			g.addEdge(desti, origin, capa,1);

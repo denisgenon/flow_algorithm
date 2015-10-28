@@ -88,6 +88,7 @@ public class Main {
 						pr.getResult();*/
 						EdmondsKarp ek = new EdmondsKarp(g);
 						ek.getResult();
+
 						//FordFulkerson ff = new FordFulkerson(g);
 						//ff.getResult();
 					}
