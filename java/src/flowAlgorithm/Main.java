@@ -99,18 +99,18 @@ public class Main {
 				else {
 					
 					System.out.println("Push Relabel :");
-					Graph g = new SplitArrayGraph(args[0]);
+					Graph g = new AdjacencyListGraph(args[0]);
 					PushRelabel pr = new PushRelabel();
 					pr.process(g);
 					pr.getResult();
 					
-					System.out.println("Ford Fulkerson :");
+					/*System.out.println("Ford Fulkerson :");
 					g = new SplitArrayGraph(args[0]);
 					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();
+					ff.getResult();*/
 					
 					System.out.println("Edmonds Karp :");
-					g = new SplitArrayGraph(args[0]);
+					g = new AdjacencyListGraph(args[0]);
 					EdmondsKarp ek = new EdmondsKarp(g);
 					ek.getResult();
 				}

@@ -54,6 +54,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 				// On ajoute la distance dans la matrice des distances
 				Node.addNode(idVertex1, idVertex2, capa, capaMatrix);
 			}
+			
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
