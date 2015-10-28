@@ -82,7 +82,7 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						Graph g = new SplitArrayGraph(f.getPath());
+						Graph g = new AdjacencyListGraph(f.getPath());
 						/*PushRelabel pr = new PushRelabel();
 						pr.process(g);
 						pr.getResult();*/
@@ -93,7 +93,7 @@ public class Main {
 						//ff.getResult();
 					}
 				}
-				if(args[0].equals("bigTest")){
+				else if(args[0].equals("bigTest")){
 					bigTest();
 				}
 				else {
