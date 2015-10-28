@@ -103,18 +103,10 @@ public class SplitArrayGraph implements Graph{
 
 	@Override
 	public int getCapacity(Vertex u, Vertex v, int type) {
-		if(type==1){
-			for(int i=0; i<capaMatrix[u.id].split; i++){
-				if(capaMatrix[u.id].dom[i].idDesti==v.id) {
-					return capaMatrix[u.id].dom[i].getCapacity();
-				}
-			}
-		}
-		if(type==2){
-			for(int i=0; i<bestFlow[u.id].split; i++){
-				if(bestFlow[u.id].dom[i].idDesti==v.id) {
-					return bestFlow[u.id].dom[i].getCapacity();
-				}
+		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
+		for(int i=0; i<currentData[u.id].split; i++){
+			if(currentData[u.id].dom[i].idDesti==v.id) {
+				return currentData[u.id].dom[i].getCapacity();
 			}
 		}
 		return -1;
@@ -122,20 +114,13 @@ public class SplitArrayGraph implements Graph{
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		if(type==1){
-			for(int i=0; i<capaMatrix[u.id].split; i++){
-				if(capaMatrix[u.id].dom[i].idDesti==v.id) {
-					capaMatrix[u.id].dom[i].capa=newCapa;
-				}
+		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
+		for(int i=0; i<currentData[u.id].split; i++){
+			if(currentData[u.id].dom[i].idDesti==v.id) {
+				currentData[u.id].dom[i].capa=newCapa;
 			}
 		}
-		if(type==2){
-			for(int i=0; i<bestFlow[u.id].split; i++){
-				if(bestFlow[u.id].dom[i].idDesti==v.id) {
-					bestFlow[u.id].dom[i].capa=newCapa;
-				}
-			}
-		}
+
 	}
 
 	@Override
@@ -168,8 +153,15 @@ public class SplitArrayGraph implements Graph{
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		if(type==1) capaMatrix[u.id].add(v.id, capa);	
-		if(type==2) bestFlow[u.id].add(v.id, capa);
+		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
+		currentData[u.id].add(v.id, capa);	
+	}
+
+	@Override
+	public Object[] getGraphType(int type) {
+		if(type==1) return capaMatrix;
+		if(type==2) return bestFlow;
+		return null;
 	}
 
 }

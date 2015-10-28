@@ -83,17 +83,17 @@ public class Main {
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
 						Graph g = new AdjacencyListGraph(f.getPath());
-						EdmondsKarp pr = new EdmondsKarp(g);
-						//pr.process(g);
-						pr.getResult();
-						//Graph g = new SplitArrayGraph(f.getPath());
-						//EdmondsKarp ek = new EdmondsKarp(g);
-						//ek.getResult();
+						/*PushRelabel pr = new PushRelabel();
+						pr.process(g);
+						pr.getResult();*/
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();
+
 						//FordFulkerson ff = new FordFulkerson(g);
 						//ff.getResult();
 					}
 				}
-				if(args[0].equals("bigTest")){
+				else if(args[0].equals("bigTest")){
 					bigTest();
 				}
 				else {

@@ -125,33 +125,30 @@ public class HashMapGraph implements Graph {
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		if (type==1) capaMatrix[u.id].map.put(v.id, capa);
-		if (type==2) {
-			
-			bestFlow[u.id].map.put(v.id, capa);
-		}
+		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
+		currentData[u.id].map.put(v.id, capa);
 	}
 
 	@Override
 	public int getCapacity(Vertex u, Vertex v, int type) {
-		if (type==1){
-			Integer res = capaMatrix[u.id].map.get(v.id);
-			if (res==null) return -1;
-			return res;
-		}
-		if (type==2){
-			if(bestFlow[u.id]==null) bestFlow[u.id] = new MyHashMap();
-			Integer res = bestFlow[u.id].map.get(v.id);
-			if (res==null) return -1;
-			return res;
-		}
-		return -1;
+		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
+		if(currentData[u.id]==null) currentData[u.id] = new MyHashMap();
+		Integer res = currentData[u.id].map.get(v.id);
+		if (res==null) return -1;
+		return res;
 	}
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		if (type==1) capaMatrix[u.id].map.replace(v.id, newCapa);
-		if (type==2) bestFlow[u.id].map.replace(v.id, newCapa);
+		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
+		currentData[u.id].map.replace(v.id, newCapa);
+	}
+
+	@Override
+	public Object[] getGraphType(int type) {
+		if(type==1) return capaMatrix;
+		if(type==2) return bestFlow;
+		return null;
 	}
 
 }
