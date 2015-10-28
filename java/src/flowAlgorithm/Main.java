@@ -19,10 +19,10 @@ public class Main {
 					pr.process(g);
 					pr.getResult();
 					
-					System.out.println("    Ford Fulkerson :");
+					/*System.out.println("    Ford Fulkerson :");
 					g = new SplitArrayGraph(f.getPath());
 					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();
+					ff.getResult();*/
 					
 					System.out.println("    Edmonds Karp :");
 					g = new SplitArrayGraph(f.getPath());
@@ -37,10 +37,10 @@ public class Main {
 					pr.process(g);
 					pr.getResult();
 					
-					System.out.println("    Ford Fulkerson :");
+					/*System.out.println("    Ford Fulkerson :");
 					g = new HashMapGraph(f.getPath());
 					ff = new FordFulkerson(g);
-					ff.getResult();
+					ff.getResult();*/
 					
 					System.out.println("    Edmonds Karp :");
 					g = new HashMapGraph(f.getPath());
@@ -55,10 +55,10 @@ public class Main {
 					pr.process(g);
 					pr.getResult();
 					
-					System.out.println("    Ford Fulkerson :");
+					/*System.out.println("    Ford Fulkerson :");
 					g = new SplitArrayGraph(f.getPath());
 					ff = new FordFulkerson(g);
-					ff.getResult();
+					ff.getResult();*/
 					
 					System.out.println("    Edmonds Karp :");
 					g = new SplitArrayGraph(f.getPath());
