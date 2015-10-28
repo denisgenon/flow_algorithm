@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import object.Edge;
 import object.Vertex;
 
 public class FordFulkerson {
@@ -28,8 +27,7 @@ public class FordFulkerson {
 	public int getMinFlow(Vertex[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			
-			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i]));
+			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i],1));
 		}
 		return minFlow;
 	}
@@ -37,7 +35,7 @@ public class FordFulkerson {
 	public void getResult() {
 		System.out.println("|V| : "+g.getV());
 		System.out.println("|E| : "+g.getE());
-		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("Max flot : " + g.getFlowValue(1));
 		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	
@@ -64,27 +62,28 @@ public class FordFulkerson {
 	
 	public void applyPath(int capacity, Vertex[] path) {
 		for(int i=0; i<path.length-1; i++) {
-			Edge myT = g.getEdge(path[i+1],  path[i],1);
-			if(myT.capa<=capacity) { // On enleve l'arete si la capa dispo est 0
+			int currentCapa = g.getCapacity(path[i+1],  path[i],1);
+			if(currentCapa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path[i+1], path[i]);
 			}
 			else { // on enleve la capa dans le bon sens sinon
-				myT.capa-=capacity;
+				g.setCapacity(path[i+1], path[i], currentCapa-capacity,1);
 			}
 
-			myT = g.getEdge(path[i],path[i+1],1);
-			if(myT==null) { // on crée l'arete si elle n'existe pas
+			currentCapa = g.getCapacity(path[i],path[i+1],1);
+			if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 				g.addEdge(path[i], path[i+1], capacity,1);
 			}
 			else { // on rajoute la capa dans le sens inverse sinon
-				myT.capa+=capacity;
+				g.setCapacity(path[i], path[i+1], currentCapa+capacity,1);
 			}
 			
-			myT = g.getEdge(path[i], path[i+1], 2); // on augmente le flot courant	
-			if(myT==null) g.addEdge(path[i], path[i+1], capacity, 2); 
+			currentCapa = g.getCapacity(path[i], path[i+1], 2); // on augmente le flot courant	
+			if(currentCapa==-1) g.addEdge(path[i], path[i+1], capacity, 2); 
 			else {
-				myT.capa+=capacity;
+				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);
 			}
+			
 		}
 	}
 	

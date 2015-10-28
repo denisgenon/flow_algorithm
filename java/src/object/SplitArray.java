@@ -83,7 +83,6 @@ public class SplitArray {
 	
 	public void print(){
 		String sdom="";
-		String smap="";
 		for(int i=0; i<dom.length; i++){
 			if(i==split){
 				sdom+=("|");
@@ -91,7 +90,6 @@ public class SplitArray {
 			sdom+=(dom[i]+" ");
 		}
 		System.out.println(sdom);
-		System.out.println(smap);
 		System.out.println();
 	}
 	
