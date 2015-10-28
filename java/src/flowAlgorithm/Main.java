@@ -4,6 +4,7 @@ import java.io.File;
 import interfaces.Graph;
 import models.*;
 import solver.*;
+import sun.security.provider.certpath.AdjacencyList;
 
 public class Main {
 
@@ -82,9 +83,9 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						Graph g = new HashMapGraph(f.getPath());
-						PushRelabel pr = new PushRelabel();
-						pr.process(g);
+						Graph g = new AdjacencyListGraph(f.getPath());
+						EdmondsKarp pr = new EdmondsKarp(g);
+						//pr.process(g);
 						pr.getResult();
 						//Graph g = new SplitArrayGraph(f.getPath());
 						//EdmondsKarp ek = new EdmondsKarp(g);

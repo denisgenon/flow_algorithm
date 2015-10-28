@@ -40,34 +40,12 @@ public class Node extends Edge{
 	}
 
 	public static void addNode(int x, int y, int capa, Node [] capaMatrix){
-		// TODO : pas faire en trier, juste ajouter en 1er
 		Node current = capaMatrix[x];
-		boolean flag = true;
 		if(current==null) {
 			capaMatrix[x]=new Node(y,capa,null);
 		}
-		else if(current.idDesti>y){
-			capaMatrix[x]=new Node(y,capa,current);
-			flag=false;
-		}
 		else {
-			while(current.next!=null && flag) {
-				if(current.idDesti>y) {
-					Node newTuple = new Node(y,capa,current);
-					capaMatrix[x]=newTuple;
-					flag = false;
-				}
-				else if(current.next.idDesti>y) {
-					Node newTuple = new Node(y,capa,current.next);
-					current.next=newTuple;
-					flag = false;
-				}
-				current = current.next;
-			}
-			if (flag) {
-				Node newTuple = new Node(y,capa,null);
-				current.next=newTuple;
-			}
+			capaMatrix[x]=new Node(y,capa,current);
 		}
 	}
 
