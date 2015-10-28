@@ -114,8 +114,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node.getNode(u.id,v.id,currentData).capa=newCapa;
 	}
-
-	@Override
+	
 	public Object[] getGraphType(int type) {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;

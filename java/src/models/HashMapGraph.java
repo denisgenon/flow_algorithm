@@ -11,12 +11,9 @@ import object.MyHashMap;
 import object.Vertex;
 import interfaces.Graph;
 
-public class HashMapGraph implements Graph {
-	public Vertex [] vertices;
+public class HashMapGraph extends SimpleGraph implements Graph {
 	public MyHashMap[] capaMatrix;
 	public MyHashMap[] bestFlow;
-	public int V;
-	public int E;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
@@ -64,26 +61,6 @@ public class HashMapGraph implements Graph {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public int getV() {
-		return V;
-	}
-
-	@Override
-	public int getE() {
-		return E;
-	}
-
-	@Override
-	public Vertex getVertex(int id) {
-		return vertices[id];
-	}
-
-	@Override
-	public Vertex[] getVertices() {
-		return vertices;
 	}
 
 	@Override

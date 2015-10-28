@@ -10,12 +10,10 @@ import object.Edge;
 import object.Vertex;
 import interfaces.Graph;
 
-public class SplitArrayGraph implements Graph{
-	public Vertex [] vertices;
+public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public SplitArray[] capaMatrix;
 	public SplitArray[] bestFlow;
-	public int V;
-	public int E;
+
 
 	public SplitArrayGraph(String filePath) {
 		parse(filePath);
@@ -81,26 +79,7 @@ public class SplitArrayGraph implements Graph{
 		}
 	}
 
-	@Override
-	public int getV() {
-		return V;
-	}
-
-	@Override
-	public int getE() {
-		return E;
-	}
-
-	@Override
-	public Vertex getVertex(int id) {
-		return vertices[id];
-	}
-
-	@Override
-	public Vertex[] getVertices() {
-		return vertices;
-	}
-
+	
 	@Override
 	public int getCapacity(Vertex u, Vertex v, int type) {
 		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
