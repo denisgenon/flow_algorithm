@@ -40,6 +40,7 @@ public class Node extends Edge{
 	}
 
 	public static void addNode(int x, int y, int capa, Node [] capaMatrix){
+		// TODO : pas faire en trier, juste ajouter en 1er
 		Node current = capaMatrix[x];
 		boolean flag = true;
 		if(current==null) {
