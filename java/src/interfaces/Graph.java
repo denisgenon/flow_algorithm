@@ -44,9 +44,11 @@ public interface Graph {
 	public ArrayList<Vertex> getAdjacents(Vertex vertex);
 	
 	/**
-	 * @return La valeur du flot
+	 * 
+	 * @param type : 1 pour pushRelabel, 2 pour Augmenting Path
+	 * @return la valeur du flot
 	 */
-	public int getFlowValue();
+	public int getFlowValue(int type);
 
 	/**
 	 * @param u : Vertex à l'origine

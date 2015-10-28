@@ -21,7 +21,7 @@ public class AdjacencyListGraph implements Graph {
 		parse(filePath);
 		bestFlow = new Node[V];
 	}
-	
+
 	@Override
 	public void parse(String filePath) {
 		try {
@@ -54,12 +54,8 @@ public class AdjacencyListGraph implements Graph {
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
 
-				// On ajoute les voisins dans les vertices
-				getAdjacents(vertices[idVertex1]);
-
 				// On ajoute la distance dans la matrice des distances
 				Node.addNode(idVertex1, idVertex2, capa, capaMatrix);
-
 			}
 			br.close();
 		} catch (IOException e) {
@@ -71,31 +67,37 @@ public class AdjacencyListGraph implements Graph {
 	public int getV() {
 		return V;
 	}
-	
+
 	@Override
 	public int getE() {
 		return E;
 	}
-	
+
 	@Override
 	public Vertex[] getVertices() {
 		return vertices;
 	}
-	
+
 	@Override
 	public Vertex getVertex(int id) {
 		return vertices[id];
 	}
 
 	@Override
-	public int getFlowValue() {
-		int value = 0;
-		Node t = bestFlow[bestFlow.length-1];
-		while(t != null){
-			value += t.capa;
-			t = t.next;
+	public int getFlowValue(int type) {
+		if(type==1){
+			int value = 0;
+			Node t = bestFlow[bestFlow.length-1];
+			while(t != null){
+				value += t.capa;
+				t = t.next;
+			}
+			return value;
 		}
-		return value;
+		if(type==2){
+			return vertices[V-1].e;
+		}
+		return -1;
 	}
 
 	@Override

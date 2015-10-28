@@ -14,11 +14,13 @@ import interfaces.Graph;
 public class HashMapGraph implements Graph {
 	public Vertex [] vertices;
 	public MyHashMap[] capaMatrix;
+	public MyHashMap[] bestFlow;
 	public int V;
 	public int E;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
+		bestFlow = new MyHashMap[V];
 	}
 
 	@Override
@@ -94,13 +96,26 @@ public class HashMapGraph implements Graph {
 			Integer key = keySetIterator.next();
 			myArray.add(vertices[key]);
 		}
-		
+
 		return myArray;
 	}
 
 	@Override
-	public int getFlowValue() {
-		return vertices[V-1].e;
+	public int getFlowValue(int type) {
+		if(type==1){
+			int value = 0;
+			HashMap<Integer, Integer> myMap = bestFlow[V-1].map;
+			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+			while(keySetIterator.hasNext()){ 
+				Integer key = keySetIterator.next();
+				value+=myMap.get(key);
+			}
+			return value;
+		}
+		if(type==2){
+			return vertices[V-1].e;
+		}
+		return -1;
 	}
 
 	@Override
@@ -110,19 +125,33 @@ public class HashMapGraph implements Graph {
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		capaMatrix[u.id].map.put(v.id, capa);
+		if (type==1) capaMatrix[u.id].map.put(v.id, capa);
+		if (type==2) {
+			
+			bestFlow[u.id].map.put(v.id, capa);
+		}
 	}
 
 	@Override
 	public int getCapacity(Vertex u, Vertex v, int type) {
-		Integer res = capaMatrix[u.id].map.get(v.id);
-		if (res==null) return -1;
-		return res;
+		if (type==1){
+			Integer res = capaMatrix[u.id].map.get(v.id);
+			if (res==null) return -1;
+			return res;
+		}
+		if (type==2){
+			if(bestFlow[u.id]==null) bestFlow[u.id] = new MyHashMap();
+			Integer res = bestFlow[u.id].map.get(v.id);
+			if (res==null) return -1;
+			return res;
+		}
+		return -1;
 	}
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		capaMatrix[u.id].map.replace(v.id, newCapa);
+		if (type==1) capaMatrix[u.id].map.replace(v.id, newCapa);
+		if (type==2) bestFlow[u.id].map.replace(v.id, newCapa);
 	}
 
 }

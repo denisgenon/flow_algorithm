@@ -70,7 +70,6 @@ public class PushRelabel {
 	public void process(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
-		
 		preProcess();
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
@@ -81,7 +80,7 @@ public class PushRelabel {
 	public void getResult() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("Max flot : " + g.getFlowValue(2));
 		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 

@@ -35,7 +35,7 @@ public class FordFulkerson {
 	public void getResult() {
 		System.out.println("|V| : "+g.getV());
 		System.out.println("|E| : "+g.getE());
-		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("Max flot : " + g.getFlowValue(1));
 		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	
@@ -83,6 +83,7 @@ public class FordFulkerson {
 			else {
 				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);
 			}
+			
 		}
 	}
 	
