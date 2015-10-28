@@ -1,25 +1,22 @@
 package models;
 
-import interfaces.Graph;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import interfaces.Graph;
 import object.Node;
 import object.Vertex;
 
-public class AdjacencyListGraph implements Graph {
+public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow; // que pour Augmenting Path
-	public Vertex [] vertices;
-	public int V;
-	public int E;
+
 
 	public AdjacencyListGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new Node[V];
+		bestFlow = new Node[super.V];
 	}
 
 	@Override
@@ -63,25 +60,6 @@ public class AdjacencyListGraph implements Graph {
 		}
 	}
 
-	@Override
-	public int getV() {
-		return V;
-	}
-
-	@Override
-	public int getE() {
-		return E;
-	}
-
-	@Override
-	public Vertex[] getVertices() {
-		return vertices;
-	}
-
-	@Override
-	public Vertex getVertex(int id) {
-		return vertices[id];
-	}
 
 	@Override
 	public int getFlowValue(int type) {
