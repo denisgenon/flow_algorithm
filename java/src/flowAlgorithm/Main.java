@@ -82,13 +82,12 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						Graph g = new HashMapGraph(f.getPath());
-						PushRelabel pr = new PushRelabel();
+						Graph g = new SplitArrayGraph(f.getPath());
+						/*PushRelabel pr = new PushRelabel();
 						pr.process(g);
-						pr.getResult();
-						//Graph g = new SplitArrayGraph(f.getPath());
-						//EdmondsKarp ek = new EdmondsKarp(g);
-						//ek.getResult();
+						pr.getResult();*/
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();
 						//FordFulkerson ff = new FordFulkerson(g);
 						//ff.getResult();
 					}

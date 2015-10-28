@@ -80,4 +80,6 @@ public interface Graph {
 	 */
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type);
 	
+	public Object[] getGraphType(int type);
+	
 }

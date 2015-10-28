@@ -118,31 +118,29 @@ public class AdjacencyListGraph implements Graph {
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		if (type==1) Node.addNode(u.id, v.id, capa, capaMatrix);
-		if (type==2) Node.addNode(u.id, v.id, capa, bestFlow);
+		Node[] currentData = (Node[]) getGraphType(type);
+		Node.addNode(u.id, v.id, capa, currentData);
 	}
 
 	@Override
 	public int getCapacity(Vertex v, Vertex u, int type) {
-		if (type==1) {
-			Node myN = Node.getNode(v.id,u.id,capaMatrix);
-			if(myN!=null) return myN.capa;
-			else return -1;
-		}
-		if (type==2) {
-			Node myN = Node.getNode(v.id,u.id,bestFlow);
-			if(myN!=null) return myN.capa;
-			else return -1;
-		}
-		return -1;
+		Node[] currentData = (Node[]) getGraphType(type);
+		Node myN = Node.getNode(v.id,u.id,currentData);
+		if(myN!=null) return myN.capa;
+		else return -1;
+
 	}
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		if (type==1) {
-			Node myN = Node.getNode(u.id,v.id,capaMatrix);
-			myN.capa=newCapa;
-		}
-		if (type==2) Node.getNode(u.id,v.id,bestFlow).capa=newCapa;
+		Node[] currentData = (Node[]) getGraphType(type);
+		Node.getNode(u.id,v.id,currentData).capa=newCapa;
+	}
+
+	@Override
+	public Object[] getGraphType(int type) {
+		if(type==1) return capaMatrix;
+		if(type==2) return bestFlow;
+		return null;
 	}
 }
