@@ -1,9 +1,8 @@
 package solver;
 
-import interfaces.Graph;
-
 import java.util.ArrayList;
 
+import interfaces.Graph;
 import object.Vertex;
 
 public class PushRelabel {
