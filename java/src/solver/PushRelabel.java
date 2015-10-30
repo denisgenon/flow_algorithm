@@ -13,8 +13,9 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		while(g.getAdjacents(g.getVertex(0)).size()>0) {
-			chargeMax(g.getVertex(0), g.getAdjacents(g.getVertex(0)).get(0), actifV);
+		ArrayList<Vertex> adja = g.getAdjacents(g.getVertex(0));
+		for(Vertex v : adja){
+			chargeMax(g.getVertex(0),v,actifV);
 		}
 		g.getVertex(0).h = g.getV();
 	}
@@ -84,7 +85,7 @@ public class PushRelabel {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
 		System.out.println("Max flot : " + g.getFlowValue(2));
-		System.out.println("Temps d'éxecution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
+		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 
 	public void pushRelabel(Vertex v) {
