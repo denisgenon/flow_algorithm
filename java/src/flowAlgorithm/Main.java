@@ -86,15 +86,22 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						Graph g = new HashMapGraph(f.getPath());
+						System.out.println("Push Relabel :");
+						Graph g = new AdjacencyListGraph(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
 						pr.getResult();
-						//EdmondsKarp ek = new EdmondsKarp(g);
-						//ek.getResult();
 
-						//FordFulkerson ff = new FordFulkerson(g);
-						//ff.getResult();
+						System.out.println("Ford Fulkerson :");
+						g = new AdjacencyListGraph(f.getPath());
+						FordFulkerson ff = new FordFulkerson(g);
+						ff.getResult();
+
+						System.out.println("Edmonds Karp :");
+						g = new AdjacencyListGraph(f.getPath());
+						EdmondsKarp ek = new EdmondsKarp(g);
+						ek.getResult();
+
 					}
 				}
 				else if(args[0].equals("bigTest")){

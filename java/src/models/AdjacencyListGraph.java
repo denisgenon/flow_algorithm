@@ -13,6 +13,11 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow; // que pour Augmenting Path
 
+	public int cgetAdjacents = 0;
+	public int cremoveEdge = 0;
+	public int caddEdge = 0;
+	public int cgetCapacity = 0;
+	public int csetCapacity = 0;
 
 	public AdjacencyListGraph(String filePath) {
 		parse(filePath);
@@ -64,6 +69,12 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int getFlowValue(int type) {
+		/*System.out.println("getAdjacents : "+cgetAdjacents);
+		System.out.println("removeEdge : "+cremoveEdge);
+		System.out.println("addEdge : "+caddEdge);
+		System.out.println("getCapacity : "+cgetCapacity);
+		System.out.println("setCapacity : "+csetCapacity);*/
+		
 		if(type==1){
 			int value = 0;
 			Node t = bestFlow[bestFlow.length-1];
@@ -81,6 +92,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
+		cgetAdjacents++;
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
 		Node n = capaMatrix[vertex.id];
 		while(n!=null){
@@ -92,17 +104,22 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(Vertex u, Vertex v) {
+		cremoveEdge++;
+
 		return Node.removeNode(u.id, v.id, capaMatrix);
 	}
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
+		caddEdge++;
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node.addNode(u.id, v.id, capa, currentData);
 	}
 
 	@Override
 	public int getCapacity(Vertex v, Vertex u, int type) {
+		cgetCapacity++;
+			
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node myN = Node.getNode(v.id,u.id,currentData);
 		if(myN!=null) return myN.capa;
@@ -112,6 +129,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
+		csetCapacity++;
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node.getNode(u.id,v.id,currentData).capa=newCapa;
 	}
