@@ -1,10 +1,9 @@
 package solver;
 
-import interfaces.Graph;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import interfaces.Graph;
 import object.Vertex;
 
 public class EdmondsKarp extends FordFulkerson {

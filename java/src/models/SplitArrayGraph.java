@@ -5,10 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import object.SplitArray;
-import object.Edge;
-import object.Vertex;
 import interfaces.Graph;
+import object.Edge;
+import object.SplitArray;
+import object.Vertex;
 
 public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public SplitArray[] capaMatrix;

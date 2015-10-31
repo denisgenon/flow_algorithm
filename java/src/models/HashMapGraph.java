@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import interfaces.Graph;
 import object.MyHashMap;
 import object.Vertex;
-import interfaces.Graph;
 
 public class HashMapGraph extends SimpleGraph implements Graph {
 	public MyHashMap[] capaMatrix;
