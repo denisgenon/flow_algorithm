@@ -84,7 +84,7 @@ public class PushRelabel {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
 		System.out.println("Max flot : " + g.getFlowValue(2));
-		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)/1000+" s"+"\n");
+		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 
 	public void pushRelabel(Vertex v) {

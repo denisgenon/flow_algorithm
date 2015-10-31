@@ -39,7 +39,7 @@ public class FordFulkerson {
 			System.out.println("|V| : "+g.getV());
 			System.out.println("|E| : "+g.getE());
 			System.out.println("Max flot : " + g.getFlowValue(1));
-			System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)/1000+" s"+"\n");
+			System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 		}
 		else{
 			System.out.println("|V| : "+g.getV());
