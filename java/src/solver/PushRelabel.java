@@ -1,6 +1,7 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -12,8 +13,9 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		ArrayList<Vertex> adja = g.getAdjacents(g.getVertex(0));
-		for(Vertex v : adja){
+		Iterator<Vertex> iterator = g.getAdjacents(g.getVertex(0)).iterator();
+		while(iterator.hasNext()) {
+			Vertex v = iterator.next();
 			chargeMax(g.getVertex(0),v,actifV);
 		}
 		g.getVertex(0).h = g.getV();
@@ -30,7 +32,9 @@ public class PushRelabel {
 		}
 
 		for (Vertex v : g.getVertices()) {
-			for (Vertex u : g.getAdjacents(v)) {
+			Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
+			while(iterator.hasNext()) {
+				Vertex u = iterator.next();
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
 				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
@@ -48,6 +52,7 @@ public class PushRelabel {
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
+			// TODO iterator
 			for (Vertex j : g.getAdjacents(i)) {
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
 					//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
@@ -92,7 +97,7 @@ public class PushRelabel {
 		for(Vertex u : g.getAdjacents(v)) {
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
-				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v, u, 1)),actifV); // push
+				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v.id, u.id, 1)),actifV); // push
 				return;
 			}
 		}
@@ -111,7 +116,7 @@ public class PushRelabel {
 	}
 
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
-		int currentCapa = g.getCapacity(origin,desti,1);
+		int currentCapa = g.getCapacity(origin.id,desti.id,1);
 		if(currentCapa<=capa) { // On enleve l'arete si la capa dispo est 0
 			g.removeEdge(origin, desti);
 		}
@@ -127,7 +132,7 @@ public class PushRelabel {
 			actifV.add(desti);
 		}
 
-		currentCapa = g.getCapacity(desti, origin, 1);
+		currentCapa = g.getCapacity(desti.id, origin.id, 1);
 		if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 			g.addEdge(desti, origin, capa,1);
 		}

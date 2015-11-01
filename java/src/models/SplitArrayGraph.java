@@ -81,11 +81,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 
 	
 	@Override
-	public int getCapacity(Vertex u, Vertex v, int type) {
+	public int getCapacity(int u, int v, int type) {
 		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		for(int i=0; i<currentData[u.id].split; i++){
-			if(currentData[u.id].dom[i].idDesti==v.id) {
-				return currentData[u.id].dom[i].getCapacity();
+		for(int i=0; i<currentData[u].split; i++){
+			if(currentData[u].dom[i].idDesti==v) {
+				return currentData[u].dom[i].getCapacity();
 			}
 		}
 		return -1;

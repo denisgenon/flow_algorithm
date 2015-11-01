@@ -29,7 +29,7 @@ public class FordFulkerson {
 	public int getMinFlow(Vertex[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i],1));
+			minFlow=Math.min(minFlow,g.getCapacity(path[i+1].id, path[i].id,1));
 		}
 		return minFlow;
 	}
@@ -60,18 +60,19 @@ public class FordFulkerson {
 
 		ArrayList<Vertex> mypath = new ArrayList<Vertex>();
 		int indexpath = g.getV() - 1;
-		mypath.add(g.getVertex(indexpath)); // TODO Cast Vertex ?
+		mypath.add(g.getVertex(indexpath)); 
 		while(parents[indexpath]!=-1 && indexpath!=0){
-			mypath.add(g.getVertex(parents[indexpath])); // TODO Cast Vertex ?
+			mypath.add(g.getVertex(parents[indexpath])); 
 			indexpath=parents[indexpath];
 		}
+		// TODO Faire une arrayList de Vertex et le convertir en tableau ou faire une arrayList d'integer et le convertir en tableau d'int (via une itération)?
 		if(indexpath==0) return mypath.toArray(new Vertex [mypath.size()]);
 		return null;
 	}
 
 	public void applyPath(int capacity, Vertex[] path) {
 		for(int i=0; i<path.length-1; i++) {
-			int currentCapa = g.getCapacity(path[i+1],  path[i],1);
+			int currentCapa = g.getCapacity(path[i+1].id,  path[i].id,1);
 			if(currentCapa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path[i+1], path[i]);
 			}
@@ -79,7 +80,7 @@ public class FordFulkerson {
 				g.setCapacity(path[i+1], path[i], currentCapa-capacity,1);
 			}
 
-			currentCapa = g.getCapacity(path[i],path[i+1],1);
+			currentCapa = g.getCapacity(path[i].id,path[i+1].id,1);
 			if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 				g.addEdge(path[i], path[i+1], capacity,1);
 			}
@@ -87,7 +88,7 @@ public class FordFulkerson {
 				g.setCapacity(path[i], path[i+1], currentCapa+capacity,1);
 			}
 
-			currentCapa = g.getCapacity(path[i], path[i+1], 2); // on augmente le flot courant	
+			currentCapa = g.getCapacity(path[i].id, path[i+1].id, 2); // on augmente le flot courant	
 			if(currentCapa==-1) g.addEdge(path[i], path[i+1], capacity, 2); 
 			else {
 				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);

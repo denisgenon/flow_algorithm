@@ -1,6 +1,7 @@
 package solver;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import interfaces.Graph;
@@ -30,7 +31,9 @@ public class EdmondsKarp extends FordFulkerson {
 		queue.add(super.g.getVertex(0));
 		while (!queue.isEmpty()) {
 			Vertex u = queue.removeFirst();
-			for (Vertex v : g.getAdjacents(u)) {
+			Iterator<Vertex> iterator = super.g.getAdjacents(u).iterator();
+			while(iterator.hasNext()) {
+				Vertex v = iterator.next();
 				if (distances[v.id] == INFINITY) {
 					distances[v.id] = distances[u.id] + 1;
 					parent[v.id] = u;

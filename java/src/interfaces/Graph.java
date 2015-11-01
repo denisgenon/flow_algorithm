@@ -70,7 +70,7 @@ public interface Graph {
 	 * @param v : Vertex à la destination
 	 * @return La capacité entre u et v
 	 */
-	public int getCapacity(Vertex u, Vertex v, int type);
+	public int getCapacity(int u, int v, int type);
 	
 	/**
 	 * 

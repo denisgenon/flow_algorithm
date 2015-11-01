@@ -13,11 +13,11 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	public Node[] capaMatrix;
 	public Node[] bestFlow; // que pour Augmenting Path
 
-	public int cgetAdjacents = 0;
+	/*public int cgetAdjacents = 0;
 	public int cremoveEdge = 0;
 	public int caddEdge = 0;
 	public int cgetCapacity = 0;
-	public int csetCapacity = 0;
+	public int csetCapacity = 0;*/
 
 	public AdjacencyListGraph(String filePath) {
 		parse(filePath);
@@ -92,7 +92,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
-		cgetAdjacents++;
+		//cgetAdjacents++;
 		ArrayList<Vertex> adja = new ArrayList<Vertex>();
 		Node n = capaMatrix[vertex.id];
 		while(n!=null){
@@ -104,24 +104,24 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(Vertex u, Vertex v) {
-		cremoveEdge++;
+		//cremoveEdge++;
 
 		return Node.removeNode(u.id, v.id, capaMatrix);
 	}
 
 	@Override
 	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		caddEdge++;
+		//caddEdge++;
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node.addNode(u.id, v.id, capa, currentData);
 	}
 
 	@Override
-	public int getCapacity(Vertex v, Vertex u, int type) {
-		cgetCapacity++;
+	public int getCapacity(int u, int v, int type) {
+		//cgetCapacity++;
 			
 		Node[] currentData = (Node[]) getGraphType(type);
-		Node myN = Node.getNode(v.id,u.id,currentData);
+		Node myN = Node.getNode(u,v,currentData);
 		if(myN!=null) return myN.capa;
 		else return -1;
 
@@ -129,7 +129,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		csetCapacity++;
+		//csetCapacity++;
 		Node[] currentData = (Node[]) getGraphType(type);
 		Node.getNode(u.id,v.id,currentData).capa=newCapa;
 	}
