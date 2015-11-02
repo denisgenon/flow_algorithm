@@ -18,7 +18,7 @@ public class Main {
 				System.out.println(f.getName()+" : ");
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
-				Graph g = new SplitArrayGraph("file_path");
+				Graph g = new SplitArrayGraph(f.getPath());
 				PushRelabel pr = new PushRelabel(g);
 				pr.getResult();
 

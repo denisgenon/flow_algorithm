@@ -8,8 +8,10 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryMarker;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
@@ -26,6 +28,7 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	int median = 0;
 	
 	public NeighborsDistributionBarViewer(String title, Graph g) {
 		super(title); 
@@ -33,32 +36,57 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 	}
 	private CategoryDataset createDataset(Graph g) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		int mean = 0;
-		for (int i = 101; i < g.getV(); i++) {
-			mean += g.getAdjacents(g.getVertex(i)).size();
-			if (i % 100 == 0) {
-				dataset.addValue(mean, i+"", "");
-				mean = 0;
+		
+		int[] tab = new int[g.getV()];
+		for (int i = 0; i < tab.length; i++) {
+			tab[i] = 0;
+		}
+		for (int i = 0; i < g.getV(); i++) {
+			tab[g.getAdjacents(g.getVertex(i)).size()] += 1;
+			
+		}
+		int count = 0;
+		boolean set = true;
+		for (int i = 0; i < tab.length; i++) {
+			//System.out.println(tab[i]);
+		}
+		for (int i = 0; i < tab.length; i++) {
+			//TODO
+			count += tab[i];
+
+			if (count > g.getV()/2 && set) {
+				this.median = i;
+				System.out.println(i);
+				set = false;
 			}
+			if (tab[i] == 0 && i > 5) {
+				break;
+			}
+			dataset.addValue(tab[i], i+"", i+"");
 		}
 		return dataset;
 	}
 	private JFreeChart createChart(CategoryDataset categoryDataset) {
 		JFreeChart chart = ChartFactory.createBarChart(      
 				"Neighbors Distribution",  // chart title
-				"Noeuds",
-				"# Voisins",
+				"# de Voisins",
+				"# de Noeuds",
 				categoryDataset,        // data   
 				PlotOrientation.VERTICAL,
 				false,           // include legend   
 				true, 
-				false);
+				true);
 		final CategoryPlot plot = chart.getCategoryPlot();
 		CategoryItemRenderer renderer = this.new CustomRenderer();
 		plot.setRenderer(renderer);
 		plot.setBackgroundAlpha((float) 0.0);;
+		
 		((BarRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
 		((BarRenderer) plot.getRenderer()).setShadowVisible(false);
+		CategoryMarker marker = new CategoryMarker(this.median);  // position is the value on the axis
+		marker.setPaint(Color.red);
+
+		plot.addDomainMarker(marker);
 		return chart;
 	}
 	public JPanel createDemoPanel(Graph g){
