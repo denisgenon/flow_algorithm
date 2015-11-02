@@ -18,9 +18,8 @@ public class Main {
 				System.out.println(f.getName()+" : ");
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
-				Graph g = new SplitArrayGraph(f.getPath());
-				PushRelabel pr = new PushRelabel();
-				pr.process(g);
+				Graph g = new SplitArrayGraph("file_path");
+				PushRelabel pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -37,8 +36,7 @@ public class Main {
 				System.out.println("HashMap");
 				System.out.println("    Push Relabel :");
 				g = new HashMapGraph(f.getPath());
-				pr = new PushRelabel();
-				pr.process(g);
+				pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -55,8 +53,7 @@ public class Main {
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
 				g = new SplitArrayGraph(f.getPath());
-				pr = new PushRelabel();
-				pr.process(g);
+				pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -86,21 +83,28 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						System.out.println("Push Relabel :");
+						/*System.out.println("Push Relabel :");
 						Graph g = new AdjacencyListGraph(f.getPath());
 						PushRelabel pr = new PushRelabel();
 						pr.process(g);
-						pr.getResult();
+						pr.getResult();*/
 
 						/*System.out.println("Ford Fulkerson :");
 						g = new AdjacencyListGraph(f.getPath());
 						FordFulkerson ff = new FordFulkerson(g);
 						ff.getResult();*/
 
-						/*System.out.println("Edmonds Karp :");
-						Graph g = new AdjacencyListGraph(f.getPath());
-						EdmondsKarp ek = new EdmondsKarp(g);
-						ek.getResult();*/
+						long moyenne=0;
+						for(int i=0; i<100; i++){
+							//System.out.println("Edmonds Karp :");
+							long timeStart=System.currentTimeMillis();
+							Graph g = new AdjacencyListGraph(f.getPath());
+							EdmondsKarp ek = new EdmondsKarp(g);
+							//ek.getResult();
+							moyenne+=System.currentTimeMillis()-timeStart;
+						}
+						System.out.println("Moyenne : "+moyenne/100);
+
 
 					}
 				}
@@ -111,8 +115,7 @@ public class Main {
 
 					System.out.println("Push Relabel :");
 					Graph g = new AdjacencyListGraph(args[0]);
-					PushRelabel pr = new PushRelabel();
-					pr.process(g);
+					PushRelabel pr = new PushRelabel(g);
 					pr.getResult();
 
 					/*System.out.println("Ford Fulkerson :");

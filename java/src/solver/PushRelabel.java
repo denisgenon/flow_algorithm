@@ -10,6 +10,16 @@ public class PushRelabel {
 	public Graph g;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
+	
+	public PushRelabel(Graph g) {
+		this.g = g;
+		timeStart=System.currentTimeMillis();
+		preProcess();
+		while(!actifV.isEmpty()){
+			Vertex elu = actifV.get(0);// on prend un actif
+			pushRelabel(elu);
+		}
+	}
 
 	public void preProcess() {
 		computeDistanceLabel();
@@ -77,16 +87,6 @@ public class PushRelabel {
 			}
 		}
 		return minVertex;
-	}
-
-	public void process(Graph g) {
-		this.g = g;
-		timeStart=System.currentTimeMillis();
-		preProcess();
-		while(!actifV.isEmpty()){
-			Vertex elu = actifV.get(0);// on prend un actif
-			pushRelabel(elu);
-		}
 	}
 
 	public void getResult() {
