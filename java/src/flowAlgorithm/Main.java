@@ -83,29 +83,17 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						/*System.out.println("Push Relabel :");
-						Graph g = new AdjacencyListGraph(f.getPath());
-						PushRelabel pr = new PushRelabel();
-						pr.process(g);
-						pr.getResult();*/
-
-						/*System.out.println("Ford Fulkerson :");
-						g = new AdjacencyListGraph(f.getPath());
-						FordFulkerson ff = new FordFulkerson(g);
-						ff.getResult();*/
-
-					/*	long moyenne=0;
-						for(int i=0; i<100; i++){
-							//System.out.println("Edmonds Karp :");
-							long timeStart=System.currentTimeMillis();
-							Graph g = new AdjacencyListGraph(f.getPath());
-							EdmondsKarp ek = new EdmondsKarp(g);
-							//ek.getResult();
-							moyenne+=System.currentTimeMillis()-timeStart;
+						if(!f.getName().contains("5") && !f.getName().contains("7")){
+							long moyenne=0;
+							for(int i=0; i<100; i++){
+								long timeStart=System.currentTimeMillis();
+								Graph g = new HashMapGraph(f.getPath());
+								PushRelabel pr = new PushRelabel(g);
+								pr.getResult();
+								moyenne+=System.currentTimeMillis()-timeStart;
+							}
+							System.out.println("Moyenne : "+moyenne/100);
 						}
-						System.out.println("Moyenne : "+moyenne/100);*/
-
-
 					}
 				}
 				else if(args[0].equals("bigTest")){

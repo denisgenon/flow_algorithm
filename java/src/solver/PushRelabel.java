@@ -12,27 +12,34 @@ public class PushRelabel {
 	public long timeStart;
 	
 	public PushRelabel(Graph g) {
+		//System.out.println("test01");
 		this.g = g;
 		timeStart=System.currentTimeMillis();
+		//System.out.println("test02");
 		preProcess();
+		//System.out.println("test03");
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
 			pushRelabel(elu);
+			
 		}
 	}
 
 	public void preProcess() {
+		//System.out.println("test04");
 		computeDistanceLabel();
+		//System.out.println("test05");
 		Iterator<Vertex> iterator = g.getAdjacents(g.getVertex(0)).iterator();
+		
 		while(iterator.hasNext()) {
 			Vertex v = iterator.next();
 			chargeMax(g.getVertex(0),v,actifV);
 		}
+		
 		g.getVertex(0).h = g.getV();
 	}
 
 	public void computeDistanceLabel() {
-		// Faire un Dijkstra à l'envers	
 		// Faire un Dijkstra à l'envers
 		Vertex[] invertedVertices = new Vertex[g.getV()];
 
@@ -40,7 +47,7 @@ public class PushRelabel {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
-
+		System.out.println("test05");
 		for (Vertex v : g.getVertices()) {
 			Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
 			while(iterator.hasNext()) {
@@ -49,39 +56,33 @@ public class PushRelabel {
 				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
-
-
-		//FlowAlgorithmInstance invertedInstance = new FlowAlgorithmInstance(invertedCapaMatrix, instance.vertices, instance.V, instance.E);
+		System.out.println("test06");
 		ArrayList<Vertex> notS = new ArrayList<>();
 		for (int i = 0; i < invertedVertices.length; i++) {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
 			notS.add(invertedVertices[i]);
 		}
-
+		//System.out.println("test07");
 		invertedVertices[g.getV() - 1].h = 0;
 		while (notS.size() > 0) {
+			//System.out.println("test088");
 			Vertex i = findMinimumDistance(notS);
-			notS.remove(i);
-			// TODO iterator
 			Iterator<Vertex> iterator = g.getAdjacents(i).iterator();
 			while(iterator.hasNext()) {
 				Vertex j = iterator.next();
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
-					//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
-					//j.h = i.h + 1;
 					g.getVertex(j.id).h = invertedVertices[i.id].h + 1;
 					invertedVertices[j.id].h = invertedVertices[i.id].h + 1;
 				}
 			}
 		}
+		//System.out.println("test08");
 	}
 
 	public Vertex findMinimumDistance(ArrayList<Vertex> vertices) {
 		Vertex minVertex = new Vertex(vertices.size());
 		minVertex.h = Integer.MAX_VALUE;
-		Iterator<Vertex> iterator = vertices.iterator();
-		while(iterator.hasNext()) {
-			Vertex v = iterator.next();
+		for (Vertex v : vertices) {
 			if (v.h <= minVertex.h) {
 				minVertex = v;
 			}
