@@ -20,7 +20,6 @@ public class Main {
 				System.out.println("    Push Relabel :");
 				Graph g = new SplitArrayGraph(f.getPath());
 				PushRelabel pr = new PushRelabel();
-				pr.process(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
