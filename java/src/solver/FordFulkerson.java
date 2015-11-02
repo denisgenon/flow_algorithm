@@ -2,6 +2,7 @@ package solver;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
@@ -104,7 +105,9 @@ public class FordFulkerson {
 		while(!stack.isEmpty()){
 			int current = stack.pop();
 			set.add(current);
-			for(Vertex v : g.getAdjacents(g.getVertex(current))) {
+			Iterator<Vertex> iterator = g.getAdjacents(g.getVertex(current)).iterator();
+			while(iterator.hasNext()) {
+				Vertex v = iterator.next();
 				if(!set.contains(v.id)) {
 					parents[v.id]=current;
 					if (!set.contains(v.id)) {

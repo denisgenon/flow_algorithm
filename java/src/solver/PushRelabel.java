@@ -53,7 +53,9 @@ public class PushRelabel {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
 			// TODO iterator
-			for (Vertex j : g.getAdjacents(i)) {
+			Iterator<Vertex> iterator = g.getAdjacents(i).iterator();
+			while(iterator.hasNext()) {
+				Vertex j = iterator.next();
 				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
 					//if (j.h > i.h + 1) { // pas de cout de distance sur les aretes!
 					//j.h = i.h + 1;
@@ -67,7 +69,9 @@ public class PushRelabel {
 	public Vertex findMinimumDistance(ArrayList<Vertex> vertices) {
 		Vertex minVertex = new Vertex(vertices.size());
 		minVertex.h = Integer.MAX_VALUE;
-		for (Vertex v : vertices) {
+		Iterator<Vertex> iterator = vertices.iterator();
+		while(iterator.hasNext()) {
+			Vertex v = iterator.next();
 			if (v.h <= minVertex.h) {
 				minVertex = v;
 			}
@@ -94,7 +98,9 @@ public class PushRelabel {
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		for(Vertex u : g.getAdjacents(v)) {
+		Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
+		while(iterator.hasNext()) {
+			Vertex u = iterator.next();
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
 				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v.id, u.id, 1)),actifV); // push
