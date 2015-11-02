@@ -8,11 +8,8 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -23,6 +20,10 @@ import interfaces.Graph;
 import models.AdjacencyListGraph;
 
 public class NeighborsDistributionXYViewer  extends ApplicationFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public NeighborsDistributionXYViewer(String title, Graph g) {
 		super(title); 
 		setContentPane(createDemoPanel(g));
@@ -30,7 +31,7 @@ public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 	private XYDataset createDataset(Graph g) {
 		XYSeries serie = new XYSeries("Noeuds");
 		int mean = 0;
-		for (int i = 11; i < g.getV(); i++) { // Starting at 10 because first nodes have a lot more neighbors than others
+		for (int i =11; i < g.getV(); i++) { // Starting at 10 because first nodes have a lot more neighbors than others
 			mean += g.getAdjacents(g.getVertex(i)).size();
 			if (i % 10 == 0) {
 				serie.add(i*10, mean/10);
@@ -79,7 +80,11 @@ public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 	}
 	class CustomRenderer extends BarRenderer
 	{
-	   public CustomRenderer() {
+	   /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+	public CustomRenderer() {
 	   }
 	   public Paint getItemPaint(final int row, final int column) {
 	      return Color.black ;

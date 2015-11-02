@@ -22,6 +22,11 @@ import interfaces.Graph;
 import models.AdjacencyListGraph;
 
 public class NeighborsDistributionBarViewer  extends ApplicationFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	public NeighborsDistributionBarViewer(String title, Graph g) {
 		super(title); 
 		setContentPane(createDemoPanel(g));
@@ -77,7 +82,11 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 	}
 	class CustomRenderer extends BarRenderer
 	{
-	   public CustomRenderer() {
+	   /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+	public CustomRenderer() {
 	   }
 	   public Paint getItemPaint(final int row, final int column) {
 	      return Color.black ;
