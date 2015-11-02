@@ -94,7 +94,7 @@ public class Main {
 						FordFulkerson ff = new FordFulkerson(g);
 						ff.getResult();*/
 
-						long moyenne=0;
+					/*	long moyenne=0;
 						for(int i=0; i<100; i++){
 							//System.out.println("Edmonds Karp :");
 							long timeStart=System.currentTimeMillis();
@@ -103,7 +103,7 @@ public class Main {
 							//ek.getResult();
 							moyenne+=System.currentTimeMillis()-timeStart;
 						}
-						System.out.println("Moyenne : "+moyenne/100);
+						System.out.println("Moyenne : "+moyenne/100);*/
 
 
 					}
