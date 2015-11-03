@@ -87,9 +87,9 @@ public class Main {
 							long moyenne=0;
 							for(int i=0; i<100; i++){
 								long timeStart=System.currentTimeMillis();
-								Graph g = new HashMapGraph(f.getPath());
+								Graph g = new SplitArrayGraph(f.getPath());
 								PushRelabel pr = new PushRelabel(g);
-								pr.getResult();
+								//pr.getResult();
 								moyenne+=System.currentTimeMillis()-timeStart;
 							}
 							System.out.println("Moyenne : "+moyenne/100);

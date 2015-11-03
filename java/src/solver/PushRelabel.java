@@ -47,7 +47,7 @@ public class PushRelabel {
 			Vertex v = new Vertex(i);
 			invertedVertices[i] = v;
 		}
-		System.out.println("test05");
+
 		for (Vertex v : g.getVertices()) {
 			Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
 			while(iterator.hasNext()) {
@@ -56,7 +56,7 @@ public class PushRelabel {
 				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
-		System.out.println("test06");
+
 		ArrayList<Vertex> notS = new ArrayList<>();
 		for (int i = 0; i < invertedVertices.length; i++) {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
@@ -67,6 +67,7 @@ public class PushRelabel {
 		while (notS.size() > 0) {
 			//System.out.println("test088");
 			Vertex i = findMinimumDistance(notS);
+			notS.remove(i);
 			Iterator<Vertex> iterator = g.getAdjacents(i).iterator();
 			while(iterator.hasNext()) {
 				Vertex j = iterator.next();
