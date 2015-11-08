@@ -41,7 +41,7 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 			tab[i] = 0;
 		}
 		for (int i = 0; i < g.getV(); i++) {
-			tab[g.getAdjacents(g.getVertex(i)).size()] += 1;
+			tab[g.getAdjacents(i).size()] += 1;
 			
 		}
 		int count = 0;
@@ -82,6 +82,8 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 		
 		((BarRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
 		((BarRenderer) plot.getRenderer()).setShadowVisible(false);
+		
+		
 		CategoryMarker marker = new CategoryMarker(this.median);  // position is the value on the axis
 		marker.setPaint(Color.red);
 

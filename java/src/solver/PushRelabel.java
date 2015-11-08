@@ -12,12 +12,9 @@ public class PushRelabel {
 	public long timeStart;
 	
 	public PushRelabel(Graph g) {
-		//System.out.println("test01");
 		this.g = g;
 		timeStart=System.currentTimeMillis();
-		//System.out.println("test02");
 		preProcess();
-		//System.out.println("test03");
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
 			pushRelabel(elu);
@@ -26,14 +23,11 @@ public class PushRelabel {
 	}
 
 	public void preProcess() {
-		//System.out.println("test04");
 		computeDistanceLabel();
-		//System.out.println("test05");
-		Iterator<Vertex> iterator = g.getAdjacents(g.getVertex(0)).iterator();
-		
+		Iterator<Integer> iterator = g.getAdjacents(0).iterator();
 		while(iterator.hasNext()) {
-			Vertex v = iterator.next();
-			chargeMax(g.getVertex(0),v,actifV);
+			int v = iterator.next();
+			chargeMax(0,v,actifV);
 		}
 		
 		g.getVertex(0).h = g.getV();
@@ -49,11 +43,11 @@ public class PushRelabel {
 		}
 
 		for (Vertex v : g.getVertices()) {
-			Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
 			while(iterator.hasNext()) {
-				Vertex u = iterator.next();
+				int u = iterator.next();
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
-				invertedVertices[u.id].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
+				invertedVertices[u].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
 
@@ -62,22 +56,20 @@ public class PushRelabel {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
 			notS.add(invertedVertices[i]);
 		}
-		//System.out.println("test07");
+		
 		invertedVertices[g.getV() - 1].h = 0;
 		while (notS.size() > 0) {
-			//System.out.println("test088");
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
-			Iterator<Vertex> iterator = g.getAdjacents(i).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(i.id).iterator();
 			while(iterator.hasNext()) {
-				Vertex j = iterator.next();
-				if (invertedVertices[j.id].h > invertedVertices[i.id].h + 1) {
-					g.getVertex(j.id).h = invertedVertices[i.id].h + 1;
-					invertedVertices[j.id].h = invertedVertices[i.id].h + 1;
+				int j = iterator.next();
+				if (invertedVertices[j].h > invertedVertices[i.id].h + 1) {
+					g.getVertex(j).h = invertedVertices[i.id].h + 1;
+					invertedVertices[j].h = invertedVertices[i.id].h + 1;
 				}
 			}
 		}
-		//System.out.println("test08");
 	}
 
 	public Vertex findMinimumDistance(ArrayList<Vertex> vertices) {
@@ -100,9 +92,10 @@ public class PushRelabel {
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		Iterator<Vertex> iterator = g.getAdjacents(v).iterator();
+		Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
 		while(iterator.hasNext()) {
-			Vertex u = iterator.next();
+			int uint = iterator.next();
+			Vertex u = g.getVertex(uint);
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {
 				chargeCapa(v,u,Math.min(v.e,g.getCapacity(v.id, u.id, 1)),actifV); // push
@@ -112,24 +105,26 @@ public class PushRelabel {
 		v.h = hMin + 1;
 	}
 
-	public void chargeMax(Vertex origin, Vertex desti, ArrayList<Vertex> actifV) {
+	public void chargeMax(int origin, int desti, ArrayList<Vertex> actifV) {
 
 		int newCapa = g.removeEdge(origin,desti);
 		g.addEdge(desti, origin, newCapa,1);
+		
+		Vertex dest = g.getVertex(desti);
 
-		desti.e+=newCapa;
-		if(desti.e>0) {
-			actifV.add(desti);
+		dest.e+=newCapa;
+		if(dest.e>0) {
+			actifV.add(dest);
 		}
 	}
 
 	public void chargeCapa(Vertex origin, Vertex desti, int capa, ArrayList<Vertex> actifV) {
 		int currentCapa = g.getCapacity(origin.id,desti.id,1);
 		if(currentCapa<=capa) { // On enleve l'arete si la capa dispo est 0
-			g.removeEdge(origin, desti);
+			g.removeEdge(origin.id, desti.id);
 		}
 		else { // on enleve la capa dans le bon sens sinon
-			g.setCapacity(origin, desti, currentCapa-capa, 1);
+			g.setCapacity(origin.id, desti.id, currentCapa-capa, 1);
 		}
 		origin.e-=capa;
 		if(origin.e<=0) {
@@ -142,10 +137,10 @@ public class PushRelabel {
 
 		currentCapa = g.getCapacity(desti.id, origin.id, 1);
 		if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
-			g.addEdge(desti, origin, capa,1);
+			g.addEdge(desti.id, origin.id, capa,1);
 		}
 		else { // on rajoute la capa dans le sens inverse sinon
-			g.setCapacity(desti, origin, currentCapa+capa, 1);
+			g.setCapacity(desti.id, origin.id, currentCapa+capa, 1);
 		}
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import interfaces.Graph;
-import object.Vertex;
 
 public class FordFulkerson {
 	public Graph g;
@@ -19,7 +18,7 @@ public class FordFulkerson {
 	public FordFulkerson(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
-		Vertex [] myPath = getPath();
+		int [] myPath = getPath();
 		while(myPath!=null && !timeout) {
 			applyPath(getMinFlow(myPath),myPath);
 			myPath = getPath();
@@ -27,10 +26,10 @@ public class FordFulkerson {
 		}
 	}
 
-	public int getMinFlow(Vertex[] path) {
+	public int getMinFlow(int[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow,g.getCapacity(path[i+1].id, path[i].id,1));
+			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i],1));
 		}
 		return minFlow;
 	}
@@ -49,7 +48,7 @@ public class FordFulkerson {
 		}
 	}
 
-	public Vertex [] getPath() {
+	public int [] getPath() {
 
 		parents = new int [g.getV()];
 
@@ -59,21 +58,29 @@ public class FordFulkerson {
 
 		visitDFS(0);
 
-		ArrayList<Vertex> mypath = new ArrayList<Vertex>();
+		ArrayList<Integer> mypath = new ArrayList<Integer>();
 		int indexpath = g.getV() - 1;
-		mypath.add(g.getVertex(indexpath)); 
+		mypath.add(indexpath); 
 		while(parents[indexpath]!=-1 && indexpath!=0){
-			mypath.add(g.getVertex(parents[indexpath])); 
+			mypath.add(parents[indexpath]); 
 			indexpath=parents[indexpath];
 		}
-		// TODO Faire une arrayList de Vertex et le convertir en tableau ou faire une arrayList d'integer et le convertir en tableau d'int (via une itération)?
-		if(indexpath==0) return mypath.toArray(new Vertex [mypath.size()]);
+		
+		if(indexpath==0) {
+			int [] res = new int [mypath.size()];
+			int index=0;
+			for(int i : mypath){
+				res[index]=i;
+				index++;
+			}
+			return res;
+		}
 		return null;
 	}
 
-	public void applyPath(int capacity, Vertex[] path) {
+	public void applyPath(int capacity, int [] path) {
 		for(int i=0; i<path.length-1; i++) {
-			int currentCapa = g.getCapacity(path[i+1].id,  path[i].id,1);
+			int currentCapa = g.getCapacity(path[i+1],  path[i],1);
 			if(currentCapa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path[i+1], path[i]);
 			}
@@ -81,7 +88,7 @@ public class FordFulkerson {
 				g.setCapacity(path[i+1], path[i], currentCapa-capacity,1);
 			}
 
-			currentCapa = g.getCapacity(path[i].id,path[i+1].id,1);
+			currentCapa = g.getCapacity(path[i],path[i+1],1);
 			if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
 				g.addEdge(path[i], path[i+1], capacity,1);
 			}
@@ -89,12 +96,11 @@ public class FordFulkerson {
 				g.setCapacity(path[i], path[i+1], currentCapa+capacity,1);
 			}
 
-			currentCapa = g.getCapacity(path[i].id, path[i+1].id, 2); // on augmente le flot courant	
+			currentCapa = g.getCapacity(path[i], path[i+1], 2); // on augmente le flot courant	
 			if(currentCapa==-1) g.addEdge(path[i], path[i+1], capacity, 2); 
 			else {
 				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);
 			}
-
 		}
 	}
 
@@ -105,13 +111,13 @@ public class FordFulkerson {
 		while(!stack.isEmpty()){
 			int current = stack.pop();
 			set.add(current);
-			Iterator<Vertex> iterator = g.getAdjacents(g.getVertex(current)).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(current).iterator();
 			while(iterator.hasNext()) {
-				Vertex v = iterator.next();
-				if(!set.contains(v.id)) {
-					parents[v.id]=current;
-					if (!set.contains(v.id)) {
-						stack.push(v.id);
+				int v = iterator.next();
+				if(!set.contains(v)) {
+					parents[v]=current;
+					if (!set.contains(v)) {
+						stack.push(v);
 					}
 				}
 			}

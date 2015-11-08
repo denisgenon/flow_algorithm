@@ -92,11 +92,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
+	public void setCapacity(int u, int v, int newCapa, int type) {
 		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		for(int i=0; i<currentData[u.id].split; i++){
-			if(currentData[u.id].dom[i].idDesti==v.id) {
-				currentData[u.id].dom[i].capa=newCapa;
+		for(int i=0; i<currentData[u].split; i++){
+			if(currentData[u].dom[i].idDesti==v) {
+				currentData[u].dom[i].capa=newCapa;
 			}
 		}
 
@@ -116,24 +116,24 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
-		SplitArray s = capaMatrix[vertex.id];
-		ArrayList<Vertex> adja = new ArrayList<Vertex>();
+	public ArrayList<Integer> getAdjacents(int vertex) {
+		SplitArray s = capaMatrix[vertex];
+		ArrayList<Integer> adja = new ArrayList<Integer>();
 		for(int i=0; i<s.split; i++){
-			adja.add(vertices[s.dom[i].idDesti]);
+			adja.add(s.dom[i].idDesti);
 		}
 		return adja;
 	}
 
 	@Override
-	public int removeEdge(Vertex u, Vertex v) {
-		return capaMatrix[u.id].remove(v.id);
+	public int removeEdge(int u, int v) {
+		return capaMatrix[u].remove(v);
 	}
 
 	@Override
-	public void addEdge(Vertex u, Vertex v, int capa, int type) {
+	public void addEdge(int u, int v, int capa, int type) {
 		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		currentData[u.id].add(v.id, capa);	
+		currentData[u].add(v, capa);	
 	}
 
 	@Override

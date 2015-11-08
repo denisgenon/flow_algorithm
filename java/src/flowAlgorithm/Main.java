@@ -2,12 +2,8 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.AdjacencyListGraph;
-import models.HashMapGraph;
-import models.SplitArrayGraph;
-import solver.EdmondsKarp;
-import solver.FordFulkerson;
-import solver.PushRelabel;
+import models.*;
+import solver.*;
 
 public class Main {
 
@@ -89,7 +85,7 @@ public class Main {
 								long timeStart=System.currentTimeMillis();
 								Graph g = new SplitArrayGraph(f.getPath());
 								PushRelabel pr = new PushRelabel(g);
-								//pr.getResult();
+								pr.getResult();
 								moyenne+=System.currentTimeMillis()-timeStart;
 							}
 							System.out.println("Moyenne : "+moyenne/100);
@@ -102,19 +98,19 @@ public class Main {
 				else {
 
 					System.out.println("Push Relabel :");
-					Graph g = new AdjacencyListGraph(args[0]);
+					Graph g = new HashMapGraph(args[0]);
 					PushRelabel pr = new PushRelabel(g);
 					pr.getResult();
 
-					/*System.out.println("Ford Fulkerson :");
+					System.out.println("Ford Fulkerson :");
 					g = new SplitArrayGraph(args[0]);
 					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();*/
+					ff.getResult();
 
-					/*System.out.println("Edmonds Karp :");
+					System.out.println("Edmonds Karp :");
 					g = new AdjacencyListGraph(args[0]);
 					EdmondsKarp ek = new EdmondsKarp(g);
-					ek.getResult();*/
+					ek.getResult();
 				}
 
 			} catch (Exception e) {
