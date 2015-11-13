@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import interfaces.Graph;
 import object.Vertex;
 
-public class EdmondsKarp extends FordFulkerson {
+public class EdmondsKarp extends AugmentingPath {
 	private static final int INFINITY = Integer.MAX_VALUE;
 
 	public EdmondsKarp(Graph g) {
