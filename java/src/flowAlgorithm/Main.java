@@ -2,12 +2,8 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.AdjacencyListGraph;
-import models.HashMapGraph;
-import models.SplitArrayGraph;
-import solver.EdmondsKarp;
-import solver.FordFulkerson;
-import solver.PushRelabel;
+import models.*;
+import solver.*;
 
 public class Main {
 
@@ -19,7 +15,7 @@ public class Main {
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
 				Graph g = new SplitArrayGraph(f.getPath());
-				PushRelabel pr = new PushRelabel();
+				PushRelabel pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -36,8 +32,7 @@ public class Main {
 				System.out.println("HashMap");
 				System.out.println("    Push Relabel :");
 				g = new HashMapGraph(f.getPath());
-				pr = new PushRelabel();
-				pr.process(g);
+				pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -54,8 +49,7 @@ public class Main {
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
 				g = new SplitArrayGraph(f.getPath());
-				pr = new PushRelabel();
-				pr.process(g);
+				pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson :");
@@ -85,22 +79,17 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						System.out.println("Push Relabel :");
-						Graph g = new AdjacencyListGraph(f.getPath());
-						PushRelabel pr = new PushRelabel();
-						pr.process(g);
-						pr.getResult();
-
-						/*System.out.println("Ford Fulkerson :");
-						g = new AdjacencyListGraph(f.getPath());
-						FordFulkerson ff = new FordFulkerson(g);
-						ff.getResult();*/
-
-						/*System.out.println("Edmonds Karp :");
-						Graph g = new AdjacencyListGraph(f.getPath());
-						EdmondsKarp ek = new EdmondsKarp(g);
-						ek.getResult();*/
-
+						if(!f.getName().contains("5") && !f.getName().contains("7")){
+							long moyenne=0;
+							for(int i=0; i<100; i++){
+								long timeStart=System.currentTimeMillis();
+								Graph g = new SplitArrayGraph(f.getPath());
+								PushRelabel pr = new PushRelabel(g);
+								pr.getResult();
+								moyenne+=System.currentTimeMillis()-timeStart;
+							}
+							System.out.println("Moyenne : "+moyenne/100);
+						}
 					}
 				}
 				else if(args[0].equals("bigTest")){
@@ -109,20 +98,19 @@ public class Main {
 				else {
 
 					System.out.println("Push Relabel :");
-					Graph g = new AdjacencyListGraph(args[0]);
-					PushRelabel pr = new PushRelabel();
-					pr.process(g);
+					Graph g = new HashMapGraph(args[0]);
+					PushRelabel pr = new PushRelabel(g);
 					pr.getResult();
 
-					/*System.out.println("Ford Fulkerson :");
+					System.out.println("Ford Fulkerson :");
 					g = new SplitArrayGraph(args[0]);
 					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();*/
+					ff.getResult();
 
-					/*System.out.println("Edmonds Karp :");
+					System.out.println("Edmonds Karp :");
 					g = new AdjacencyListGraph(args[0]);
 					EdmondsKarp ek = new EdmondsKarp(g);
-					ek.getResult();*/
+					ek.getResult();
 				}
 
 			} catch (Exception e) {

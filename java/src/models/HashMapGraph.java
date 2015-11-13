@@ -8,16 +8,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import interfaces.Graph;
-import object.MyHashMap;
 import object.Vertex;
 
+
+@SuppressWarnings("unchecked")
 public class HashMapGraph extends SimpleGraph implements Graph {
-	public MyHashMap[] capaMatrix;
-	public MyHashMap[] bestFlow;
+	public HashMap<Integer, Integer> [] capaMatrix;
+	public HashMap<Integer, Integer> [] bestFlow;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new MyHashMap[V];
+		bestFlow = new HashMap[V];
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
-			capaMatrix = new MyHashMap[V];
+			capaMatrix = new HashMap[V];
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -52,9 +53,9 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				}
 
 				// On ajoute le voisin+distance dans le tableau
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new MyHashMap();
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new MyHashMap();
-				capaMatrix[idVertex1].map.put(idVertex2, capa);
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>();
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>();
+				capaMatrix[idVertex1].put(idVertex2, capa);
 			}
 
 			br.close();
@@ -64,14 +65,14 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
-		HashMap<Integer, Integer> myMap = capaMatrix[vertex.id].map;
-		ArrayList<Vertex> myArray = new ArrayList<Vertex>();
+	public ArrayList<Integer> getAdjacents(int vertex) {
+		HashMap<Integer, Integer> myMap = capaMatrix[vertex];
+		ArrayList<Integer> myArray = new ArrayList<Integer>();
 
 		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
 		while(keySetIterator.hasNext()){ 
 			Integer key = keySetIterator.next();
-			myArray.add(vertices[key]);
+			myArray.add(key);
 		}
 
 		return myArray;
@@ -81,7 +82,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	public int getFlowValue(int type) {
 		if(type==1){
 			int value = 0;
-			HashMap<Integer, Integer> myMap = bestFlow[V-1].map;
+			HashMap<Integer, Integer> myMap = bestFlow[V-1];
 			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
 			while(keySetIterator.hasNext()){ 
 				Integer key = keySetIterator.next();
@@ -96,29 +97,29 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public int removeEdge(Vertex u, Vertex v) {
-		return capaMatrix[u.id].map.remove(v.id);
+	public int removeEdge(int u, int v) {
+		return capaMatrix[u].remove(v);
 	}
 
 	@Override
-	public void addEdge(Vertex u, Vertex v, int capa, int type) {
-		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
-		currentData[u.id].map.put(v.id, capa);
+	public void addEdge(int u, int v, int capa, int type) {
+		HashMap<Integer, Integer> [] currentData = (HashMap[]) getGraphType(type);
+		currentData[u].put(v, capa);
 	}
 
 	@Override
 	public int getCapacity(int u, int v, int type) {
-		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new MyHashMap();
-		Integer res = currentData[u].map.get(v);
+		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
+		if(currentData[u]==null) currentData[u] = new HashMap<Integer, Integer>();
+		Integer res = currentData[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
 
 	@Override
-	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
-		MyHashMap[] currentData = (MyHashMap[]) getGraphType(type);
-		currentData[u.id].map.replace(v.id, newCapa);
+	public void setCapacity(int u, int v, int newCapa, int type) {
+		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
+		currentData[u].replace(v, newCapa);
 	}
 
 	@Override

@@ -91,29 +91,29 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Vertex> getAdjacents(Vertex vertex) {
+	public ArrayList<Integer> getAdjacents(int vertex) {
 		//cgetAdjacents++;
-		ArrayList<Vertex> adja = new ArrayList<Vertex>();
-		Node n = capaMatrix[vertex.id];
+		ArrayList<Integer> adja = new ArrayList<Integer>();
+		Node n = capaMatrix[vertex];
 		while(n!=null){
-			adja.add(vertices[n.idDesti]);
+			adja.add(n.idDesti);
 			n = n.next;
 		}
 		return adja;
 	}
 
 	@Override
-	public int removeEdge(Vertex u, Vertex v) {
+	public int removeEdge(int u, int v) {
 		//cremoveEdge++;
 
-		return Node.removeNode(u.id, v.id, capaMatrix);
+		return Node.removeNode(u, v, capaMatrix);
 	}
 
 	@Override
-	public void addEdge(Vertex u, Vertex v, int capa, int type) {
+	public void addEdge(int u, int v, int capa, int type) {
 		//caddEdge++;
 		Node[] currentData = (Node[]) getGraphType(type);
-		Node.addNode(u.id, v.id, capa, currentData);
+		Node.addNode(u, v, capa, currentData);
 	}
 
 	@Override
@@ -128,10 +128,10 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void setCapacity(Vertex u, Vertex v, int newCapa, int type) {
+	public void setCapacity(int u, int v, int newCapa, int type) {
 		//csetCapacity++;
 		Node[] currentData = (Node[]) getGraphType(type);
-		Node.getNode(u.id,v.id,currentData).capa=newCapa;
+		Node.getNode(u,v,currentData).capa=newCapa;
 	}
 	
 	public Object[] getGraphType(int type) {
