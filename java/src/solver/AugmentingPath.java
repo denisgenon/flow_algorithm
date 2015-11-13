@@ -77,24 +77,4 @@ public abstract class AugmentingPath {
 
 		}
 	}
-
-	public void visitDFS(int index) {
-		Set<Integer> set = new HashSet<Integer>();
-		Stack<Integer> stack = new Stack<Integer>();
-		stack.push(index);
-		while(!stack.isEmpty()){
-			int current = stack.pop();
-			set.add(current);
-			Iterator<Integer> iterator = g.getAdjacents(current).iterator();
-			while(iterator.hasNext()) {
-				int v = iterator.next();
-				if(!set.contains(v)) {
-					parents[v]=current;
-					if (!set.contains(v)) {
-						stack.push(v);
-					}
-				}
-			}
-		}
-	}
 }

@@ -7,12 +7,13 @@ import java.util.Set;
 import java.util.Stack;
 
 import interfaces.Graph;
-import object.Vertex;
 
-public class FordFulkerson extends AugmentingPath {
+public class FordFulkerson extends AugmentingPath{
+
 	public FordFulkerson(Graph g) {
 		super(g);
 	}
+
 	public int [] getPath() {
 
 		parents = new int [g.getV()];
@@ -30,7 +31,7 @@ public class FordFulkerson extends AugmentingPath {
 			mypath.add(parents[indexpath]); 
 			indexpath=parents[indexpath];
 		}
-		// TODO Faire une arrayList de Vertex et le convertir en tableau ou faire une arrayList d'integer et le convertir en tableau d'int (via une itération)?
+		
 		if(indexpath==0) {
 			int [] res = new int [mypath.size()];
 			int index=0;
@@ -41,5 +42,25 @@ public class FordFulkerson extends AugmentingPath {
 			return res;
 		}
 		return null;
+	}
+
+	public void visitDFS(int index) {
+		Set<Integer> set = new HashSet<Integer>();
+		Stack<Integer> stack = new Stack<Integer>();
+		stack.push(index);
+		while(!stack.isEmpty()){
+			int current = stack.pop();
+			set.add(current);
+			Iterator<Integer> iterator = g.getAdjacents(current).iterator();
+			while(iterator.hasNext()) {
+				int v = iterator.next();
+				if(!set.contains(v)) {
+					parents[v]=current;
+					if (!set.contains(v)) {
+						stack.push(v);
+					}
+				}
+			}
+		}
 	}
 }
