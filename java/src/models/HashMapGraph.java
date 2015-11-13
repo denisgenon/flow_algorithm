@@ -65,17 +65,8 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Integer> getAdjacents(int vertex) {
-		HashMap<Integer, Integer> myMap = capaMatrix[vertex];
-		ArrayList<Integer> myArray = new ArrayList<Integer>();
-
-		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
-		while(keySetIterator.hasNext()){ 
-			Integer key = keySetIterator.next();
-			myArray.add(key);
-		}
-
-		return myArray;
+	public Iterator<Integer> getAdjacents(int vertex) {
+		return capaMatrix[vertex].keySet().iterator();
 	}
 
 	@Override
@@ -127,6 +118,11 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
+	}
+
+	@Override
+	public int getAdjacentsSize(int i) {
+		return capaMatrix[i].size();
 	}
 
 }

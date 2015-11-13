@@ -15,7 +15,6 @@ public class FordFulkerson extends AugmentingPath{
 	}
 
 	public int [] getPath() {
-
 		parents = new int [g.getV()];
 
 		for(int i=0; i<g.getV(); i++) {
@@ -29,12 +28,11 @@ public class FordFulkerson extends AugmentingPath{
 		mypath.add(indexpath); 
 		while(parents[indexpath]!=-1 && indexpath!=0){
 			mypath.add(parents[indexpath]); 
-			indexpath=parents[indexpath];
+			indexpath = parents[indexpath];
 		}
-		
-		if(indexpath==0) {
+		if(indexpath == 0) {
 			int [] res = new int [mypath.size()];
-			int index=0;
+			int index = 0;
 			for(int i : mypath){
 				res[index]=i;
 				index++;
@@ -51,11 +49,12 @@ public class FordFulkerson extends AugmentingPath{
 		while(!stack.isEmpty()){
 			int current = stack.pop();
 			set.add(current);
-			Iterator<Integer> iterator = g.getAdjacents(current).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(current);
 			while(iterator.hasNext()) {
+				
 				int v = iterator.next();
 				if(!set.contains(v)) {
-					parents[v]=current;
+					parents[v] = current;
 					if (!set.contains(v)) {
 						stack.push(v);
 					}

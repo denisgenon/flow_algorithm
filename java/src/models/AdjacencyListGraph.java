@@ -3,15 +3,17 @@ package models;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import interfaces.Graph;
+import object.Edge;
 import object.Node;
+import object.SimpleLinkedList;
 import object.Vertex;
 
 public class AdjacencyListGraph extends SimpleGraph implements Graph {
-	public Node[] capaMatrix;
-	public Node[] bestFlow; // que pour Augmenting Path
+	public SimpleLinkedList[] capaMatrix;
+	public SimpleLinkedList[] bestFlow; // que pour Augmenting Path
 
 	/*public int cgetAdjacents = 0;
 	public int cremoveEdge = 0;
@@ -20,8 +22,9 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	public int csetCapacity = 0;*/
 
 	public AdjacencyListGraph(String filePath) {
+
 		parse(filePath);
-		bestFlow = new Node[super.V];
+		
 	}
 
 	@Override
@@ -37,11 +40,18 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 			String[] data = line.split(" ");
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
-			capaMatrix = new Node [V];
+			capaMatrix = new SimpleLinkedList[V];
+			bestFlow = new SimpleLinkedList[super.V];
 			vertices = new Vertex[V];
+			
+			for (int j = 0; j < V; j++) {
+				capaMatrix[j] = new SimpleLinkedList();
+				bestFlow[j] = new SimpleLinkedList();
+			}
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
+
 				line = br.readLine();
 				data = line.split(" ");
 				int idVertex1 = Integer.parseInt(data[0]);
@@ -55,9 +65,8 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 				if(vertices[idVertex2] == null) {
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
-
-				// On ajoute la distance dans la matrice des distances
-				Node.addNode(idVertex1, idVertex2, capa, capaMatrix);
+				
+				capaMatrix[idVertex1].addNode(idVertex2, capa);
 			}
 			
 			br.close();
@@ -77,10 +86,12 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 		
 		if(type==1){
 			int value = 0;
-			Node t = bestFlow[bestFlow.length-1];
-			while(t != null){
-				value += t.capa;
-				t = t.next;
+			
+			Node i = bestFlow[bestFlow.length-1].getFirst();
+
+			while(i != null){
+				value += i.getElement().getCapacity();
+				i = i.getNext();
 			}
 			return value;
 		}
@@ -91,38 +102,30 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Integer> getAdjacents(int vertex) {
-		//cgetAdjacents++;
-		ArrayList<Integer> adja = new ArrayList<Integer>();
-		Node n = capaMatrix[vertex];
-		while(n!=null){
-			adja.add(n.idDesti);
-			n = n.next;
-		}
-		return adja;
+	public Iterator<Integer> getAdjacents(int vertex) {
+		return capaMatrix[vertex].iterator();
 	}
 
 	@Override
 	public int removeEdge(int u, int v) {
 		//cremoveEdge++;
-
-		return Node.removeNode(u, v, capaMatrix);
+		return capaMatrix[u].removeNode(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capa, int type) {
 		//caddEdge++;
-		Node[] currentData = (Node[]) getGraphType(type);
-		Node.addNode(u, v, capa, currentData);
+		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
+		currentData[u].addNode(v, capa);
+		
 	}
 
 	@Override
 	public int getCapacity(int u, int v, int type) {
 		//cgetCapacity++;
-			
-		Node[] currentData = (Node[]) getGraphType(type);
-		Node myN = Node.getNode(u,v,currentData);
-		if(myN!=null) return myN.capa;
+		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
+		Node myN = currentData[u].getNode(v);
+		if (myN != null) return myN.getElement().getCapacity();
 		else return -1;
 
 	}
@@ -130,13 +133,18 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	@Override
 	public void setCapacity(int u, int v, int newCapa, int type) {
 		//csetCapacity++;
-		Node[] currentData = (Node[]) getGraphType(type);
-		Node.getNode(u,v,currentData).capa=newCapa;
+		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
+		currentData[u].getNode(v).getElement().setCapa(newCapa);
 	}
 	
 	public Object[] getGraphType(int type) {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
+	}
+
+	@Override
+	public int getAdjacentsSize(int i) {
+		return capaMatrix[i].getSize();
 	}
 }

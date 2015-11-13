@@ -24,7 +24,7 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		Iterator<Integer> iterator = g.getAdjacents(0).iterator();
+		Iterator<Integer> iterator = g.getAdjacents(0);
 		while(iterator.hasNext()) {
 			int v = iterator.next();
 			chargeMax(0,v,actifV);
@@ -43,7 +43,7 @@ public class PushRelabel {
 		}
 
 		for (Vertex v : g.getVertices()) {
-			Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(v.id);
 			while(iterator.hasNext()) {
 				int u = iterator.next();
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
@@ -61,7 +61,7 @@ public class PushRelabel {
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
-			Iterator<Integer> iterator = g.getAdjacents(i.id).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(i.id);
 			while(iterator.hasNext()) {
 				int j = iterator.next();
 				if (invertedVertices[j].h > invertedVertices[i.id].h + 1) {
@@ -92,7 +92,7 @@ public class PushRelabel {
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
+		Iterator<Integer> iterator = g.getAdjacents(v.id);
 		while(iterator.hasNext()) {
 			int uint = iterator.next();
 			Vertex u = g.getVertex(uint);

@@ -1,62 +1,24 @@
 package object;
 
-public class Node extends Edge{
-	public Node next;
-	
-	public Node(int index, int capa, Node next){
-		super(capa, index);
-		this.next=next;
-	}
-	
-	@Override
-	public String toString() {
-		return ("["+super.idDesti + ", " + capa+"]");
-	}
-	
-	// Retourne la valeur du node enlevé
-	public static int removeNode(int x, int y, Node [] capaMatrix) {
-		Node current = capaMatrix[x];
-		int res=-1;
-		if(current==null){
-			System.out.println("La liste est vide");
-			return res;
-		}
-		if(current.idDesti==y){
-			capaMatrix[x]=current.next;
-			return current.capa;
-		}
-		while(current.next!=null) {
-			if(current.next.idDesti==y) {
-				res=current.next.capa;
-				current.next = current.next.next;
-				return res;
-			}
-			else {
-				current = current.next;
-			}
-		}
-		
-		return res;
-	}
+public class Node {
+	private Edge element;
+	private Node next;
 
-	public static void addNode(int x, int y, int capa, Node [] capaMatrix){
-		Node current = capaMatrix[x];
-		if(current==null) {
-			capaMatrix[x]=new Node(y,capa,null);
-		}
-		else {
-			capaMatrix[x]=new Node(y,capa,current);
-		}
+	public Node(Edge edge, Node next){
+		this.element = edge;
+		this.next = next;
 	}
-
-	public static Node getNode(int x, int y, Node [] capaMatrix){
-		Node current = capaMatrix[x];
-		while(current!=null) {
-			if(current.idDesti==y) {
-				return current;
-			}
-			current=current.next;
-		}
-		return null;
+	public Edge getElement() {
+		return element;
 	}
+	public Node getNext() {
+		return next;
+	}
+	public void setElement(Edge element) {
+        this.element = element;
+    }
+ 
+    public void setNext(Node next) {
+        this.next = next;
+    }
 }

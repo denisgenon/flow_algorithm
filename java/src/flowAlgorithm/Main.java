@@ -96,16 +96,17 @@ public class Main {
 					bigTest();
 				}
 				else {
-
+					
 					System.out.println("Push Relabel :");
-					Graph g = new HashMapGraph(args[0]);
+					Graph g = new AdjacencyListGraph(args[0]);
 					PushRelabel pr = new PushRelabel(g);
 					pr.getResult();
+					
 
 					System.out.println("Ford Fulkerson :");
-					g = new SplitArrayGraph(args[0]);
-					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();
+					g = new AdjacencyListGraph(args[0]);
+					//FordFulkerson ff = new FordFulkerson(g);
+					//ff.getResult();
 
 					System.out.println("Edmonds Karp :");
 					g = new AdjacencyListGraph(args[0]);

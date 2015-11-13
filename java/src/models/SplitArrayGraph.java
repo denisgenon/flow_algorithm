@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import interfaces.Graph;
 import object.Edge;
@@ -116,13 +117,8 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public ArrayList<Integer> getAdjacents(int vertex) {
-		SplitArray s = capaMatrix[vertex];
-		ArrayList<Integer> adja = new ArrayList<Integer>();
-		for(int i=0; i<s.split; i++){
-			adja.add(s.dom[i].idDesti);
-		}
-		return adja;
+	public Iterator<Integer> getAdjacents(int vertex) {
+		return capaMatrix[vertex].iterator();
 	}
 
 	@Override
@@ -141,6 +137,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
+	}
+
+	@Override
+	public int getAdjacentsSize(int i) {
+		return capaMatrix[i].getSize();
 	}
 
 }
