@@ -3,9 +3,9 @@ package models;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -18,6 +18,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
+		bestFlow = new HashMap[V];
 	}
 
 	@Override
@@ -34,12 +35,6 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
 			capaMatrix = new HashMap[V];
-			bestFlow = new HashMap[V];
-			
-			for (int j = 0; j < V; j++) {
-				capaMatrix[j] = new HashMap<Integer, Integer>();
-				bestFlow[j] = new HashMap<Integer, Integer>();
-			}
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -61,7 +56,6 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>();
 				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>();
 				capaMatrix[idVertex1].put(idVertex2, capa);
-				
 			}
 
 			br.close();
@@ -71,8 +65,17 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public Iterator<Integer> getAdjacents(int vertex) {
-		return capaMatrix[vertex].keySet().iterator();
+	public ArrayList<Integer> getAdjacents(int vertex) {
+		HashMap<Integer, Integer> myMap = capaMatrix[vertex];
+		ArrayList<Integer> myArray = new ArrayList<Integer>();
+
+		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+		while(keySetIterator.hasNext()){ 
+			Integer key = keySetIterator.next();
+			myArray.add(key);
+		}
+
+		return myArray;
 	}
 
 	@Override
@@ -80,9 +83,9 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 		if(type==1){
 			int value = 0;
 			HashMap<Integer, Integer> myMap = bestFlow[V-1];
-			Iterator<Integer> it = myMap.keySet().iterator(); 
-			while(it.hasNext()){ 
-				Integer key = it.next();
+			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+			while(keySetIterator.hasNext()){ 
+				Integer key = keySetIterator.next();
 				value+=myMap.get(key);
 			}
 			return value;
@@ -124,11 +127,6 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
-	}
-
-	@Override
-	public int getAdjacentsSize(int i) {
-		return capaMatrix[i].size();
 	}
 
 }

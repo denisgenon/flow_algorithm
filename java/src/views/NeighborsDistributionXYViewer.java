@@ -32,7 +32,7 @@ public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 		XYSeries serie = new XYSeries("Noeuds");
 		int mean = 0;
 		for (int i =11; i < g.getV(); i++) { // Starting at 10 because first nodes have a lot more neighbors than others
-			mean += g.getAdjacentsSize(i);
+			mean += g.getAdjacents(i).size();
 			if (i % 10 == 0) {
 				serie.add(i*10, mean/10);
 				mean = 0;

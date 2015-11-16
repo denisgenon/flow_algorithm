@@ -3,7 +3,7 @@ package models;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import interfaces.Graph;
 import object.Edge;
@@ -116,8 +116,13 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public Iterator<Integer> getAdjacents(int vertex) {
-		return capaMatrix[vertex].iterator();
+	public ArrayList<Integer> getAdjacents(int vertex) {
+		SplitArray s = capaMatrix[vertex];
+		ArrayList<Integer> adja = new ArrayList<Integer>();
+		for(int i=0; i<s.split; i++){
+			adja.add(s.dom[i].idDesti);
+		}
+		return adja;
 	}
 
 	@Override
@@ -136,11 +141,6 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
-	}
-
-	@Override
-	public int getAdjacentsSize(int i) {
-		return capaMatrix[i].getSize();
 	}
 
 }

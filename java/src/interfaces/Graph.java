@@ -1,6 +1,6 @@
 package interfaces;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import object.Vertex;
 
@@ -41,8 +41,7 @@ public interface Graph {
 	 * @param vertex
 	 * @return Les vertices voisins du vertex
 	 */
-	//public ArrayList<Integer> getAdjacents(int vertex);
-	public Iterator<Integer> getAdjacents(int vertex);
+	public ArrayList<Integer> getAdjacents(int vertex);
 	
 	/**
 	 * 
@@ -82,7 +81,5 @@ public interface Graph {
 	public void setCapacity(int u, int v, int newCapa, int type);
 	
 	public Object[] getGraphType(int type);
-
-	public int getAdjacentsSize(int i);
 	
 }

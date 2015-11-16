@@ -1,7 +1,6 @@
 package object;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SplitArray {
 
@@ -100,27 +99,5 @@ public class SplitArray {
 	
 	public int getSize() {
 		return split;
-	}
-	public Iterator<Integer> iterator() {
-		return new Iterator<Integer>() {
-			int index = 0;
-			
-			@Override
-			public boolean hasNext() {
-				return index < split;
-			}
-
-			@Override
-			public Integer next() {
-				int id = dom[index].getCapacity();
-				index++;
-				return id;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			};
-		};
 	}
 }
