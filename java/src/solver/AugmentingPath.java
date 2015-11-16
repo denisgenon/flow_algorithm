@@ -1,31 +1,26 @@
 package solver;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Stack;
-
 import interfaces.Graph;
-import object.Vertex;
+
 
 public abstract class AugmentingPath {
 	public Graph g;
-	public int [] parents; // For getPath
 	public long timeStart;
 	public boolean timeout=false;
 	public int limitTime=300000; // en ms
 
 	public AugmentingPath(Graph g) {
 		this.g = g;
+		System.out.println("Test00");
 		timeStart=System.currentTimeMillis();
 		int [] myPath = getPath();
-		
+		System.out.println("Test01");
 		while(myPath!=null && !timeout) {
 			applyPath(getMinFlow(myPath),myPath);
 			myPath = getPath();
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
+		System.out.println("Test02");
 	}
 
 	public int getMinFlow(int[] path) {

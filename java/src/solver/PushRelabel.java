@@ -16,7 +16,9 @@ public class PushRelabel {
 	public PushRelabel(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
+		
 		preProcess();
+		
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0); //on prend un actif
 			pushRelabel(elu);			
@@ -24,12 +26,17 @@ public class PushRelabel {
 	}
 
 	public void preProcess() {
+		System.out.println("Test02");
 		computeDistanceLabel();
+		System.out.println("Test03");
 		Iterator<Integer> it = g.getAdjacents(0);
+		
 		while(it.hasNext()) {
 			int v = it.next();
-			chargeMax(0, v, actifV, it);
+
+			chargeMax(0, v, actifV);
 		}
+		
 
 		g.getVertex(0).h = g.getV();
 	}
@@ -51,7 +58,6 @@ public class PushRelabel {
 				invertedVertices[u].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
 		}
-
 		ArrayList<Vertex> notS = new ArrayList<>();
 		for (int i = 0; i < invertedVertices.length; i++) {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
