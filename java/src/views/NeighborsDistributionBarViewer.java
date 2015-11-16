@@ -41,7 +41,7 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 			tab[i] = 0;
 		}
 		for (int i = 0; i < g.getV(); i++) {
-			tab[g.getAdjacents(i).size()] += 1;
+			tab[g.getAdjacentsSize(i)] += 1;
 			
 		}
 		int count = 0;

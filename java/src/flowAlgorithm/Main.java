@@ -2,8 +2,12 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.*;
-import solver.*;
+import models.AdjacencyListGraph;
+import models.HashMapGraph;
+import models.SplitArrayGraph;
+import solver.EdmondsKarp;
+import solver.FordFulkerson;
+import solver.PushRelabel;
 
 public class Main {
 
@@ -96,11 +100,12 @@ public class Main {
 					bigTest();
 				}
 				else {
-
+									
 					System.out.println("Push Relabel :");
-					Graph g = new HashMapGraph(args[0]);
+					Graph g = new SplitArrayGraph(args[0]);
 					PushRelabel pr = new PushRelabel(g);
 					pr.getResult();
+					
 
 					System.out.println("Ford Fulkerson :");
 					g = new SplitArrayGraph(args[0]);
@@ -108,7 +113,7 @@ public class Main {
 					ff.getResult();
 
 					System.out.println("Edmonds Karp :");
-					g = new AdjacencyListGraph(args[0]);
+					g = new SplitArrayGraph(args[0]);
 					EdmondsKarp ek = new EdmondsKarp(g);
 					ek.getResult();
 				}

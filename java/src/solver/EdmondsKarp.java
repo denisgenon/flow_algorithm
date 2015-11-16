@@ -30,7 +30,7 @@ public class EdmondsKarp extends AugmentingPath {
 		queue.add(0);
 		while (!queue.isEmpty()) {
 			int u = queue.removeFirst();
-			Iterator<Integer> iterator = g.getAdjacents(u).iterator();
+			Iterator<Integer> iterator = g.getAdjacents(u);
 			while(iterator.hasNext()) {
 				int v = iterator.next();
 				if (distances[v] == INFINITY) {
