@@ -10,6 +10,8 @@ import interfaces.Graph;
 
 public class FordFulkerson extends AugmentingPath{
 
+	public int [] parents; // For getPath
+	
 	public FordFulkerson(Graph g) {
 		super(g);
 	}
