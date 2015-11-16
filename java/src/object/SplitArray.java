@@ -107,13 +107,13 @@ public class SplitArray {
 			
 			@Override
 			public boolean hasNext() {
-				return index < split;
+				return index <= split;
 			}
 
 			@Override
 			public Integer next() {
-				int id = 0;// TODO
-				//curr = curr.getNext();
+				int id = dom[index].getCapacity();
+				index++;
 				return id;
 			}
 

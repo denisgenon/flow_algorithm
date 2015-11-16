@@ -3,6 +3,8 @@ package solver;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.plaf.FontUIResource;
+
 import interfaces.Graph;
 import object.Vertex;
 
@@ -10,26 +12,29 @@ public class PushRelabel {
 	public Graph g;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
-	
+
 	public PushRelabel(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
-			pushRelabel(elu);
-			
+			pushRelabel(elu);			
 		}
 	}
 
 	public void preProcess() {
 		computeDistanceLabel();
-		Iterator<Integer> iterator = g.getAdjacents(0);
-		while(iterator.hasNext()) {
-			int v = iterator.next();
-			chargeMax(0,v,actifV);
+		Iterator<Integer> it = g.getAdjacents(0);
+		while(it.hasNext()) {
+			System.out.println("hagga");
+			int v = it.next();
+			System.out.println(v);
+			//chargeMax(0, v, actifV);
+			System.out.println(v);
+			System.out.println("--");
 		}
-		
+
 		g.getVertex(0).h = g.getV();
 	}
 
@@ -56,7 +61,7 @@ public class PushRelabel {
 			invertedVertices[i].h = Integer.MAX_VALUE-1;
 			notS.add(invertedVertices[i]);
 		}
-		
+
 		invertedVertices[g.getV() - 1].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
@@ -106,13 +111,13 @@ public class PushRelabel {
 	}
 
 	public void chargeMax(int origin, int desti, ArrayList<Vertex> actifV) {
-
 		int newCapa = g.removeEdge(origin,desti);
-		g.addEdge(desti, origin, newCapa,1);
-		
+		g.addEdge(desti, origin, newCapa, 1);
+
 		Vertex dest = g.getVertex(desti);
 
-		dest.e+=newCapa;
+		dest.e += newCapa;
+
 		if(dest.e>0) {
 			actifV.add(dest);
 		}
