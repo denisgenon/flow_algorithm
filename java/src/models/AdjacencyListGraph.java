@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import interfaces.Graph;
-import object.Edge;
 import object.Node;
 import object.SimpleLinkedList;
 import object.Vertex;

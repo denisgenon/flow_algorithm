@@ -11,14 +11,16 @@ public abstract class AugmentingPath {
 
 	public AugmentingPath(Graph g) {
 		this.g = g;
+		System.out.println("Test00");
 		timeStart=System.currentTimeMillis();
 		int [] myPath = getPath();
-		
+		System.out.println("Test01");
 		while(myPath!=null && !timeout) {
 			applyPath(getMinFlow(myPath),myPath);
 			myPath = getPath();
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
+		System.out.println("Test02");
 	}
 
 	public int getMinFlow(int[] path) {

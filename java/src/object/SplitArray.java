@@ -107,7 +107,7 @@ public class SplitArray {
 			
 			@Override
 			public boolean hasNext() {
-				return index <= split;
+				return index < split;
 			}
 
 			@Override
