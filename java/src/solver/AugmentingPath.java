@@ -1,17 +1,10 @@
 package solver;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Stack;
-
 import interfaces.Graph;
-import object.Vertex;
+
 
 public abstract class AugmentingPath {
 	public Graph g;
-	public int [] parents; // For getPath
 	public long timeStart;
 	public boolean timeout=false;
 	public int limitTime=300000; // en ms
