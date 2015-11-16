@@ -18,7 +18,7 @@ public class PushRelabel {
 		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()){
-			Vertex elu = actifV.get(0);// on prend un actif
+			Vertex elu = actifV.get(0); //on prend un actif
 			pushRelabel(elu);			
 		}
 	}
@@ -27,12 +27,8 @@ public class PushRelabel {
 		computeDistanceLabel();
 		Iterator<Integer> it = g.getAdjacents(0);
 		while(it.hasNext()) {
-			System.out.println("hagga");
 			int v = it.next();
-			System.out.println(v);
-			//chargeMax(0, v, actifV);
-			System.out.println(v);
-			System.out.println("--");
+			chargeMax(0, v, actifV, it);
 		}
 
 		g.getVertex(0).h = g.getV();
@@ -112,14 +108,14 @@ public class PushRelabel {
 
 	public void chargeMax(int origin, int desti, ArrayList<Vertex> actifV) {
 		int newCapa = g.removeEdge(origin,desti);
+		
 		g.addEdge(desti, origin, newCapa, 1);
-
 		Vertex dest = g.getVertex(desti);
-
 		dest.e += newCapa;
 
 		if(dest.e>0) {
 			actifV.add(dest);
+
 		}
 	}
 
