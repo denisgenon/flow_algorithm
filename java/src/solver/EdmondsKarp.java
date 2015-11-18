@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import interfaces.Graph;
@@ -30,9 +29,8 @@ public class EdmondsKarp extends AugmentingPath {
 		queue.add(0);
 		while (!queue.isEmpty()) {
 			int u = queue.removeFirst();
-			Iterator<Integer> iterator = g.getAdjacents(u).iterator();
-			while(iterator.hasNext()) {
-				int v = iterator.next();
+			for(int i : g.getAdjacents(u)){
+				int v = i;
 				if (distances[v] == INFINITY) {
 					distances[v] = distances[u] + 1;
 					parent[v] = u;

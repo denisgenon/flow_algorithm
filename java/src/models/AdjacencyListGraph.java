@@ -3,11 +3,8 @@ package models;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import interfaces.Graph;
-import object.Edge;
 import object.Node;
 import object.SimpleLinkedList;
 import object.Vertex;
@@ -103,11 +100,14 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Integer> getAdjacents(int vertex) {
-		ArrayList<Integer> adja = new ArrayList<Integer>();
+	public int [] getAdjacents(int vertex) {
+		
+		int [] adja = new int [getAdjacentsSize(vertex)];
 		Node n = capaMatrix[vertex].getFirst();
+		int i = 0;
 		while(n!=null){
-			adja.add(n.getElement().getIndex());
+			adja[i]=n.getElement().getIndex();
+			i++;
 			n = n.getNext();
 		}
 		return adja;
@@ -144,12 +144,14 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 		currentData[u].getNode(v).getElement().setCapa(newCapa);
 	}
 	
+	@Override
 	public Object[] getGraphType(int type) {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
 	}
 
+	@Override
 	public int getAdjacentsSize(int i) {
 		return capaMatrix[i].getSize();
 	}

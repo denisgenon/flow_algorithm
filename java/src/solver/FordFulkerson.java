@@ -2,7 +2,6 @@ package solver;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
@@ -60,9 +59,8 @@ public class FordFulkerson extends AugmentingPath{
 			}
 			else {
 				set.add(current);
-				Iterator<Integer> iterator = g.getAdjacents(current).iterator();
-				while(iterator.hasNext()) {
-					int v = iterator.next();
+				for(int i : g.getAdjacents(current)){
+					int v = i;
 					if(!set.contains(v)) {
 						parents[v]=current;
 						if (!set.contains(v)) {

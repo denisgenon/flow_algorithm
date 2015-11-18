@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -24,9 +23,8 @@ public class PushRelabel {
 
 	public void preProcess() {
 		computeDistanceLabel();
-		Iterator<Integer> iterator = g.getAdjacents(0).iterator();
-		while(iterator.hasNext()) {
-			int v = iterator.next();
+		for(int i : g.getAdjacents(0)) {
+			int v = i;
 			chargeMax(0,v,actifV);
 		}
 		
@@ -43,9 +41,8 @@ public class PushRelabel {
 		}
 
 		for (Vertex v : g.getVertices()) {
-			Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
-			while(iterator.hasNext()) {
-				int u = iterator.next();
+			for(int i : g.getAdjacents(v.id)) {
+				int u = i;
 				// V -5-> U devient V <-5- U dans invertedCapaMatrix
 				invertedVertices[u].adjaDijkstra.add(new Vertex(v.id)); // TODO adjacents doit être add en fonction de la structure de donnée
 			}
@@ -61,9 +58,8 @@ public class PushRelabel {
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
-			Iterator<Integer> iterator = g.getAdjacents(i.id).iterator();
-			while(iterator.hasNext()) {
-				int j = iterator.next();
+			for(int p : g.getAdjacents(i.id)) {
+				int j = p;
 				if (invertedVertices[j].h > invertedVertices[i.id].h + 1) {
 					g.getVertex(j).h = invertedVertices[i.id].h + 1;
 					invertedVertices[j].h = invertedVertices[i.id].h + 1;
@@ -92,9 +88,8 @@ public class PushRelabel {
 
 	public void pushRelabel(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
-		Iterator<Integer> iterator = g.getAdjacents(v.id).iterator();
-		while(iterator.hasNext()) {
-			int uint = iterator.next();
+		for(int i : g.getAdjacents(v.id)) {
+			int uint = i;
 			Vertex u = g.getVertex(uint);
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) {

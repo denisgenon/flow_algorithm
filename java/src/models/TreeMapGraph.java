@@ -3,7 +3,6 @@ package models;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -64,17 +63,19 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public ArrayList<Integer> getAdjacents(int vertex) {
+	public int [] getAdjacents(int vertex) {
 		TreeMap<Integer, Integer> myMap = capaMatrix[vertex];
-		ArrayList<Integer> myArray = new ArrayList<Integer>();
+		int [] adja = new int [getAdjacentsSize(vertex)];
 
 		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+		int i = 0;
 		while(keySetIterator.hasNext()){ 
 			Integer key = keySetIterator.next();
-			myArray.add(key);
+			adja[i]=key;
+			i++;
 		}
 
-		return myArray;
+		return adja;
 	}
 
 	@Override
@@ -126,5 +127,10 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 		if(type==1) return capaMatrix;
 		if(type==2) return bestFlow;
 		return null;
+	}
+
+	@Override
+	public int getAdjacentsSize(int v) {
+		return capaMatrix[v].size();
 	}
 }

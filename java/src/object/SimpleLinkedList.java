@@ -1,7 +1,5 @@
 package object;
 
-import java.util.Iterator;
-
 public class SimpleLinkedList {
 	protected Node head;
 	protected int size;

@@ -4,7 +4,6 @@ import java.io.File;
 import interfaces.Graph;
 import models.*;
 import solver.*;
-import sun.security.provider.certpath.AdjacencyList;
 
 public class Main {
 
@@ -80,17 +79,17 @@ public class Main {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
-						if(!f.getName().contains("5") && !f.getName().contains("7")){
+						//if(!f.getName().contains("5") && !f.getName().contains("7")){
 							long moyenne=0;
 							for(int i=0; i<10; i++){
 								long timeStart=System.currentTimeMillis();
 								Graph g = new AdjacencyListGraph(f.getPath());
 								EdmondsKarp pr = new EdmondsKarp(g);
-								//pr.getResult();
+								pr.getResult();
 								moyenne+=System.currentTimeMillis()-timeStart;
 							}
 							System.out.println("Moyenne : "+moyenne/10);
-						}
+						//}
 					}
 				}
 				else if(args[0].equals("bigTest")){
