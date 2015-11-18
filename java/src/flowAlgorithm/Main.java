@@ -81,14 +81,14 @@ public class Main {
 						System.out.println(f.getName()+" : ");
 						if(!f.getName().contains("5") && !f.getName().contains("7")){
 							long moyenne=0;
-							for(int i=0; i<100; i++){
+							for(int i=0; i<10; i++){
 								long timeStart=System.currentTimeMillis();
-								Graph g = new SplitArrayGraph(f.getPath());
-								PushRelabel pr = new PushRelabel(g);
-								pr.getResult();
+								Graph g = new AdjacencyListGraph(f.getPath());
+								EdmondsKarp pr = new EdmondsKarp(g);
+								//pr.getResult();
 								moyenne+=System.currentTimeMillis()-timeStart;
 							}
-							System.out.println("Moyenne : "+moyenne/100);
+							System.out.println("Moyenne : "+moyenne/10);
 						}
 					}
 				}

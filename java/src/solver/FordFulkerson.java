@@ -11,12 +11,14 @@ import interfaces.Graph;
 public class FordFulkerson extends AugmentingPath{
 
 	public int [] parents; // For getPath
-	
+
 	public FordFulkerson(Graph g) {
 		super(g);
 	}
 
 	public int [] getPath() {
+
+		// DFS
 
 		parents = new int [g.getV()];
 
@@ -33,7 +35,7 @@ public class FordFulkerson extends AugmentingPath{
 			mypath.add(parents[indexpath]); 
 			indexpath=parents[indexpath];
 		}
-		
+
 		if(indexpath==0) {
 			int [] res = new int [mypath.size()];
 			int index=0;
@@ -50,16 +52,22 @@ public class FordFulkerson extends AugmentingPath{
 		Set<Integer> set = new HashSet<Integer>();
 		Stack<Integer> stack = new Stack<Integer>();
 		stack.push(index);
-		while(!stack.isEmpty()){
+		boolean flag = true;
+		while(!stack.isEmpty() && flag){
 			int current = stack.pop();
-			set.add(current);
-			Iterator<Integer> iterator = g.getAdjacents(current).iterator();
-			while(iterator.hasNext()) {
-				int v = iterator.next();
-				if(!set.contains(v)) {
-					parents[v]=current;
-					if (!set.contains(v)) {
-						stack.push(v);
+			if(current==g.getV()-1){
+				flag=false;
+			}
+			else {
+				set.add(current);
+				Iterator<Integer> iterator = g.getAdjacents(current).iterator();
+				while(iterator.hasNext()) {
+					int v = iterator.next();
+					if(!set.contains(v)) {
+						parents[v]=current;
+						if (!set.contains(v)) {
+							stack.push(v);
+						}
 					}
 				}
 			}
