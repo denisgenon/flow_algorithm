@@ -19,7 +19,7 @@ public class PushRelabel {
 		preProcess();
 		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
 			Vertex elu = actifV.get(0);// We take any active node (we need to change this heuristic)
-			pushRelabel(elu);
+			process(elu);
 		}
 	}
 	/**
@@ -101,7 +101,7 @@ public class PushRelabel {
 	 * We push a flow on the neighbors of v if we can.
 	 * @param v
 	 */
-	public void pushRelabel(Vertex v) {
+	public void process(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
 		for(int i : g.getAdjacents(v.id)) {
 			int uint = i;
