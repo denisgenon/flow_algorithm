@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
-import interfaces.Graph;
-
 public class EdmondsKarpIterator extends AugmentingPathIterator {
 	private static final int INFINITY = Integer.MAX_VALUE;
 

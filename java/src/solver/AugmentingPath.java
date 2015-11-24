@@ -8,6 +8,8 @@ public abstract class AugmentingPath {
 	public long timeStart;
 	public boolean timeout=false;
 	public int limitTime=300000; // en ms
+	
+	public AugmentingPath(){}
 
 	public AugmentingPath(Graph g) {
 		this.g = g;
