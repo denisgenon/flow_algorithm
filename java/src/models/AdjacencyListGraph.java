@@ -11,18 +11,10 @@ import object.Vertex;
 
 public class AdjacencyListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] capaMatrix;
-	public SimpleLinkedList[] bestFlow; // que pour Augmenting Path
-
-	/*public int cgetAdjacents = 0;
-	public int cremoveEdge = 0;
-	public int caddEdge = 0;
-	public int cgetCapacity = 0;
-	public int csetCapacity = 0;*/
+	public SimpleLinkedList[] bestFlow; // Final flow
 
 	public AdjacencyListGraph(String filePath) {
-
 		parse(filePath);
-		
 	}
 
 	@Override
@@ -39,7 +31,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			capaMatrix = new SimpleLinkedList[V];
-			bestFlow = new SimpleLinkedList[super.V];
+			bestFlow = new SimpleLinkedList[V];
 			vertices = new Vertex[V];
 			maxCapa = 0;
 			
@@ -78,24 +70,17 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int getFlowValue(int type) {
-		/*System.out.println("getAdjacents : "+cgetAdjacents);
-		System.out.println("removeEdge : "+cremoveEdge);
-		System.out.println("addEdge : "+caddEdge);
-		System.out.println("getCapacity : "+cgetCapacity);
-		System.out.println("setCapacity : "+csetCapacity);*/
-		
-		if(type==1){
-			int value = 0;
-			
-			Node i = bestFlow[bestFlow.length-1].getFirst();
 
-			while(i != null){
+		if(type==1){ // For augmenting path
+			int value = 0;
+			Node i = bestFlow[getV()-1].getFirst();
+			while(i != null){ // On regarde toutes les arêtes qui arrivent à la destination
 				value += i.getElement().getCapacity();
 				i = i.getNext();
 			}
 			return value;
 		}
-		if(type==2){
+		if(type==2){ // For push/relabel
 			return vertices[V-1].e;
 		}
 		return -1;
@@ -117,30 +102,28 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(int u, int v) {
-		//cremoveEdge++;
 		return capaMatrix[u].removeNode(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capa, int type) {
-		//caddEdge++;
+
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		currentData[u].addNode(v, capa);
 	}
 
 	@Override
 	public int getCapacity(int u, int v, int type) {
-		//cgetCapacity++;
+
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		Node myN = currentData[u].getNode(v);
 		if (myN != null) return myN.getElement().getCapacity();
 		else return -1;
-
 	}
 
 	@Override
 	public void setCapacity(int u, int v, int newCapa, int type) {
-		//csetCapacity++;
+
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		currentData[u].getNode(v).getElement().setCapa(newCapa);
 	}

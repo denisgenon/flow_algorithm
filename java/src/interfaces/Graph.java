@@ -81,18 +81,22 @@ public interface Graph {
 	
 	/**
 	 * 
-	 * @param type
-	 * @return
+	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
+	 * @return 
 	 */
 	public Object[] getGraphType(int type);
 	
 	/**
 	 * 
-	 * @param v
-	 * @return
+	 * @param v 
+	 * @return Le nombre de voisins de v
 	 */
 	public int getAdjacentsSize(int v);
 	
+	/**
+	 * 
+	 * @return La capacité maximum des edges
+	 */
 	public int getMaxCapacity();
 	
 }

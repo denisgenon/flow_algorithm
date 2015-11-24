@@ -8,7 +8,7 @@ public abstract class AugmentingPathScaling extends AugmentingPath{
 		super.g = g;
 		timeStart=System.currentTimeMillis();
 		int delta = (int) (2*Math.log(g.getMaxCapacity()));
-		while(delta>=1) {
+		while(delta>=1 && !timeout) {
 			int [] myPath = getPath(delta);
 			if(myPath == null) {
 				delta = (int) Math.round(delta/2);
@@ -16,6 +16,7 @@ public abstract class AugmentingPathScaling extends AugmentingPath{
 			else {
 				applyPath(getMinFlow(myPath),myPath);
 			}
+			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
 	}
 	

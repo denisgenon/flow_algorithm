@@ -17,7 +17,6 @@ public class PushRelabel {
 		while(!actifV.isEmpty()){
 			Vertex elu = actifV.get(0);// on prend un actif
 			pushRelabel(elu);
-			
 		}
 	}
 
