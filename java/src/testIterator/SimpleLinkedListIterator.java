@@ -2,7 +2,6 @@ package testIterator;
 
 import java.util.Iterator;
 
-import object.NodeIter;
 
 public class SimpleLinkedListIterator {
 	protected NodeIter head;

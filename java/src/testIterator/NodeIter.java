@@ -1,4 +1,4 @@
-package object;
+package testIterator;
 
 public class NodeIter {
 	private int id;

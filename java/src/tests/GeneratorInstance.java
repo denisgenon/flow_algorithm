@@ -92,6 +92,6 @@ public class GeneratorInstance {
 	}
 
 	public static void main (String [] args) {
-		generateInstance(10000,100000,10000,"instance9");
+		generateInstance(10000,20000,10000,"instance54");
 	}
 }

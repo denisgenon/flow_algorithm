@@ -10,10 +10,10 @@ public class Main {
 	public static void bigTest(){
 		try {
 			File directoryToScan = new File("instances"); 
-			
+
 			for(File f : directoryToScan.listFiles()){
 				System.out.println("----> "+f.getName()+" <----");
-				
+
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
 				Graph g = new SplitArrayGraph(f.getPath());
@@ -63,7 +63,7 @@ public class Main {
 				g = new AdjacencyListGraph(f.getPath());
 				ek = new EdmondsKarp(g);
 				ek.getResult();
-				
+
 				System.out.println("-------------");
 				System.out.println("TreeMap");
 				System.out.println("    Push Relabel :");
@@ -97,26 +97,21 @@ public class Main {
 				if(args[0].equals("all")) {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
-						System.out.println(f.getName()+" : ");
-						//if(!f.getName().contains("5") && !f.getName().contains("7")){
-							long moyenne=0;
-							for(int i=0; i<10; i++){
-								long timeStart=System.currentTimeMillis();
-								Graph g = new TreeMapGraph(f.getPath());
-								FordFulkersonScaling ek = new FordFulkersonScaling(g);
-								moyenne+=System.currentTimeMillis()-timeStart;
-							}
-							System.out.println("Moyenne : "+moyenne/10);
-												//}
+						//if(f.getName().contains("5")){
+							System.out.println(f.getName()+" : ");
+							Graph g = new HashMapGraph(f.getPath());
+							EdmondsKarp pr = new EdmondsKarp(g);
+							pr.getResult();
+						//}
 					}
 				}
 				else if(args[0].equals("bigTest")){
 					bigTest();
 				}
 				else {
-					Graph g = new HashMapGraph(args[0]);
-					EdmondsKarp ek = new EdmondsKarp(g);
-					ek.getResult();
+					Graph g = new AdjacencyListGraph(args[0]);
+					PushRelabel pr = new PushRelabel(g);
+					pr.getResult();
 				}
 
 			} catch (Exception e) {
