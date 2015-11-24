@@ -4,6 +4,9 @@ import java.io.File;
 import interfaces.Graph;
 import models.*;
 import solver.*;
+import testIterator.AdjacencyListGraphIterator;
+import testIterator.EdmondsKarpIterator;
+import testIterator.GraphIterator;
 
 public class Main {
 
@@ -80,15 +83,14 @@ public class Main {
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
 						//if(!f.getName().contains("5") && !f.getName().contains("7")){
-							//long moyenne=0;
-							//for(int i=0; i<10; i++){
-								//long timeStart=System.currentTimeMillis();
-								Graph g = new HashMapGraph(f.getPath());
-								FordFulkersonScaling ek = new FordFulkersonScaling(g);
-								ek.getResult();
-								//moyenne+=System.currentTimeMillis()-timeStart;
-							//}
-							//System.out.println("Moyenne : "+moyenne/10);
+							long moyenne=0;
+							for(int i=0; i<10; i++){
+								long timeStart=System.currentTimeMillis();
+								GraphIterator g = new AdjacencyListGraphIterator(f.getPath());
+								EdmondsKarpIterator ek = new EdmondsKarpIterator(g);
+								moyenne+=System.currentTimeMillis()-timeStart;
+							}
+							System.out.println("Moyenne : "+moyenne/10);
 						//}
 					}
 				}
@@ -96,20 +98,8 @@ public class Main {
 					bigTest();
 				}
 				else {
-
-					System.out.println("Push Relabel :");
-					Graph g = new AdjacencyListGraph(args[0]);
-					PushRelabel pr = new PushRelabel(g);
-					pr.getResult();
-
-					System.out.println("Ford Fulkerson :");
-					g = new AdjacencyListGraph(args[0]);
-					FordFulkerson ff = new FordFulkerson(g);
-					ff.getResult();
-
-					System.out.println("Edmonds Karp :");
-					g = new AdjacencyListGraph(args[0]);
-					EdmondsKarp ek = new EdmondsKarp(g);
+					GraphIterator g = new AdjacencyListGraphIterator(args[0]);
+					EdmondsKarpIterator ek = new EdmondsKarpIterator(g);
 					ek.getResult();
 				}
 

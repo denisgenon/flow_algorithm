@@ -1,4 +1,4 @@
-package object;
+package testIterator;
 
 public class Arc {
 
@@ -20,9 +20,7 @@ public class Arc {
 
     @Override
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
-        return result;
+        return x*31+y;
     }
 
 }

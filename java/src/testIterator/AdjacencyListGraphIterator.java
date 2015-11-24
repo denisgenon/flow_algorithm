@@ -1,4 +1,4 @@
-package models;
+package testIterator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,17 +6,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import interfaces.GraphIter;
-import object.Arc;
 import object.NodeIter;
-import object.SimpleLinkedListIter;
 import object.Vertex;
 
-public class AdjacencyListGraphIter extends SimpleGraphIter implements GraphIter {
-	public SimpleLinkedListIter[] capaMatrix;
-	public SimpleLinkedListIter[] bestFlow; // que pour Augmenting Path
+public class AdjacencyListGraphIterator extends SimpleGraphIter implements GraphIterator {
+	public SimpleLinkedListIterator[] voisins;
 
-	public AdjacencyListGraphIter(String filePath) {
+	public AdjacencyListGraphIterator(String filePath) {
 		parse(filePath);
 	}
 
@@ -33,14 +29,14 @@ public class AdjacencyListGraphIter extends SimpleGraphIter implements GraphIter
 			String[] data = line.split(" ");
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
-			capaMatrix = new SimpleLinkedListIter[V];
-			bestFlow = new SimpleLinkedListIter[super.V];
+			voisins = new SimpleLinkedListIterator[V];
+
 			vertices = new Vertex[V];
 			capacities = new HashMap<>();
+			capacitiesBestFlow = new HashMap<>();
 			
 			for (int j = 0; j < V; j++) {
-				capaMatrix[j] = new SimpleLinkedListIter();
-				bestFlow[j] = new SimpleLinkedListIter();
+				voisins[j] = new SimpleLinkedListIterator();
 			}
 
 			// Parse the items
@@ -59,10 +55,14 @@ public class AdjacencyListGraphIter extends SimpleGraphIter implements GraphIter
 				if(vertices[idVertex2] == null) {
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
-				capaMatrix[idVertex1].addNode(idVertex2);
+				voisins[idVertex1].addNode(idVertex2);
 				capacities.put(new Arc(idVertex1, idVertex2), capa);
-				capaMatrix[idVertex2].addNode(idVertex1);
-				capacities.put(new Arc(idVertex2, idVertex1), 0);
+				capacitiesBestFlow.put(new Arc(idVertex1, idVertex2), 0);
+				
+				voisins[idVertex2].addNode(idVertex1);
+				capacities.put(new Arc(idVertex2, idVertex1), 0); // TODO si elle existe déjà, pas mettre la capa à 0
+				capacitiesBestFlow.put(new Arc(idVertex2, idVertex1), 0);
+				
 			}
 			br.close();
 		} catch (IOException e) {
@@ -75,10 +75,10 @@ public class AdjacencyListGraphIter extends SimpleGraphIter implements GraphIter
 	public int getFlowValue(int type) {
 		if(type==1){
 			int value = 0;
-			NodeIter i = bestFlow[bestFlow.length-1].getFirst();
+			NodeIter i = voisins[getV()-1].getFirst();
 
 			while(i != null){
-				value += capacities.get(new Arc(bestFlow.length-1, i.getId()));
+				value += capacitiesBestFlow.get(new Arc(getV()-1, i.getId()));
 				i = i.getNext();
 			}
 			return value;
@@ -91,29 +91,10 @@ public class AdjacencyListGraphIter extends SimpleGraphIter implements GraphIter
 
 	@Override
 	public Iterator<Integer> getAdjacents(int vertex) {
-		return capaMatrix[vertex].iterator();
+		return voisins[vertex].iterator();
 	}
-
-	/*
-	@Override
-	public int removeEdge(int u, int v) {
-		return capaMatrix[u].removeNode(v);
-	}
-
-	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
-		currentData[u].addNode(v, capa);
-	}
-	*/
 	
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
-	}
-
 	public int getAdjacentsSize(int i) {
-		return capaMatrix[i].getSize();
+		return voisins[i].getSize();
 	}
 }

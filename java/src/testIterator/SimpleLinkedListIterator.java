@@ -1,43 +1,17 @@
-package object;
+package testIterator;
 
 import java.util.Iterator;
 
-public class SimpleLinkedListIter {
+import object.NodeIter;
+
+public class SimpleLinkedListIterator {
 	protected NodeIter head;
 	protected int size;
 
-	public SimpleLinkedListIter() {
+	public SimpleLinkedListIterator() {
 		head = null;
 		size = 0;
 	} 
-	/*
-	// Retourne la valeur du node enlevé
-	public int removeNode(int y) {
-		Node current = head;
-		int res = -1;
-		if (current == null) {
-			System.out.println("La liste est vide");
-			return res;
-		}
-		if (current.getId() == y) {
-			head = current.getNext();
-			size--;
-			return current.getElement().getCapacity(); //TODO a changer
-		}
-		while(current.getNext() != null) {
-			if(current.getNext().getId() == y) {
-				res = current.getNext().getElement().getCapacity(); // TODO
-				current.setNext(current.getNext().getNext());
-				size--;
-				return res;
-			}
-			else {
-				current = current.getNext();
-			}
-		}
-		return res;
-	}
-	*/
 
 	public void addNode(int y){
 		if (size == 0) {

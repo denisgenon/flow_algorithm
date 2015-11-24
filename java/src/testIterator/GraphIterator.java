@@ -1,10 +1,10 @@
-package interfaces;
+package testIterator;
 
 import java.util.Iterator;
 
 import object.Vertex;
 
-public interface GraphIter {
+public interface GraphIterator {
 	
 	/**
 	 * Parse le fichier
@@ -50,28 +50,12 @@ public interface GraphIter {
 	 */
 	public int getFlowValue(int type);
 	
-	
-	/**
-	 * @param u : Vertex à l'origine
-	 * @param v : Vertex à la destination
-	 * @return La capacité de l'edge retiré
-	 */
-	//public int removeEdge(int u, int v);
-
-	/**
-	 * @param u : Vertex à l'origine
-	 * @param v : Vertex à la destination
-	 * @param capa : Capacité de l'edge
-	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
-	 */
-	//public void addEdge(int u, int v, int capa, int type);
-
 	/**
 	 * @param u : Vertex à l'origine
 	 * @param v : Vertex à la destination
 	 * @return La capacité entre u et v
 	 */
-	public int getCapacity(int u, int v);
+	public int getCapacity(int u, int v, int type);
 	
 	/**
 	 * 
@@ -79,7 +63,5 @@ public interface GraphIter {
 	 * @param v : Vertex à la destination
 	 * @param newCapa : la capacité entre u et v
 	 */
-	public void setCapacity(int u, int v, int newCapa);
-	
-	public Object[] getGraphType(int type);	
+	public void setCapacity(int u, int v, int newCapa, int type);
 }
