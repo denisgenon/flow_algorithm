@@ -10,17 +10,21 @@ import interfaces.Graph;
 public class FordFulkerson extends AugmentingPath{
 
 	public int [] parents; // For getPath
-
+	/**
+	 * Just call the augmenting path algorithm
+	 * @param g, the representation of the instance
+	 */
 	public FordFulkerson(Graph g) {
 		super(g);
 	}
-
+	
+	/**
+	 * We found a path with DFS in the residual graph
+	 */
 	public int [] getPath() {
-
-		// DFS
-
 		parents = new int [g.getV()];
 
+		// Initialize values
 		for(int i=0; i<g.getV(); i++) {
 			parents[i]=-1;
 		}

@@ -10,18 +10,27 @@ public abstract class AugmentingPath {
 	public int limitTime=300000; // en ms
 	
 	public AugmentingPath(){}
-
+	
+	/**
+	 * Run the augmenting path algorithm on the Graph g
+	 * @param g, the representation of the instance
+	 */
 	public AugmentingPath(Graph g) {
 		this.g = g;
 		timeStart=System.currentTimeMillis();
 		int [] myPath = getPath();
-		while(myPath!=null && !timeout) {
-			applyPath(getMinFlow(myPath),myPath);
-			myPath = getPath();
+		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph
+			applyPath(getMinFlow(myPath), myPath); // Apply the path found on the residual graph with the bottleneck of the path
+			myPath = getPath(); // Search for a new path in the residual graph
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
 	}
 
+	/**
+	 * Give the bottleneck of the path
+	 * @param the path
+	 * @return the value of the bottleneck of the path
+	 */
 	public int getMinFlow(int[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
@@ -30,6 +39,9 @@ public abstract class AugmentingPath {
 		return minFlow;
 	}
 
+	/**
+	 * Print to the standard output the value of the maximum flow
+	 */
 	public void getResult() {
 		if(!timeout){
 			System.out.println("|V| : "+g.getV());
@@ -46,6 +58,11 @@ public abstract class AugmentingPath {
 
 	public abstract int [] getPath();
 
+	/**
+	 * Apply the capacity change on the path in the residual graph and in the graph (pushing the flow)
+	 * @param capacity
+	 * @param path
+	 */
 	public void applyPath(int capacity, int[] path) {
 		for(int i=0; i<path.length-1; i++) {
 			int currentCapa = g.getCapacity(path[i+1], path[i],1);

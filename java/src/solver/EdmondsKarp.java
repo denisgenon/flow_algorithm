@@ -7,16 +7,23 @@ import interfaces.Graph;
 
 public class EdmondsKarp extends AugmentingPath {
 	private static final int INFINITY = Integer.MAX_VALUE;
-
+	/**
+	 * Just call the augmenting path algorithm
+	 * @param g, the representation of the instance
+	 */
 	public EdmondsKarp(Graph g) {
 		super(g);
 	}
 	
+	/**
+	 * We found a path with BFS in the residual graph
+	 */
 	public int [] getPath() {
 		int[] distances = new int[g.getV()];
 		int[] parent = new int[g.getV()];
 		ArrayList<Integer> path = new ArrayList<>();
 		
+		// Initialize values
 		for (int i = 0; i < super.g.getV(); i++) {
 			distances[i] = INFINITY;
 			parent[i] = -1;
@@ -24,7 +31,7 @@ public class EdmondsKarp extends AugmentingPath {
 		
 		LinkedList<Integer> queue = new LinkedList<>();
 		
-		// Sommet ?
+		// BFS
 		distances[0] = 0;
 		queue.add(0);
 		while (!queue.isEmpty()) {

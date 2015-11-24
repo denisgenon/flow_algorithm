@@ -10,17 +10,21 @@ import interfaces.Graph;
 public class FordFulkersonScaling extends AugmentingPathScaling{
 
 	public int [] parents; // For getPath
-
+	/**
+	 * Just call the augmenting path algorithm
+	 * @param g, the representation of the instance
+	 */
 	public FordFulkersonScaling(Graph g) {
 		super(g);
 	}
 
+	/**
+	 * We found a path with DFS in the residual graph
+	 */
 	public int [] getPath(int delta) {
-
-		// DFS
-
 		parents = new int [g.getV()];
 
+		// Initialize values
 		for(int i=0; i<g.getV(); i++) {
 			parents[i]=-1;
 		}
@@ -61,7 +65,7 @@ public class FordFulkersonScaling extends AugmentingPathScaling{
 				set.add(current);
 				for(int i : g.getAdjacents(current)){
 					int v = i;
-					if(g.getCapacity(current, v, 1)>= delta){
+					if(g.getCapacity(current, v, 1)>= delta) { //We browse only the edge if the capacity is greater than the delta value
 						if(!set.contains(v)) {
 							parents[v]=current;
 							if (!set.contains(v)) {
