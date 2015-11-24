@@ -66,6 +66,7 @@ public interface Graph {
 	/**
 	 * @param u : Vertex à l'origine
 	 * @param v : Vertex à la destination
+	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
 	 * @return La capacité entre u et v
 	 */
 	public int getCapacity(int u, int v, int type);
@@ -91,5 +92,7 @@ public interface Graph {
 	 * @return
 	 */
 	public int getAdjacentsSize(int v);
+	
+	public int getMaxCapacity();
 	
 }

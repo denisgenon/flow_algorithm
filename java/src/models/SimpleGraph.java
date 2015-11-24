@@ -6,6 +6,7 @@ public abstract class SimpleGraph {
 	public Vertex [] vertices;
 	public int V;
 	public int E;
+	public int maxCapa;
 	
 	public int getV() {
 		return V;
@@ -13,6 +14,10 @@ public abstract class SimpleGraph {
 
 	public int getE() {
 		return E;
+	}
+	
+	public int getMaxCapacity() {
+		return maxCapa;
 	}
 
 	public Vertex[] getVertices() {

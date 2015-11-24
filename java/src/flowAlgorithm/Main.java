@@ -80,15 +80,15 @@ public class Main {
 					for(File f : directoryToScan.listFiles()){
 						System.out.println(f.getName()+" : ");
 						//if(!f.getName().contains("5") && !f.getName().contains("7")){
-							long moyenne=0;
-							for(int i=0; i<10; i++){
-								long timeStart=System.currentTimeMillis();
-								Graph g = new AdjacencyListGraph(f.getPath());
-								EdmondsKarp pr = new EdmondsKarp(g);
-								pr.getResult();
-								moyenne+=System.currentTimeMillis()-timeStart;
-							}
-							System.out.println("Moyenne : "+moyenne/10);
+							//long moyenne=0;
+							//for(int i=0; i<10; i++){
+								//long timeStart=System.currentTimeMillis();
+								Graph g = new HashMapGraph(f.getPath());
+								FordFulkersonScaling ek = new FordFulkersonScaling(g);
+								ek.getResult();
+								//moyenne+=System.currentTimeMillis()-timeStart;
+							//}
+							//System.out.println("Moyenne : "+moyenne/10);
 						//}
 					}
 				}

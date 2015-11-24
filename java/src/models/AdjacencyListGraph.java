@@ -41,6 +41,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 			capaMatrix = new SimpleLinkedList[V];
 			bestFlow = new SimpleLinkedList[super.V];
 			vertices = new Vertex[V];
+			maxCapa = 0;
 			
 			for (int j = 0; j < V; j++) {
 				capaMatrix[j] = new SimpleLinkedList();
@@ -55,6 +56,7 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
+				maxCapa = Math.max(capa, maxCapa);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {

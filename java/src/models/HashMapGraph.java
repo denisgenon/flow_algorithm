@@ -34,6 +34,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
 			capaMatrix = new HashMap[V];
+			maxCapa = 0;
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -42,6 +43,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
+				maxCapa = Math.max(capa, maxCapa);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {
@@ -52,8 +54,8 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				}
 
 				// On ajoute le voisin+distance dans le tableau
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>();
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>();
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>(20);
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>(20);
 				capaMatrix[idVertex1].put(idVertex2, capa);
 			}
 

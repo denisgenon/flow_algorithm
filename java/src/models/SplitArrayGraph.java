@@ -33,6 +33,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 			vertices = new Vertex[V];
 			capaMatrix = new SplitArray[V];
 			bestFlow = new SplitArray[V];
+			maxCapa = 0;
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -41,6 +42,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
+				maxCapa = Math.max(capa, maxCapa);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {
