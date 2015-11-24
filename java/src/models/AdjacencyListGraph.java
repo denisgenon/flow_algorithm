@@ -124,7 +124,6 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 		//caddEdge++;
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		currentData[u].addNode(v, capa);
-		
 	}
 
 	@Override

@@ -2,15 +2,15 @@ package object;
 
 import java.util.Iterator;
 
-public class SimpleLinkedList {
-	protected Node head;
+public class SimpleLinkedListIter {
+	protected NodeIter head;
 	protected int size;
 
-	public SimpleLinkedList() {
+	public SimpleLinkedListIter() {
 		head = null;
 		size = 0;
 	} 
-
+	/*
 	// Retourne la valeur du node enlevé
 	public int removeNode(int y) {
 		Node current = head;
@@ -19,14 +19,14 @@ public class SimpleLinkedList {
 			System.out.println("La liste est vide");
 			return res;
 		}
-		if (current.getElement().idDesti == y) {
+		if (current.getId() == y) {
 			head = current.getNext();
 			size--;
-			return current.getElement().getCapacity();
+			return current.getElement().getCapacity(); //TODO a changer
 		}
 		while(current.getNext() != null) {
-			if(current.getNext().getElement().idDesti == y) {
-				res = current.getNext().getElement().getCapacity();
+			if(current.getNext().getId() == y) {
+				res = current.getNext().getElement().getCapacity(); // TODO
 				current.setNext(current.getNext().getNext());
 				size--;
 				return res;
@@ -37,22 +37,23 @@ public class SimpleLinkedList {
 		}
 		return res;
 	}
+	*/
 
-	public void addNode(int y, int capa){
+	public void addNode(int y){
 		if (size == 0) {
-			head = new Node(new Edge(capa, y), null);
+			head = new NodeIter(y, null);
 		}
 		else {
-			Node current = head;
-			head = new Node(new Edge(capa, y), current);
+			NodeIter current = head;
+			head = new NodeIter(y, current);
 		}
 		size++;
 	}
 
-	public Node getNode(int y){
-		Node current = head;
+	public NodeIter getNode(int y){
+		NodeIter current = head;
 		while(current != null) {
-			if(current.getElement().idDesti == y) {
+			if(current.getId() == y) {
 				return current;
 			}
 			current=current.getNext();
@@ -60,7 +61,7 @@ public class SimpleLinkedList {
 		return null;
 	}
 
-	public Node getFirst() {
+	public NodeIter getFirst() {
 		return head;
 	}
 
@@ -69,15 +70,15 @@ public class SimpleLinkedList {
 	}
 	
 	public void printList() {
-		Node c = head;
+		NodeIter c = head;
 		while (c != null) {
-			System.out.println(c.getElement().getIndex());
+			System.out.println(c.getId());
 			c = c.getNext();
 		}
 	}
 	public Iterator<Integer> iterator() {
 		return new Iterator<Integer>() {
-			Node curr = head;
+			NodeIter curr = head;
 
 			@Override
 			public boolean hasNext() {
@@ -86,7 +87,7 @@ public class SimpleLinkedList {
 
 			@Override
 			public Integer next() {
-				int id = curr.getElement().idDesti;
+				int id = curr.getId();
 				curr = curr.getNext();
 				return id;
 			}

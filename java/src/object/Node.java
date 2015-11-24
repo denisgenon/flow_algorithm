@@ -4,8 +4,8 @@ public class Node {
 	private Edge element;
 	private Node next;
 
-	public Node(Edge edge, Node next){
-		this.element = edge;
+	public Node(Edge element, Node next){
+		this.element = element;
 		this.next = next;
 	}
 	public Edge getElement() {
