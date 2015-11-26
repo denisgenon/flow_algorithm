@@ -17,69 +17,69 @@ public class Main {
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
 				Graph g = new SplitArrayGraph(f.getPath());
-				PushRelabel pr = new PushRelabel(g);
-				pr.getResult();
+				Solver s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new SplitArrayGraph(f.getPath());
-				FordFulkersonScaling ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new SplitArrayGraph(f.getPath());
-				EdmondsKarp ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println("-------------");
 				System.out.println("HashMap");
 				System.out.println("    Push Relabel :");
 				g = new HashMapGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new HashMapGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new HashMapGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println("-------------");
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
 				g = new AdjacencyListGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new AdjacencyListGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new AdjacencyListGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println("-------------");
 				System.out.println("TreeMap");
 				System.out.println("    Push Relabel :");
 				g = new TreeMapGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new TreeMapGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new TreeMapGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println();
 			}
@@ -100,8 +100,8 @@ public class Main {
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
 							Graph g = new HashMapGraph(f.getPath());
-							EdmondsKarp pr = new EdmondsKarp(g);
-							pr.getResult();
+							Solver s = new EdmondsKarp(g);
+							s.getResults();
 						//}
 					}
 				}
@@ -110,8 +110,8 @@ public class Main {
 				}
 				else {
 					Graph g = new AdjacencyListGraph(args[0]);
-					PushRelabel pr = new PushRelabel(g);
-					pr.getResult();
+					Solver s = new EdmondsKarp(g);
+					s.getResults();
 				}
 
 			} catch (Exception e) {
