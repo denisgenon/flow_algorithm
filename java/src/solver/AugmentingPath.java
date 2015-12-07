@@ -7,7 +7,7 @@ public abstract class AugmentingPath implements Solver{
 
 	public long timeStart;
 	public boolean timeout=false;
-	public int limitTime=120000; // en ms
+	public int limitTime=600000; // en ms
 	
 	public AugmentingPath(){}
 	

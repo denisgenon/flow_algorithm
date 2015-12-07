@@ -99,7 +99,7 @@ public class Main {
 					for(File f : directoryToScan.listFiles()){
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
-							Graph g = new HashMapGraph(f.getPath());
+							Graph g = new AdjacencyListGraph(f.getPath());
 							Solver s = new EdmondsKarp(g);
 							s.getResults();
 						//}
@@ -110,7 +110,7 @@ public class Main {
 				}
 				else {
 					Graph g = new AdjacencyListGraph(args[0]);
-					Solver s = new EdmondsKarp(g);
+					Solver s = new FordFulkersonScaling(g);
 					s.getResults();
 				}
 
