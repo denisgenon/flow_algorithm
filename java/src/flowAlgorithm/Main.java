@@ -50,17 +50,17 @@ public class Main {
 				System.out.println("-------------");
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				s = new PushRelabel(g);
 				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				s = new FordFulkersonScaling(g);
 				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				s = new EdmondsKarp(g);
 				s.getResults();
 
@@ -99,7 +99,7 @@ public class Main {
 					for(File f : directoryToScan.listFiles()){
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
-							Graph g = new AdjacencyListGraph(f.getPath());
+							Graph g = new LinkedListGraph(f.getPath());
 							Solver s = new EdmondsKarp(g);
 							s.getResults();
 						//}
@@ -109,7 +109,7 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new AdjacencyListGraph(args[0]);
+					Graph g = new LinkedListGraph(args[0]);
 					Solver s = new FordFulkersonScaling(g);
 					s.getResults();
 				}

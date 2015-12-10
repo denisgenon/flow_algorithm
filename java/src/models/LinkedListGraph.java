@@ -9,13 +9,13 @@ import object.Node;
 import object.SimpleLinkedList;
 import object.Vertex;
 
-public class AdjacencyListGraph extends SimpleGraph implements Graph {
+public class LinkedListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] capaMatrix;
 	public SimpleLinkedList[] bestFlow; // Final flow
 	
 	int gA=0, rE=0, aE=0, gC=0, sC=0;
 
-	public AdjacencyListGraph(String filePath) {
+	public LinkedListGraph(String filePath) {
 		parse(filePath);
 	}
 
@@ -72,11 +72,11 @@ public class AdjacencyListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int getFlowValue(int type) {
-		System.out.println("gA : "+gA);
+		/*System.out.println("gA : "+gA);
 		System.out.println("rE : "+rE);
 		System.out.println("aE : "+aE);
 		System.out.println("gC : "+gC);
-		System.out.println("sC : "+sC);
+		System.out.println("sC : "+sC);*/
 		if(type==1){ // For augmenting path
 			int value = 0;
 			Node i = bestFlow[getV()-1].getFirst();
