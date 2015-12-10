@@ -113,7 +113,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	@Override
 	public int getCapacity(int u, int v, int type) {
 		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new HashMap<Integer, Integer>(20);
+		if(currentData[u]==null) currentData[u] = new HashMap<Integer, Integer>();
 		Integer res = currentData[u].get(v);
 		if (res==null) return -1;
 		return res;

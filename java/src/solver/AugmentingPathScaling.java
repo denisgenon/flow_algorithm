@@ -9,7 +9,7 @@ public abstract class AugmentingPathScaling extends AugmentingPath {
 	public AugmentingPathScaling(Graph g) {
 		super.g = g;
 		timeStart=System.currentTimeMillis();
-		int delta = (int) (2*Math.log(g.getMaxCapacity()));
+		int delta = (int) Math.pow(2, Math.log(g.getMaxCapacity()));
 		while(delta>=1 && !timeout) {
 			int [] myPath = getPath(delta);
 			if(myPath == null) { // If there is no path found with the current delta value, we update the delta

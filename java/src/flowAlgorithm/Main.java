@@ -100,7 +100,7 @@ public class Main {
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
 							Graph g = new LinkedListGraph(f.getPath());
-							Solver s = new EdmondsKarp(g);
+							Solver s = new FordFulkersonScaling(g);
 							s.getResults();
 						//}
 					}
@@ -109,9 +109,14 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new LinkedListGraph(args[0]);
-					Solver s = new FordFulkersonScaling(g);
-					s.getResults();
+					Graph g1 = new LinkedListGraph(args[0]);
+					//Graph g2 = new HashMapGraph("file_path");
+					
+					Solver s1 = new FordFulkersonScaling(g1);
+					//Solver s2 = new PushRelabel(g2);
+					
+					s1.getResults();
+					//s2.getResults();
 				}
 
 			} catch (Exception e) {
