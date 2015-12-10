@@ -1,5 +1,7 @@
 package flowAlgorithm;
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import interfaces.Graph;
 import models.*;
@@ -16,6 +18,7 @@ public class Main {
 
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
+				
 				Graph g = new SplitArrayGraph(f.getPath());
 				Solver s = new PushRelabel(g);
 				s.getResults();
@@ -51,6 +54,7 @@ public class Main {
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
 				g = new LinkedListGraph(f.getPath());
+			
 				s = new PushRelabel(g);
 				s.getResults();
 
@@ -100,7 +104,7 @@ public class Main {
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
 							Graph g = new LinkedListGraph(f.getPath());
-							Solver s = new FordFulkersonScaling(g);
+							Solver s = new EdmondsKarp(g);
 							s.getResults();
 						//}
 					}
@@ -109,14 +113,9 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g1 = new LinkedListGraph(args[0]);
-					//Graph g2 = new HashMapGraph("file_path");
-					
-					Solver s1 = new FordFulkersonScaling(g1);
-					//Solver s2 = new PushRelabel(g2);
-					
-					s1.getResults();
-					//s2.getResults();
+					Graph g = new LinkedListGraph(args[0]);
+					Solver s = new FordFulkersonScaling(g);
+					s.getResults();
 				}
 
 			} catch (Exception e) {
