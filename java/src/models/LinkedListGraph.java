@@ -12,6 +12,8 @@ import object.Vertex;
 public class LinkedListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] capaMatrix;
 	public SimpleLinkedList[] bestFlow; // Final flow
+	
+	int gA=0, rE=0, aE=0, gC=0, sC=0;
 
 	public LinkedListGraph(String filePath) {
 		parse(filePath);
@@ -70,7 +72,11 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int getFlowValue(int type) {
-
+		/*System.out.println("gA : "+gA);
+		System.out.println("rE : "+rE);
+		System.out.println("aE : "+aE);
+		System.out.println("gC : "+gC);
+		System.out.println("sC : "+sC);*/
 		if(type==1){ // For augmenting path
 			int value = 0;
 			Node i = bestFlow[getV()-1].getFirst();
@@ -88,6 +94,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int [] getAdjacents(int vertex) {
+		gA++;
 		
 		int [] adja = new int [getAdjacentsSize(vertex)];
 		Node n = capaMatrix[vertex].getFirst();
@@ -102,19 +109,20 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(int u, int v) {
+		rE++;
 		return capaMatrix[u].removeNode(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capa, int type) {
-
+		aE++;
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		currentData[u].addNode(v, capa);
 	}
 
 	@Override
 	public int getCapacity(int u, int v, int type) {
-
+		gC++;
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		Node myN = currentData[u].getNode(v);
 		if (myN != null) return myN.getElement().getCapacity();
@@ -123,7 +131,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public void setCapacity(int u, int v, int newCapa, int type) {
-
+		sC++;
 		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
 		currentData[u].getNode(v).getElement().setCapa(newCapa);
 	}

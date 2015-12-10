@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import interfaces.Graph;
 import object.Vertex;
 
-public class PushRelabel {
+public class PushRelabel implements Solver {
 	public Graph g;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
@@ -91,7 +91,7 @@ public class PushRelabel {
 	/**
 	 * Print to the standard output the value of the best flow.
 	 */
-	public void getResult() {
+	public void getResults() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
 		System.out.println("Max flot : " + g.getFlowValue(2));
@@ -164,5 +164,9 @@ public class PushRelabel {
 		else {
 			g.setCapacity(desti.id, origin.id, capacity+flow_value, 1);
 		}
+	}
+	
+	public void getTime() {
+		System.out.println((System.currentTimeMillis()-timeStart)+"\n");
 	}
 }

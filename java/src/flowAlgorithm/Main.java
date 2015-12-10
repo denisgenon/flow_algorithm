@@ -12,77 +12,78 @@ public class Main {
 	public static void bigTest(){
 		try {
 			File directoryToScan = new File("instances"); 
-			
+
 			for(File f : directoryToScan.listFiles()){
 				System.out.println("----> "+f.getName()+" <----");
-				
+
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
 				
 				Graph g = new SplitArrayGraph(f.getPath());
-				PushRelabel pr = new PushRelabel(g);
-				pr.getResult();
+				Solver s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new SplitArrayGraph(f.getPath());
-				FordFulkersonScaling ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new SplitArrayGraph(f.getPath());
-				EdmondsKarp ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println("-------------");
 				System.out.println("HashMap");
 				System.out.println("    Push Relabel :");
 				g = new HashMapGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new HashMapGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new HashMapGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println("-------------");
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
 				g = new LinkedListGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+			
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new LinkedListGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new LinkedListGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
-				
+				s = new EdmondsKarp(g);
+				s.getResults();
+
 				System.out.println("-------------");
 				System.out.println("TreeMap");
 				System.out.println("    Push Relabel :");
 				g = new TreeMapGraph(f.getPath());
-				pr = new PushRelabel(g);
-				pr.getResult();
+				s = new PushRelabel(g);
+				s.getResults();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
 				g = new TreeMapGraph(f.getPath());
-				ff = new FordFulkersonScaling(g);
-				ff.getResult();
+				s = new FordFulkersonScaling(g);
+				s.getResults();
 
 				System.out.println("    Edmonds Karp :");
 				g = new TreeMapGraph(f.getPath());
-				ek = new EdmondsKarp(g);
-				ek.getResult();
+				s = new EdmondsKarp(g);
+				s.getResults();
 
 				System.out.println();
 			}
@@ -100,26 +101,21 @@ public class Main {
 				if(args[0].equals("all")) {
 					File directoryToScan = new File("instances"); 
 					for(File f : directoryToScan.listFiles()){
-						System.out.println(f.getName()+" : ");
-						//if(!f.getName().contains("5") && !f.getName().contains("7")){
-							long moyenne=0;
-							for(int i=0; i<10; i++){
-								long timeStart=System.currentTimeMillis();
-								Graph g = new TreeMapGraph(f.getPath());
-								FordFulkersonScaling ek = new FordFulkersonScaling(g);
-								moyenne+=System.currentTimeMillis()-timeStart;
-							}
-							System.out.println("Moyenne : "+moyenne/10);
-												//}
+						//if(f.getName().contains("5")){
+							System.out.println(f.getName()+" : ");
+							Graph g = new LinkedListGraph(f.getPath());
+							Solver s = new EdmondsKarp(g);
+							s.getResults();
+						//}
 					}
 				}
 				else if(args[0].equals("bigTest")){
 					bigTest();
 				}
 				else {
-					Graph g = new HashMapGraph(args[0]);
-					FordFulkersonScaling ek = new FordFulkersonScaling(g);
-					ek.getResult();
+					Graph g = new LinkedListGraph(args[0]);
+					Solver s = new FordFulkersonScaling(g);
+					s.getResults();
 				}
 
 			} catch (Exception e) {

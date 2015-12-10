@@ -54,8 +54,8 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				}
 
 				// On ajoute le voisin+distance dans le tableau
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>(20);
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>(20);
+				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>();
+				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>();
 				capaMatrix[idVertex1].put(idVertex2, capa);
 			}
 

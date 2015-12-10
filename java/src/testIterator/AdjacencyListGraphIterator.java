@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import object.NodeIter;
 import object.Vertex;
 
 public class AdjacencyListGraphIterator extends SimpleGraphIter implements GraphIterator {

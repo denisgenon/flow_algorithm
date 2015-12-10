@@ -2,12 +2,12 @@ package solver;
 
 import interfaces.Graph;
 
-public abstract class AugmentingPath {
+public abstract class AugmentingPath implements Solver{
 	public Graph g;
 
 	public long timeStart;
 	public boolean timeout=false;
-	public int limitTime=120000; // en ms
+	public int limitTime=600000; // en ms
 	
 	public AugmentingPath(){}
 	
@@ -42,7 +42,7 @@ public abstract class AugmentingPath {
 	/**
 	 * Print to the standard output the value of the maximum flow
 	 */
-	public void getResult() {
+	public void getResults() {
 		if(!timeout){
 			System.out.println("|V| : "+g.getV());
 			System.out.println("|E| : "+g.getE());
@@ -54,6 +54,10 @@ public abstract class AugmentingPath {
 			System.out.println("|E| : "+g.getE());
 			System.out.println("Timeout. Max flot : "+g.getFlowValue(1)+"\n");
 		}
+	}
+	
+	public void getTime() {
+		System.out.println((System.currentTimeMillis()-timeStart)+"\n");
 	}
 
 	public abstract int [] getPath();
