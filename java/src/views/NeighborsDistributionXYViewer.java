@@ -17,7 +17,7 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 import interfaces.Graph;
-import models.AdjacencyListGraph;
+import models.LinkedListGraph;
 
 public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 	/**
@@ -70,7 +70,7 @@ public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 		} 
 		else {
 			String path = args[0];
-			Graph g = new AdjacencyListGraph(path);
+			Graph g = new LinkedListGraph(path);
 			NeighborsDistributionXYViewer demo = new NeighborsDistributionXYViewer("Neighbors Distribution " + path, g);  
 			demo.setSize(900, 600);
 			demo.pack();

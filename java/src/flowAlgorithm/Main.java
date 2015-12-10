@@ -1,5 +1,7 @@
 package flowAlgorithm;
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 import interfaces.Graph;
 import models.*;
@@ -16,6 +18,7 @@ public class Main {
 				
 				System.out.println("SplitArray");
 				System.out.println("    Push Relabel :");
+				
 				Graph g = new SplitArrayGraph(f.getPath());
 				PushRelabel pr = new PushRelabel(g);
 				pr.getResult();
@@ -50,17 +53,17 @@ public class Main {
 				System.out.println("-------------");
 				System.out.println("AdjacencyList");
 				System.out.println("    Push Relabel :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				pr = new PushRelabel(g);
 				pr.getResult();
 
 				System.out.println("    Ford Fulkerson (scaling) :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				ff = new FordFulkersonScaling(g);
 				ff.getResult();
 
 				System.out.println("    Edmonds Karp :");
-				g = new AdjacencyListGraph(f.getPath());
+				g = new LinkedListGraph(f.getPath());
 				ek = new EdmondsKarp(g);
 				ek.getResult();
 				
@@ -115,7 +118,7 @@ public class Main {
 				}
 				else {
 					Graph g = new HashMapGraph(args[0]);
-					EdmondsKarp ek = new EdmondsKarp(g);
+					FordFulkersonScaling ek = new FordFulkersonScaling(g);
 					ek.getResult();
 				}
 

@@ -9,11 +9,11 @@ import object.Node;
 import object.SimpleLinkedList;
 import object.Vertex;
 
-public class AdjacencyListGraph extends SimpleGraph implements Graph {
+public class LinkedListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] capaMatrix;
 	public SimpleLinkedList[] bestFlow; // Final flow
 
-	public AdjacencyListGraph(String filePath) {
+	public LinkedListGraph(String filePath) {
 		parse(filePath);
 	}
 
