@@ -104,7 +104,7 @@ public class Main {
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
 							Graph g = new LinkedListGraph(f.getPath());
-							Solver s = new EdmondsKarp(g);
+							Solver s = new FordFulkersonScaling(g);
 							s.getResults();
 						//}
 					}
