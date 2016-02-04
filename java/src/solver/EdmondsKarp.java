@@ -16,6 +16,16 @@ public class EdmondsKarp extends AugmentingPath {
 	}
 	
 	/**
+	 * Just call the augmenting path algorithm
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public EdmondsKarp(Graph g, int source, int sink) {
+		super(g, source, sink);
+	}
+	
+	/**
 	 * We found a path with BFS in the residual graph
 	 */
 	public int [] getPath() {
@@ -32,11 +42,11 @@ public class EdmondsKarp extends AugmentingPath {
 		LinkedList<Integer> queue = new LinkedList<>();
 		
 		// BFS
-		distances[0] = 0;
-		queue.add(0);
+		distances[source] = 0;
+		queue.add(source);
 		while (!queue.isEmpty()) {
 			int u = queue.removeFirst();
-			for(int i : g.getAdjacents(u)){
+			for(int i : g.getAdjacents(u)) {
 				int v = i;
 				if (distances[v] == INFINITY) {
 					distances[v] = distances[u] + 1;
@@ -45,19 +55,18 @@ public class EdmondsKarp extends AugmentingPath {
 				}
 			}
 		}
-		int index = g.getV() - 1;
+		
+		int index = sink;
 		path.add(index);
-		while (parent[index] != -1 && index != 0) {
+		while (parent[index] != -1 && index != source) {
 			path.add(parent[index]);
 			index = parent[index];
 		}
 		
-		if(index==0) {
+		if(index == source) {
 			int [] res = new int [path.size()];
-			int ind=0;
-			for(int i : path){
-				res[ind]=i;
-				ind++;
+			for (int i = 0; i < res.length; i++) {
+				res[i] = path.get(i);
 			}
 			return res;
 		}

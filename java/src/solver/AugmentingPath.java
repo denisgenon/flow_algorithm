@@ -4,6 +4,8 @@ import interfaces.Graph;
 
 public abstract class AugmentingPath implements Solver{
 	public Graph g;
+	protected int source;
+	protected int sink;
 
 	public long timeStart;
 	public boolean timeout=false;
@@ -17,6 +19,26 @@ public abstract class AugmentingPath implements Solver{
 	 */
 	public AugmentingPath(Graph g) {
 		this.g = g;
+		this.source = 0;
+		this.sink = g.getV() - 1;
+		timeStart=System.currentTimeMillis();
+		int [] myPath = getPath(); //TODO: run method ?
+		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph
+			applyPath(getMinFlow(myPath), myPath); // Apply the path found on the residual graph with the bottleneck of the path
+			myPath = getPath(); // Search for a new path in the residual graph
+			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
+		}
+	}
+	/**
+	 * Run the augmenting path algorithm on the Graph g
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public AugmentingPath(Graph g, int source, int sink) {
+		this.g = g;
+		this.source = source;
+		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		int [] myPath = getPath();
 		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph

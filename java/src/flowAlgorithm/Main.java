@@ -113,8 +113,8 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new SplitArrayGraph(args[0]);
-					Solver s = new EdmondsKarp(g);
+					Graph g = new LinkedListGraph(args[0]);
+					Solver s = new PushRelabel(g, 0 ,5);
 					s.getResults();
 				}
 

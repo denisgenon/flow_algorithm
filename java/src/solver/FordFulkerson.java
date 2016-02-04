@@ -19,6 +19,16 @@ public class FordFulkerson extends AugmentingPath{
 	}
 	
 	/**
+	 * Just call the augmenting path algorithm
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public FordFulkerson(Graph g, int source, int sink) {
+		super(g, source, sink);
+	}
+	
+	/**
 	 * We found a path with DFS in the residual graph
 	 */
 	public int [] getPath() {
@@ -29,17 +39,17 @@ public class FordFulkerson extends AugmentingPath{
 			parents[i]=-1;
 		}
 
-		visitDFS(0);
+		visitDFS(source);
 
 		ArrayList<Integer> mypath = new ArrayList<Integer>();
-		int indexpath = g.getV() - 1;
+		int indexpath = sink;
 		mypath.add(indexpath); 
-		while(parents[indexpath]!=-1 && indexpath!=0){
+		while(parents[indexpath]!=-1 && indexpath != source){
 			mypath.add(parents[indexpath]); 
 			indexpath=parents[indexpath];
 		}
 
-		if(indexpath==0) {
+		if(indexpath == source) {
 			int [] res = new int [mypath.size()];
 			int index=0;
 			for(int i : mypath){

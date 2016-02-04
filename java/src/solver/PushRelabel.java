@@ -7,6 +7,8 @@ import object.Vertex;
 
 public class PushRelabel implements Solver {
 	public Graph g;
+	public int source;
+	public int sink;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
 	/**
@@ -15,6 +17,26 @@ public class PushRelabel implements Solver {
 	 */
 	public PushRelabel(Graph g) {
 		this.g = g;
+		this.source = 0;
+		this.sink = g.getV() - 1;
+		timeStart=System.currentTimeMillis();
+		preProcess();
+		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
+			Vertex elu = actifV.get(0);// We take any active node (TODO: we need to change this heuristic)
+			process(elu);
+		}
+	}
+	
+	/**
+	 * Compute the push relabeling algorithm on the graph
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public PushRelabel(Graph g, int source, int sink) {
+		this.g = g;
+		this.source = source;
+		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
@@ -27,11 +49,11 @@ public class PushRelabel implements Solver {
 	 */
 	public void preProcess() {
 		computeDistanceLabel();
-		for(int i : g.getAdjacents(0)) {
+		for(int i : g.getAdjacents(source)) {
 			int v = i;
-			pushFillingFlow(0, v);
+			pushFillingFlow(source, v);
 		}
-		g.getVertex(0).h = g.getV();
+		g.getVertex(source).h = g.getV();
 	}
 	/**
 	 * Compute the distance of each node from the sink
@@ -59,7 +81,7 @@ public class PushRelabel implements Solver {
 			notS.add(invertedVertices[i]);
 		}
 		
-		invertedVertices[g.getV() - 1].h = 0;
+		invertedVertices[sink].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
