@@ -116,7 +116,7 @@ public class PushRelabel implements Solver {
 	public void getResults() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getFlowValue(2));
+		System.out.println("Max flot : " + g.getFlowValue());
 		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	/**
@@ -130,7 +130,7 @@ public class PushRelabel implements Solver {
 			Vertex u = g.getVertex(uint);
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) { // If we can push the flow v -> u
-				pushFlow(v,u,Math.min(v.e, g.getCapacityResidualGraph(v.id, u.id))); // We push!
+				pushFlow(v,u,Math.min(v.e, g.getCapacity(v.id, u.id))); // We push!
 				return;
 			}
 		}
@@ -144,7 +144,7 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFillingFlow(int origin, int desti) {
 		int newCapa = g.removeEdge(origin,desti);
-		g.addEdgeResidualGraph(desti, origin, newCapa);
+		g.addEdge(desti, origin, newCapa);
 		
 		Vertex dest = g.getVertex(desti);
 
@@ -161,12 +161,12 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFlow(Vertex origin, Vertex desti, int flow_value) {
 		// We update the capacity in the residual graph u -> v
-		int capacity = g.getCapacityResidualGraph(origin.id, desti.id);
+		int capacity = g.getCapacity(origin.id, desti.id);
 		if(capacity<=flow_value) { // If the edge is full, we remove it
 			g.removeEdge(origin.id, desti.id);
 		}
 		else {
-			g.setCapacityResidualGraph(origin.id, desti.id, capacity-flow_value);
+			g.setCapacity(origin.id, desti.id, capacity-flow_value);
 		}
 		// We update the excedent on the origin and on the desitnation
 		origin.e-=flow_value;
@@ -179,12 +179,12 @@ public class PushRelabel implements Solver {
 		}
 
 		// We update the capacity in the residual graph v -> u
-		capacity = g.getCapacityResidualGraph(desti.id, origin.id);
+		capacity = g.getCapacity(desti.id, origin.id);
 		if(capacity==-1) {
-			g.addEdgeResidualGraph(desti.id, origin.id, flow_value);
+			g.addEdge(desti.id, origin.id, flow_value);
 		}
 		else {
-			g.setCapacityResidualGraph(desti.id, origin.id, capacity+flow_value);
+			g.setCapacity(desti.id, origin.id, capacity+flow_value);
 		}
 	}
 	

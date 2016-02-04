@@ -75,7 +75,7 @@ public class FordFulkersonScaling extends AugmentingPathScaling{
 				set.add(current);
 				for(int i : g.getAdjacents(current)){
 					int v = i;
-					if(g.getCapacityResidualGraph(current, v)>= delta) { //We browse only the edge if the capacity is greater than the delta value
+					if(g.getCapacity(current, v)>= delta) { //We browse only the edge if the capacity is greater than the delta value
 						if(!set.contains(v)) {
 							parents[v]=current;
 							if (!set.contains(v)) {

@@ -11,7 +11,6 @@ import object.Vertex;
 
 public class LinkedListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] capaMatrix;
-	public SimpleLinkedList[] bestFlow; // Final flow
 	
 	int gA=0, rE=0, aE=0, gC=0, sC=0;
 
@@ -33,13 +32,11 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			capaMatrix = new SimpleLinkedList[V];
-			bestFlow = new SimpleLinkedList[V];
 			vertices = new Vertex[V];
 			maxCapa = 0;
 			
 			for (int j = 0; j < V; j++) {
 				capaMatrix[j] = new SimpleLinkedList();
-				bestFlow[j] = new SimpleLinkedList();
 			}
 
 			// Parse the items
@@ -71,25 +68,14 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 
 	@Override
-	public int getFlowValue(int type) {
+	public int getFlowValue() {
 		System.out.println("gA : "+gA);
 		System.out.println("rE : "+rE);
 		System.out.println("aE : "+aE);
 		System.out.println("gC : "+gC);
 		System.out.println("sC : "+sC);
-		if(type==1){ // For augmenting path
-			int value = 0;
-			Node i = bestFlow[getV()-1].getFirst();
-			while(i != null){ // On regarde toutes les arêtes qui arrivent à la destination
-				value += i.getElement().getCapacity();
-				i = i.getNext();
-			}
-			return value;
-		}
-		if(type==2){ // For push/relabel
-			return vertices[V-1].e;
-		}
-		return -1;
+		
+		return vertices[V-1].e;
 	}
 
 	@Override
@@ -114,43 +100,26 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdgeResidualGraph(int u, int v, int capa) {
+	public void addEdge(int u, int v, int capa) {
 		aE++;
 		capaMatrix[u].addNode(v, capa);
 	}
-	
-	@Override
-	public void addEdgeGraph(int u, int v, int capa) {
-		aE++;
-		bestFlow[u].addNode(v, capa);
-	}
 
 	@Override
-	public int getCapacityResidualGraph(int u, int v) {
+	public int getCapacity(int u, int v) {
 		gC++;
 		Node myN = capaMatrix[u].getNode(v); //TODO change name
 		if (myN != null) return myN.getElement().getCapacity();
 		else return -1;
 	}
 
-	@Override
-	public int getCapacityGraph(int u, int v) {
-		gC++;
-		Node myN = bestFlow[u].getNode(v); //TODO change name
-		if (myN != null) return myN.getElement().getCapacity();
-		else return -1;
-	}
 	
 	@Override
-	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+	public void setCapacity(int u, int v, int newCapa) {
 		sC++;
 		capaMatrix[u].getNode(v).getElement().setCapa(newCapa);
 	}
-	@Override
-	public void setCapacityGraph(int u, int v, int newCapa) {
-		sC++;
-		bestFlow[u].getNode(v).getElement().setCapa(newCapa);
-	}
+
 
 	@Override
 	public int getAdjacentsSize(int i) {

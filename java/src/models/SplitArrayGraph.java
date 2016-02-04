@@ -11,7 +11,6 @@ import object.Vertex;
 
 public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public SplitArray[] capaMatrix;
-	public SplitArray[] bestFlow;
 
 
 	public SplitArrayGraph(String filePath) {
@@ -32,7 +31,6 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
 			capaMatrix = new SplitArray[V];
-			bestFlow = new SplitArray[V];
 			maxCapa = 0;
 
 			// Parse the items
@@ -56,21 +54,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new SplitArray();
 				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new SplitArray();
 				capaMatrix[idVertex1].add(new Edge(capa,idVertex2));
-				capaMatrix[idVertex2].addFutur(new Edge(0,idVertex1));
-
-				// On initialise le graph des flots
-				if(bestFlow[idVertex1]==null) bestFlow[idVertex1]= new SplitArray();
-				if(bestFlow[idVertex2]==null) bestFlow[idVertex2]= new SplitArray();
-				bestFlow[idVertex1].addFutur(new Edge(0,idVertex2));
-				bestFlow[idVertex2].addFutur(new Edge(0,idVertex1));
+				capaMatrix[idVertex2].addFutur(new Edge(0,idVertex1)); //TODO: add futur ????
 
 			}
 
 			for(SplitArray s : capaMatrix){
-				s.compile();
-			}
-
-			for(SplitArray s : bestFlow){
 				s.compile();
 			}
 
@@ -82,7 +70,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 
 	
 	@Override
-	public int getCapacityResidualGraph(int u, int v) {
+	public int getCapacity(int u, int v) {
 		for(int i=0; i<capaMatrix[u].split; i++){
 			if(capaMatrix[u].dom[i].idDesti==v) {
 				return capaMatrix[u].dom[i].getCapacity();
@@ -90,19 +78,9 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 		}
 		return -1;
 	}
-	
-	@Override
-	public int getCapacityGraph(int u, int v) {
-		for(int i=0; i<bestFlow[u].split; i++){
-			if(bestFlow[u].dom[i].idDesti==v) {
-				return bestFlow[u].dom[i].getCapacity();
-			}
-		}
-		return -1;
-	}
 
 	@Override
-	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+	public void setCapacity(int u, int v, int newCapa) {
 		for(int i=0; i<capaMatrix[u].split; i++){
 			if(capaMatrix[u].dom[i].idDesti==v) {
 				capaMatrix[u].dom[i].capa=newCapa;
@@ -110,27 +88,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 		}
 
 	}
-	@Override
-	public void setCapacityGraph(int u, int v, int newCapa) {
-		for(int i=0; i<bestFlow[u].split; i++){
-			if(bestFlow[u].dom[i].idDesti==v) {
-				bestFlow[u].dom[i].capa=newCapa;
-			}
-		}
 
-	}
 
 	@Override
-	public int getFlowValue(int type) {
-		if(type==1) {
-			int value=0;
-			for(int i=0; i<bestFlow[V-1].split; i++){
-				value+=bestFlow[V-1].dom[i].capa;
-			}
-			return value;
-		}
-		if(type==2) return vertices[V-1].e;
-		return -1;
+	public int getFlowValue() {
+		return vertices[V-1].e;
 	}
 
 	@Override
@@ -149,13 +111,10 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public void addEdgeResidualGraph(int u, int v, int capa) {
+	public void addEdge(int u, int v, int capa) {
 		capaMatrix[u].add(v, capa);	
 	}
-	@Override
-	public void addEdgeGraph(int u, int v, int capa) {
-		bestFlow[u].add(v, capa);	
-	}
+
 	
 	@Override
 	public int getAdjacentsSize(int v) {

@@ -13,11 +13,9 @@ import object.Vertex;
 @SuppressWarnings("unchecked")
 public class HashMapGraph extends SimpleGraph implements Graph {
 	public HashMap<Integer, Integer> [] capaMatrix;
-	public HashMap<Integer, Integer> [] bestFlow;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new HashMap[V];
 	}
 
 	@Override
@@ -82,21 +80,8 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public int getFlowValue(int type) {
-		if(type==1){
-			int value = 0;
-			HashMap<Integer, Integer> myMap = bestFlow[V-1];
-			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
-			while(keySetIterator.hasNext()){ 
-				Integer key = keySetIterator.next();
-				value+=myMap.get(key);
-			}
-			return value;
-		}
-		if(type==2){
-			return vertices[V-1].e;
-		}
-		return -1;
+	public int getFlowValue() {
+		return vertices[V-1].e;
 	}
 
 	@Override
@@ -105,37 +90,22 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdgeResidualGraph(int u, int v, int capa) {
+	public void addEdge(int u, int v, int capa) {
 		capaMatrix[u].put(v, capa);
-	}
-	@Override
-	public void addEdgeGraph(int u, int v, int capa) {
-		bestFlow[u].put(v, capa);
 	}
 
 	@Override
-	public int getCapacityResidualGraph(int u, int v) {
+	public int getCapacity(int u, int v) {
 		if(capaMatrix[u]==null) capaMatrix[u] = new HashMap<Integer, Integer>(20);
 		Integer res = capaMatrix[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
 	
-	@Override
-	public int getCapacityGraph(int u, int v) {
-		if(bestFlow[u]==null) bestFlow[u] = new HashMap<Integer, Integer>(20);
-		Integer res = bestFlow[u].get(v);
-		if (res==null) return -1;
-		return res;
-	}
 
 	@Override
-	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+	public void setCapacity(int u, int v, int newCapa) {
 		capaMatrix[u].replace(v, newCapa);
-	}
-	@Override
-	public void setCapacityGraph(int u, int v, int newCapa) {
-		bestFlow[u].replace(v, newCapa);
 	}
 
 	@Override

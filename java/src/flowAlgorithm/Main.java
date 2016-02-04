@@ -113,8 +113,8 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new LinkedListGraph(args[0]);
-					Solver s = new PushRelabel(g, 0 ,5);
+					Graph g = new TreeMapGraph(args[0]);
+					Solver s = new FordFulkersonScaling(g);
 					s.getResults();
 				}
 
