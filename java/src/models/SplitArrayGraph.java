@@ -82,22 +82,39 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 
 	
 	@Override
-	public int getCapacity(int u, int v, int type) {
-		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		for(int i=0; i<currentData[u].split; i++){
-			if(currentData[u].dom[i].idDesti==v) {
-				return currentData[u].dom[i].getCapacity();
+	public int getCapacityResidualGraph(int u, int v) {
+		for(int i=0; i<capaMatrix[u].split; i++){
+			if(capaMatrix[u].dom[i].idDesti==v) {
+				return capaMatrix[u].dom[i].getCapacity();
+			}
+		}
+		return -1;
+	}
+	
+	@Override
+	public int getCapacityGraph(int u, int v) {
+		for(int i=0; i<bestFlow[u].split; i++){
+			if(bestFlow[u].dom[i].idDesti==v) {
+				return bestFlow[u].dom[i].getCapacity();
 			}
 		}
 		return -1;
 	}
 
 	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		for(int i=0; i<currentData[u].split; i++){
-			if(currentData[u].dom[i].idDesti==v) {
-				currentData[u].dom[i].capa=newCapa;
+	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+		for(int i=0; i<capaMatrix[u].split; i++){
+			if(capaMatrix[u].dom[i].idDesti==v) {
+				capaMatrix[u].dom[i].capa=newCapa;
+			}
+		}
+
+	}
+	@Override
+	public void setCapacityGraph(int u, int v, int newCapa) {
+		for(int i=0; i<bestFlow[u].split; i++){
+			if(bestFlow[u].dom[i].idDesti==v) {
+				bestFlow[u].dom[i].capa=newCapa;
 			}
 		}
 
@@ -132,18 +149,14 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		SplitArray[] currentData = (SplitArray[]) getGraphType(type);
-		currentData[u].add(v, capa);	
+	public void addEdgeResidualGraph(int u, int v, int capa) {
+		capaMatrix[u].add(v, capa);	
 	}
-
 	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
+	public void addEdgeGraph(int u, int v, int capa) {
+		bestFlow[u].add(v, capa);	
 	}
-
+	
 	@Override
 	public int getAdjacentsSize(int v) {
 		return capaMatrix[v].split;

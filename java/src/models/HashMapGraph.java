@@ -105,31 +105,37 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		HashMap<Integer, Integer> [] currentData = (HashMap[]) getGraphType(type);
-		currentData[u].put(v, capa);
+	public void addEdgeResidualGraph(int u, int v, int capa) {
+		capaMatrix[u].put(v, capa);
+	}
+	@Override
+	public void addEdgeGraph(int u, int v, int capa) {
+		bestFlow[u].put(v, capa);
 	}
 
 	@Override
-	public int getCapacity(int u, int v, int type) {
-		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new HashMap<Integer, Integer>(20);
-		Integer res = currentData[u].get(v);
+	public int getCapacityResidualGraph(int u, int v) {
+		if(capaMatrix[u]==null) capaMatrix[u] = new HashMap<Integer, Integer>(20);
+		Integer res = capaMatrix[u].get(v);
+		if (res==null) return -1;
+		return res;
+	}
+	
+	@Override
+	public int getCapacityGraph(int u, int v) {
+		if(bestFlow[u]==null) bestFlow[u] = new HashMap<Integer, Integer>(20);
+		Integer res = bestFlow[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
 
 	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
-		currentData[u].replace(v, newCapa);
+	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+		capaMatrix[u].replace(v, newCapa);
 	}
-
 	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
+	public void setCapacityGraph(int u, int v, int newCapa) {
+		bestFlow[u].replace(v, newCapa);
 	}
 
 	@Override

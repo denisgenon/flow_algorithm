@@ -113,8 +113,8 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new LinkedListGraph(args[0]);
-					Solver s = new FordFulkersonScaling(g);
+					Graph g = new SplitArrayGraph(args[0]);
+					Solver s = new EdmondsKarp(g);
 					s.getResults();
 				}
 

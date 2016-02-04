@@ -108,7 +108,7 @@ public class PushRelabel implements Solver {
 			Vertex u = g.getVertex(uint);
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) { // If we can push the flow v -> u
-				pushFlow(v,u,Math.min(v.e, g.getCapacity(v.id, u.id, 1))); // We push!
+				pushFlow(v,u,Math.min(v.e, g.getCapacityResidualGraph(v.id, u.id))); // We push!
 				return;
 			}
 		}
@@ -122,7 +122,7 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFillingFlow(int origin, int desti) {
 		int newCapa = g.removeEdge(origin,desti);
-		g.addEdge(desti, origin, newCapa,1);
+		g.addEdgeResidualGraph(desti, origin, newCapa);
 		
 		Vertex dest = g.getVertex(desti);
 
@@ -139,12 +139,12 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFlow(Vertex origin, Vertex desti, int flow_value) {
 		// We update the capacity in the residual graph u -> v
-		int capacity = g.getCapacity(origin.id, desti.id, 1);
+		int capacity = g.getCapacityResidualGraph(origin.id, desti.id);
 		if(capacity<=flow_value) { // If the edge is full, we remove it
 			g.removeEdge(origin.id, desti.id);
 		}
 		else {
-			g.setCapacity(origin.id, desti.id, capacity-flow_value, 1);
+			g.setCapacityResidualGraph(origin.id, desti.id, capacity-flow_value);
 		}
 		// We update the excedent on the origin and on the desitnation
 		origin.e-=flow_value;
@@ -157,12 +157,12 @@ public class PushRelabel implements Solver {
 		}
 
 		// We update the capacity in the residual graph v -> u
-		capacity = g.getCapacity(desti.id, origin.id, 1);
+		capacity = g.getCapacityResidualGraph(desti.id, origin.id);
 		if(capacity==-1) {
-			g.addEdge(desti.id, origin.id, flow_value,1);
+			g.addEdgeResidualGraph(desti.id, origin.id, flow_value);
 		}
 		else {
-			g.setCapacity(desti.id, origin.id, capacity+flow_value, 1);
+			g.setCapacityResidualGraph(desti.id, origin.id, capacity+flow_value);
 		}
 	}
 	

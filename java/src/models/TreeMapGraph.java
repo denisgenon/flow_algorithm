@@ -11,8 +11,8 @@ import object.Vertex;
 
 @SuppressWarnings("unchecked")
 public class TreeMapGraph extends SimpleGraph implements Graph {
-	public TreeMap<Integer, Integer> [] capaMatrix;
-	public TreeMap<Integer, Integer> [] bestFlow;
+	public TreeMap<Integer, Integer> [] capaMatrix; //TODO change name
+	public TreeMap<Integer, Integer> [] bestFlow; //TODO change name
 
 	public TreeMapGraph(String filePath) {
 		parse(filePath);
@@ -104,32 +104,38 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		TreeMap<Integer, Integer> [] currentData = (TreeMap[]) getGraphType(type);
-		currentData[u].put(v, capa);
+	public void addEdgeResidualGraph(int u, int v, int capa) {
+		capaMatrix[u].put(v, capa);
+	}
+	@Override
+	public void addEdgeGraph(int u, int v, int capa) {
+		bestFlow[u].put(v, capa);
 	}
 
 	@Override
-	public int getCapacity(int u, int v, int type) {
-		TreeMap<Integer, Integer>[] currentData = (TreeMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new TreeMap<Integer, Integer>();
-		Integer res = currentData[u].get(v);
+	public int getCapacityResidualGraph(int u, int v) {
+		if(capaMatrix[u]==null) capaMatrix[u] = new TreeMap<Integer, Integer>();
+		Integer res = capaMatrix[u].get(v);
+		if (res==null) return -1;
+		return res;
+	}
+	@Override
+	public int getCapacityGraph(int u, int v) {
+		if(bestFlow[u]==null) bestFlow[u] = new TreeMap<Integer, Integer>(); //TODO ce null pas logique ici
+		Integer res = bestFlow[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
 
 	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		TreeMap<Integer, Integer>[] currentData = (TreeMap[]) getGraphType(type);
-		currentData[u].replace(v, newCapa);
+	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+		capaMatrix[u].replace(v, newCapa);
+	}
+	@Override
+	public void setCapacityGraph(int u, int v, int newCapa) {
+		bestFlow[u].replace(v, newCapa);
 	}
 
-	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
-	}
 
 	@Override
 	public int getAdjacentsSize(int v) {

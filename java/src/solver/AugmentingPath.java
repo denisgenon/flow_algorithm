@@ -34,7 +34,7 @@ public abstract class AugmentingPath implements Solver{
 	public int getMinFlow(int[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i],1));
+			minFlow=Math.min(minFlow,g.getCapacityResidualGraph(path[i+1], path[i]));
 		}
 		return minFlow;
 	}
@@ -69,26 +69,26 @@ public abstract class AugmentingPath implements Solver{
 	 */
 	public void applyPath(int capacity, int[] path) {
 		for(int i=0; i<path.length-1; i++) {
-			int currentCapa = g.getCapacity(path[i+1], path[i],1);
+			int currentCapa = g.getCapacityResidualGraph(path[i+1], path[i]);
 			if(currentCapa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path[i+1], path[i]);
 			}
 			else { // on enleve la capa dans le bon sens sinon
-				g.setCapacity(path[i+1], path[i], currentCapa-capacity,1);
+				g.setCapacityResidualGraph(path[i+1], path[i], currentCapa-capacity);
 			}
 
-			currentCapa = g.getCapacity(path[i],path[i+1],1);
+			currentCapa = g.getCapacityResidualGraph(path[i],path[i+1]);
 			if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
-				g.addEdge(path[i], path[i+1], capacity,1);
+				g.addEdgeResidualGraph(path[i], path[i+1], capacity);
 			}
 			else { // on rajoute la capa dans le sens inverse sinon
-				g.setCapacity(path[i], path[i+1], currentCapa+capacity,1);
+				g.setCapacityResidualGraph(path[i], path[i+1], currentCapa+capacity);
 			}
 
-			currentCapa = g.getCapacity(path[i], path[i+1], 2); // on augmente le flot courant	
-			if(currentCapa==-1) g.addEdge(path[i], path[i+1], capacity, 2); 
+			currentCapa = g.getCapacityGraph(path[i], path[i+1]); // on augmente le flot courant	
+			if(currentCapa==-1) g.addEdgeGraph(path[i], path[i+1], capacity); 
 			else {
-				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);
+				g.setCapacityGraph(path[i], path[i+1], currentCapa+capacity);
 			}
 
 		}

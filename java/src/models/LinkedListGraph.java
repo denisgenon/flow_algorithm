@@ -114,33 +114,42 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
+	public void addEdgeResidualGraph(int u, int v, int capa) {
 		aE++;
-		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
-		currentData[u].addNode(v, capa);
+		capaMatrix[u].addNode(v, capa);
+	}
+	
+	@Override
+	public void addEdgeGraph(int u, int v, int capa) {
+		aE++;
+		bestFlow[u].addNode(v, capa);
 	}
 
 	@Override
-	public int getCapacity(int u, int v, int type) {
+	public int getCapacityResidualGraph(int u, int v) {
 		gC++;
-		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
-		Node myN = currentData[u].getNode(v);
+		Node myN = capaMatrix[u].getNode(v); //TODO change name
 		if (myN != null) return myN.getElement().getCapacity();
 		else return -1;
 	}
 
 	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		sC++;
-		SimpleLinkedList[] currentData = (SimpleLinkedList[]) getGraphType(type);
-		currentData[u].getNode(v).getElement().setCapa(newCapa);
+	public int getCapacityGraph(int u, int v) {
+		gC++;
+		Node myN = bestFlow[u].getNode(v); //TODO change name
+		if (myN != null) return myN.getElement().getCapacity();
+		else return -1;
 	}
 	
 	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
+	public void setCapacityResidualGraph(int u, int v, int newCapa) {
+		sC++;
+		capaMatrix[u].getNode(v).getElement().setCapa(newCapa);
+	}
+	@Override
+	public void setCapacityGraph(int u, int v, int newCapa) {
+		sC++;
+		bestFlow[u].getNode(v).getElement().setCapa(newCapa);
 	}
 
 	@Override
