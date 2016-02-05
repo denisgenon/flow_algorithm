@@ -16,6 +16,7 @@ public class FordFulkerson extends AugmentingPath{
 	 */
 	public FordFulkerson(Graph g) {
 		super(g);
+		
 	}
 	
 	/**

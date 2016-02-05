@@ -12,7 +12,7 @@ import object.Vertex;
 
 @SuppressWarnings("unchecked")
 public class HashMapGraph extends SimpleGraph implements Graph {
-	public HashMap<Integer, Integer> [] capaMatrix;
+	public HashMap<Integer, Integer> [] residualGraph;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
@@ -31,7 +31,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
-			capaMatrix = new HashMap[V];
+			residualGraph = new HashMap[V];
 			maxCapa = 0;
 
 			// Parse the items
@@ -52,9 +52,9 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				}
 
 				// On ajoute le voisin+distance dans le tableau
-				if(capaMatrix[idVertex1]==null) capaMatrix[idVertex1]= new HashMap<Integer, Integer>();
-				if(capaMatrix[idVertex2]==null) capaMatrix[idVertex2]= new HashMap<Integer, Integer>();
-				capaMatrix[idVertex1].put(idVertex2, capa);
+				if(residualGraph[idVertex1]==null) residualGraph[idVertex1]= new HashMap<Integer, Integer>();
+				if(residualGraph[idVertex2]==null) residualGraph[idVertex2]= new HashMap<Integer, Integer>();
+				residualGraph[idVertex1].put(idVertex2, capa);
 			}
 
 			br.close();
@@ -65,7 +65,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int [] getAdjacents(int vertex) {
-		HashMap<Integer, Integer> myMap = capaMatrix[vertex];
+		HashMap<Integer, Integer> myMap = residualGraph[vertex];
 		int [] adja = new int [getAdjacentsSize(vertex)];
 
 		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
@@ -86,18 +86,18 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(int u, int v) {
-		return capaMatrix[u].remove(v);
+		return residualGraph[u].remove(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capa) {
-		capaMatrix[u].put(v, capa);
+		residualGraph[u].put(v, capa);
 	}
 
 	@Override
 	public int getCapacity(int u, int v) {
-		if(capaMatrix[u]==null) capaMatrix[u] = new HashMap<Integer, Integer>(20);
-		Integer res = capaMatrix[u].get(v);
+		if(residualGraph[u]==null) residualGraph[u] = new HashMap<Integer, Integer>(20);
+		Integer res = residualGraph[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
@@ -105,12 +105,12 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public void setCapacity(int u, int v, int newCapa) {
-		capaMatrix[u].replace(v, newCapa);
+		residualGraph[u].replace(v, newCapa);
 	}
 
 	@Override
 	public int getAdjacentsSize(int v) {
-		return capaMatrix[v].size();
+		return residualGraph[v].size();
 	}
 
 }

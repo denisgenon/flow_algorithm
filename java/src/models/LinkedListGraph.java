@@ -10,7 +10,7 @@ import object.SimpleLinkedList;
 import object.Vertex;
 
 public class LinkedListGraph extends SimpleGraph implements Graph {
-	public SimpleLinkedList[] capaMatrix;
+	public SimpleLinkedList[] residualGraph;
 	
 	int gA=0, rE=0, aE=0, gC=0, sC=0;
 
@@ -31,12 +31,12 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 			String[] data = line.split(" ");
 			V = Integer.parseInt(data[0]);
 			E = Integer.parseInt(data[1]);
-			capaMatrix = new SimpleLinkedList[V];
+			residualGraph = new SimpleLinkedList[V];
 			vertices = new Vertex[V];
 			maxCapa = 0;
 			
 			for (int j = 0; j < V; j++) {
-				capaMatrix[j] = new SimpleLinkedList();
+				residualGraph[j] = new SimpleLinkedList();
 			}
 
 			// Parse the items
@@ -57,7 +57,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 					vertices[idVertex2] = new Vertex(idVertex2);
 				}
 				
-				capaMatrix[idVertex1].addNode(idVertex2, capa);
+				residualGraph[idVertex1].addNode(idVertex2, capa);
 			}
 			
 			br.close();
@@ -83,7 +83,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 		gA++;
 		
 		int [] adja = new int [getAdjacentsSize(vertex)];
-		Node n = capaMatrix[vertex].getFirst();
+		Node n = residualGraph[vertex].getFirst();
 		int i = 0;
 		while(n!=null){
 			adja[i]=n.getElement().getIndex();
@@ -96,19 +96,19 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	@Override
 	public int removeEdge(int u, int v) {
 		rE++;
-		return capaMatrix[u].removeNode(v);
+		return residualGraph[u].removeNode(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capa) {
 		aE++;
-		capaMatrix[u].addNode(v, capa);
+		residualGraph[u].addNode(v, capa);
 	}
 
 	@Override
 	public int getCapacity(int u, int v) {
 		gC++;
-		Node myN = capaMatrix[u].getNode(v); //TODO change name
+		Node myN = residualGraph[u].getNode(v); //TODO change name
 		if (myN != null) return myN.getElement().getCapacity();
 		else return -1;
 	}
@@ -117,12 +117,12 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	@Override
 	public void setCapacity(int u, int v, int newCapa) {
 		sC++;
-		capaMatrix[u].getNode(v).getElement().setCapa(newCapa);
+		residualGraph[u].getNode(v).getElement().setCapa(newCapa);
 	}
 
 
 	@Override
 	public int getAdjacentsSize(int i) {
-		return capaMatrix[i].getSize();
+		return residualGraph[i].getSize();
 	}
 }
