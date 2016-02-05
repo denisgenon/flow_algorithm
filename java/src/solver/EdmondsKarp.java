@@ -12,7 +12,7 @@ public class EdmondsKarp extends AugmentingPath {
 	 * @param g, the representation of the instance
 	 */
 	public EdmondsKarp(Graph g) {
-		super(g);
+		super(g,0,g.getV()-1);
 	}
 	
 	/**

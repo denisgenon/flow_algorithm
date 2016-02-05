@@ -114,7 +114,7 @@ public class Main {
 				}
 				else {
 					Graph g = new TreeMapGraph(args[0]);
-					Solver s = new FordFulkersonScaling(g);
+					Solver s = new PushRelabel(g);
 					s.getResults();
 				}
 

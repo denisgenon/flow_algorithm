@@ -16,15 +16,7 @@ public class PushRelabel implements Solver {
 	 * @param g, the representation of the instance
 	 */
 	public PushRelabel(Graph g) {
-		this.g = g;
-		this.source = 0;
-		this.sink = g.getV() - 1;
-		timeStart=System.currentTimeMillis();
-		preProcess();
-		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
-			Vertex elu = actifV.get(0);// We take any active node (TODO: we need to change this heuristic)
-			process(elu);
-		}
+		this(g,0,g.getV()-1);
 	}
 	
 	/**
