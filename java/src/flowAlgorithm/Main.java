@@ -113,7 +113,7 @@ public class Main {
 					bigTest();
 				}
 				else {
-					Graph g = new LinkedListGraph(args[0]);
+					Graph g = new TreeMapGraph(args[0]);
 					Solver s = new PushRelabel(g);
 					s.getResults();
 				}

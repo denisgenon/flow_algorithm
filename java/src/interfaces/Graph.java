@@ -43,10 +43,9 @@ public interface Graph {
 	
 	/**
 	 * 
-	 * @param type : 1 pour pushRelabel, 2 pour Augmenting Path
 	 * @return la valeur du flot
 	 */
-	public int getFlowValue(int type);
+	public int getFlowValue();
 
 	/**
 	 * @param u : Vertex à l'origine
@@ -59,17 +58,17 @@ public interface Graph {
 	 * @param u : Vertex à l'origine
 	 * @param v : Vertex à la destination
 	 * @param capa : Capacité de l'edge
-	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
 	 */
-	public void addEdge(int u, int v, int capa, int type);
+	public void addEdge(int u, int v, int capa);
+	
 	
 	/**
 	 * @param u : Vertex à l'origine
 	 * @param v : Vertex à la destination
-	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
 	 * @return La capacité entre u et v
 	 */
-	public int getCapacity(int u, int v, int type);
+	public int getCapacity(int u, int v);
+	
 	
 	/**
 	 * 
@@ -77,14 +76,8 @@ public interface Graph {
 	 * @param v : Vertex à la destination
 	 * @param newCapa : la capacité entre u et v
 	 */
-	public void setCapacity(int u, int v, int newCapa, int type);
+	public void setCapacity(int u, int v, int newCapa);
 	
-	/**
-	 * 
-	 * @param type : 1 pour capaMatrix, 2 pour bestFlow
-	 * @return 
-	 */
-	public Object[] getGraphType(int type);
 	
 	/**
 	 * 

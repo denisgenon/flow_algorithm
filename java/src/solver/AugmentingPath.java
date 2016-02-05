@@ -4,6 +4,9 @@ import interfaces.Graph;
 
 public abstract class AugmentingPath implements Solver{
 	public Graph g;
+	protected int source;
+	protected int sink;
+	protected int flow = 0;
 
 	public long timeStart;
 	public boolean timeout=false;
@@ -17,10 +20,36 @@ public abstract class AugmentingPath implements Solver{
 	 */
 	public AugmentingPath(Graph g) {
 		this.g = g;
+		this.source = 0;
+		this.sink = g.getV() - 1;
+		int addedFlow = 0;
+		timeStart=System.currentTimeMillis();
+		int [] myPath = getPath(); //TODO: run method ?
+		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph
+			addedFlow = getMinFlow(myPath);
+			flow += addedFlow;
+			applyPath(addedFlow, myPath); // Apply the path found on the residual graph with the bottleneck of the path
+			myPath = getPath(); // Search for a new path in the residual graph
+			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
+		}
+	}
+	/**
+	 * Run the augmenting path algorithm on the Graph g
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public AugmentingPath(Graph g, int source, int sink) {
+		this.g = g;
+		this.source = source;
+		this.sink = sink;
+		int addedFlow = 0;
 		timeStart=System.currentTimeMillis();
 		int [] myPath = getPath();
 		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph
-			applyPath(getMinFlow(myPath), myPath); // Apply the path found on the residual graph with the bottleneck of the path
+			addedFlow = getMinFlow(myPath);
+			flow += addedFlow;
+			applyPath(addedFlow, myPath); // Apply the path found on the residual graph with the bottleneck of the path
 			myPath = getPath(); // Search for a new path in the residual graph
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
@@ -34,7 +63,7 @@ public abstract class AugmentingPath implements Solver{
 	public int getMinFlow(int[] path) {
 		int minFlow=Integer.MAX_VALUE;
 		for(int i=0; i<path.length-1; i++) {
-			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i],1));
+			minFlow=Math.min(minFlow,g.getCapacity(path[i+1], path[i]));
 		}
 		return minFlow;
 	}
@@ -46,13 +75,14 @@ public abstract class AugmentingPath implements Solver{
 		if(!timeout){
 			System.out.println("|V| : "+g.getV());
 			System.out.println("|E| : "+g.getE());
-			System.out.println("Max flot : " + g.getFlowValue(1));
+			//System.out.println("Max flot : " + g.getFlowValue(1));
+			System.out.println("Max flot : " + this.flow);
 			System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 		}
 		else{
 			System.out.println("|V| : "+g.getV());
 			System.out.println("|E| : "+g.getE());
-			System.out.println("Timeout. Max flot : "+g.getFlowValue(1)+"\n");
+			System.out.println("Timeout. Max flot : "+ this.flow +"\n");
 		}
 	}
 	
@@ -69,28 +99,21 @@ public abstract class AugmentingPath implements Solver{
 	 */
 	public void applyPath(int capacity, int[] path) {
 		for(int i=0; i<path.length-1; i++) {
-			int currentCapa = g.getCapacity(path[i+1], path[i],1);
+			int currentCapa = g.getCapacity(path[i+1], path[i]);
 			if(currentCapa<=capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path[i+1], path[i]);
 			}
 			else { // on enleve la capa dans le bon sens sinon
-				g.setCapacity(path[i+1], path[i], currentCapa-capacity,1);
+				g.setCapacity(path[i+1], path[i], currentCapa-capacity);
 			}
 
-			currentCapa = g.getCapacity(path[i],path[i+1],1);
+			currentCapa = g.getCapacity(path[i],path[i+1]);
 			if(currentCapa==-1) { // on crée l'arete si elle n'existe pas
-				g.addEdge(path[i], path[i+1], capacity,1);
+				g.addEdge(path[i], path[i+1], capacity);
 			}
 			else { // on rajoute la capa dans le sens inverse sinon
-				g.setCapacity(path[i], path[i+1], currentCapa+capacity,1);
+				g.setCapacity(path[i], path[i+1], currentCapa+capacity);
 			}
-
-			currentCapa = g.getCapacity(path[i], path[i+1], 2); // on augmente le flot courant	
-			if(currentCapa==-1) g.addEdge(path[i], path[i+1], capacity, 2); 
-			else {
-				g.setCapacity(path[i], path[i+1], currentCapa+capacity,2);
-			}
-
 		}
 	}
 }

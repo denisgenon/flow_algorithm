@@ -11,12 +11,10 @@ import object.Vertex;
 
 @SuppressWarnings("unchecked")
 public class TreeMapGraph extends SimpleGraph implements Graph {
-	public TreeMap<Integer, Integer> [] capaMatrix;
-	public TreeMap<Integer, Integer> [] bestFlow;
+	public TreeMap<Integer, Integer> [] capaMatrix; //TODO change name
 
 	public TreeMapGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new TreeMap[V];
 	}
 
 	@Override
@@ -81,21 +79,8 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public int getFlowValue(int type) {
-		if(type==1){
-			int value = 0;
-			TreeMap<Integer, Integer> myMap = bestFlow[V-1];
-			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
-			while(keySetIterator.hasNext()){ 
-				Integer key = keySetIterator.next();
-				value+=myMap.get(key);
-			}
-			return value;
-		}
-		if(type==2){
-			return vertices[V-1].e;
-		}
-		return -1;
+	public int getFlowValue() {
+		return vertices[V-1].e;
 	}
 
 	@Override
@@ -104,31 +89,22 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		TreeMap<Integer, Integer> [] currentData = (TreeMap[]) getGraphType(type);
-		currentData[u].put(v, capa);
+	public void addEdge(int u, int v, int capa) {
+		capaMatrix[u].put(v, capa);
 	}
 
 	@Override
-	public int getCapacity(int u, int v, int type) {
-		TreeMap<Integer, Integer>[] currentData = (TreeMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new TreeMap<Integer, Integer>();
-		Integer res = currentData[u].get(v);
+	public int getCapacity(int u, int v) {
+		if(capaMatrix[u]==null) capaMatrix[u] = new TreeMap<Integer, Integer>();
+		Integer res = capaMatrix[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
 
-	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		TreeMap<Integer, Integer>[] currentData = (TreeMap[]) getGraphType(type);
-		currentData[u].replace(v, newCapa);
-	}
 
 	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
+	public void setCapacity(int u, int v, int newCapa) {
+		capaMatrix[u].replace(v, newCapa);
 	}
 
 	@Override

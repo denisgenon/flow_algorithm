@@ -13,11 +13,9 @@ import object.Vertex;
 @SuppressWarnings("unchecked")
 public class HashMapGraph extends SimpleGraph implements Graph {
 	public HashMap<Integer, Integer> [] capaMatrix;
-	public HashMap<Integer, Integer> [] bestFlow;
 
 	public HashMapGraph(String filePath) {
 		parse(filePath);
-		bestFlow = new HashMap[V];
 	}
 
 	@Override
@@ -82,21 +80,8 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public int getFlowValue(int type) {
-		if(type==1){
-			int value = 0;
-			HashMap<Integer, Integer> myMap = bestFlow[V-1];
-			Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
-			while(keySetIterator.hasNext()){ 
-				Integer key = keySetIterator.next();
-				value+=myMap.get(key);
-			}
-			return value;
-		}
-		if(type==2){
-			return vertices[V-1].e;
-		}
-		return -1;
+	public int getFlowValue() {
+		return vertices[V-1].e;
 	}
 
 	@Override
@@ -105,31 +90,22 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa, int type) {
-		HashMap<Integer, Integer> [] currentData = (HashMap[]) getGraphType(type);
-		currentData[u].put(v, capa);
+	public void addEdge(int u, int v, int capa) {
+		capaMatrix[u].put(v, capa);
 	}
 
 	@Override
-	public int getCapacity(int u, int v, int type) {
-		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
-		if(currentData[u]==null) currentData[u] = new HashMap<Integer, Integer>();
-		Integer res = currentData[u].get(v);
+	public int getCapacity(int u, int v) {
+		if(capaMatrix[u]==null) capaMatrix[u] = new HashMap<Integer, Integer>(20);
+		Integer res = capaMatrix[u].get(v);
 		if (res==null) return -1;
 		return res;
 	}
+	
 
 	@Override
-	public void setCapacity(int u, int v, int newCapa, int type) {
-		HashMap<Integer, Integer>[] currentData = (HashMap[]) getGraphType(type);
-		currentData[u].replace(v, newCapa);
-	}
-
-	@Override
-	public Object[] getGraphType(int type) {
-		if(type==1) return capaMatrix;
-		if(type==2) return bestFlow;
-		return null;
+	public void setCapacity(int u, int v, int newCapa) {
+		capaMatrix[u].replace(v, newCapa);
 	}
 
 	@Override

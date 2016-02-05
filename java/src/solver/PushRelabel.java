@@ -7,6 +7,8 @@ import object.Vertex;
 
 public class PushRelabel implements Solver {
 	public Graph g;
+	public int source;
+	public int sink;
 	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
 	public long timeStart;
 	/**
@@ -15,6 +17,26 @@ public class PushRelabel implements Solver {
 	 */
 	public PushRelabel(Graph g) {
 		this.g = g;
+		this.source = 0;
+		this.sink = g.getV() - 1;
+		timeStart=System.currentTimeMillis();
+		preProcess();
+		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
+			Vertex elu = actifV.get(0);// We take any active node (TODO: we need to change this heuristic)
+			process(elu);
+		}
+	}
+	
+	/**
+	 * Compute the push relabeling algorithm on the graph
+	 * @param g, the representation of the instance
+	 * @param source, the source node
+	 * @param sink, the sink node
+	 */
+	public PushRelabel(Graph g, int source, int sink) {
+		this.g = g;
+		this.source = source;
+		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preProcess();
 		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
@@ -27,11 +49,11 @@ public class PushRelabel implements Solver {
 	 */
 	public void preProcess() {
 		computeDistanceLabel();
-		for(int i : g.getAdjacents(0)) {
+		for(int i : g.getAdjacents(source)) {
 			int v = i;
-			pushFillingFlow(0, v);
+			pushFillingFlow(source, v);
 		}
-		g.getVertex(0).h = g.getV();
+		g.getVertex(source).h = g.getV();
 	}
 	/**
 	 * Compute the distance of each node from the sink
@@ -59,7 +81,7 @@ public class PushRelabel implements Solver {
 			notS.add(invertedVertices[i]);
 		}
 		
-		invertedVertices[g.getV() - 1].h = 0;
+		invertedVertices[sink].h = 0;
 		while (notS.size() > 0) {
 			Vertex i = findMinimumDistance(notS);
 			notS.remove(i);
@@ -94,7 +116,7 @@ public class PushRelabel implements Solver {
 	public void getResults() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getFlowValue(2));
+		System.out.println("Max flot : " + g.getFlowValue());
 		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	/**
@@ -108,7 +130,7 @@ public class PushRelabel implements Solver {
 			Vertex u = g.getVertex(uint);
 			hMin = Math.min(hMin, u.h);
 			if (v.h-1 == u.h) { // If we can push the flow v -> u
-				pushFlow(v,u,Math.min(v.e, g.getCapacity(v.id, u.id, 1))); // We push!
+				pushFlow(v,u,Math.min(v.e, g.getCapacity(v.id, u.id))); // We push!
 				return;
 			}
 		}
@@ -122,7 +144,7 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFillingFlow(int origin, int desti) {
 		int newCapa = g.removeEdge(origin,desti);
-		g.addEdge(desti, origin, newCapa,1);
+		g.addEdge(desti, origin, newCapa);
 		
 		Vertex dest = g.getVertex(desti);
 
@@ -139,12 +161,12 @@ public class PushRelabel implements Solver {
 	 */
 	public void pushFlow(Vertex origin, Vertex desti, int flow_value) {
 		// We update the capacity in the residual graph u -> v
-		int capacity = g.getCapacity(origin.id, desti.id, 1);
+		int capacity = g.getCapacity(origin.id, desti.id);
 		if(capacity<=flow_value) { // If the edge is full, we remove it
 			g.removeEdge(origin.id, desti.id);
 		}
 		else {
-			g.setCapacity(origin.id, desti.id, capacity-flow_value, 1);
+			g.setCapacity(origin.id, desti.id, capacity-flow_value);
 		}
 		// We update the excedent on the origin and on the desitnation
 		origin.e-=flow_value;
@@ -157,12 +179,12 @@ public class PushRelabel implements Solver {
 		}
 
 		// We update the capacity in the residual graph v -> u
-		capacity = g.getCapacity(desti.id, origin.id, 1);
+		capacity = g.getCapacity(desti.id, origin.id);
 		if(capacity==-1) {
-			g.addEdge(desti.id, origin.id, flow_value,1);
+			g.addEdge(desti.id, origin.id, flow_value);
 		}
 		else {
-			g.setCapacity(desti.id, origin.id, capacity+flow_value, 1);
+			g.setCapacity(desti.id, origin.id, capacity+flow_value);
 		}
 	}
 	
