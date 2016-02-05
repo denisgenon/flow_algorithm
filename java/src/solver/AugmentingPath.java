@@ -17,25 +17,6 @@ public abstract class AugmentingPath implements Solver{
 	/**
 	 * Run the augmenting path algorithm on the Graph g
 	 * @param g, the representation of the instance
-	 */
-	public AugmentingPath(Graph g) {
-		this.g = g;
-		this.source = 0;
-		this.sink = g.getV() - 1;
-		int addedFlow = 0;
-		timeStart=System.currentTimeMillis();
-		int [] myPath = getPath(); //TODO: run method ?
-		while(myPath!=null && !timeout) { // While there is a path between the source and the sink in the residual graph
-			addedFlow = getMinFlow(myPath);
-			flow += addedFlow;
-			applyPath(addedFlow, myPath); // Apply the path found on the residual graph with the bottleneck of the path
-			myPath = getPath(); // Search for a new path in the residual graph
-			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
-		}
-	}
-	/**
-	 * Run the augmenting path algorithm on the Graph g
-	 * @param g, the representation of the instance
 	 * @param source, the source node
 	 * @param sink, the sink node
 	 */

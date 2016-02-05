@@ -83,7 +83,7 @@ public class NewGeneratorInstance {
 	}
 
 	public static void main (String [] args) {	
-		generateInstance(20);
-		createGraphFile("instanceprct20");
+		generateInstance(30);
+		createGraphFile("instanceprct30");
 	}
 }

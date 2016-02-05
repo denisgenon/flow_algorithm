@@ -15,7 +15,7 @@ public class FordFulkerson extends AugmentingPath{
 	 * @param g, the representation of the instance
 	 */
 	public FordFulkerson(Graph g) {
-		super(g);
+		super(g,0,g.getV()-1);
 	}
 	
 	/**

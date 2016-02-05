@@ -15,7 +15,7 @@ public class FordFulkersonScaling extends AugmentingPathScaling{
 	 * @param g, the representation of the instance
 	 */
 	public FordFulkersonScaling(Graph g) {
-		super(g);
+		super(g,0,g.getV()-1);
 	}
 	
 	/**
