@@ -1,15 +1,11 @@
 package solver;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Stack;
 
 import interfaces.Graph;
 
 public class FordFulkerson extends AugmentingPath{
-
-	public int [] parents; // For getPath
 	/**
 	 * Just call the augmenting path algorithm
 	 * @param g, the representation of the instance
@@ -31,58 +27,41 @@ public class FordFulkerson extends AugmentingPath{
 	/**
 	 * We found a path with DFS in the residual graph
 	 */
-	public int [] getPath() {
-		parents = new int [g.getV()];
+	public int getPath() {
+		int[] parents = new int[g.getV()];
+		int[] parentsCapacity = new int[g.getV()];
+		parentsCapacity[source] = Integer.MAX_VALUE;
 
 		// Initialize values
-		for(int i=0; i<g.getV(); i++) {
-			parents[i]=-1;
+		for (int i = 0; i < g.getV(); i++) {
+			parents[i] = -1;
 		}
 
-		visitDFS(source);
-
-		ArrayList<Integer> mypath = new ArrayList<Integer>();
-		int indexpath = sink;
-		mypath.add(indexpath); 
-		while(parents[indexpath]!=-1 && indexpath != source){
-			mypath.add(parents[indexpath]); 
-			indexpath=parents[indexpath];
-		}
-
-		if(indexpath == source) {
-			int [] res = new int [mypath.size()];
-			int index=0;
-			for(int i : mypath){
-				res[index]=i;
-				index++;
-			}
-			return res;
-		}
-		return null;
-	}
-
-	public void visitDFS(int index) {
-		Set<Integer> set = new HashSet<Integer>();
+		// DFS
 		Stack<Integer> stack = new Stack<Integer>();
-		stack.push(index);
-		boolean flag = true;
-		while(!stack.isEmpty() && flag){
-			int current = stack.pop();
-			if(current==g.getV()-1){
-				flag=false;
-			}
-			else {
-				set.add(current);
-				for(int i : g.getAdjacents(current)){
-					int v = i;
-					if(!set.contains(v)) {
-						parents[v]=current;
-						if (!set.contains(v)) {
-							stack.push(v);
-						}
-					}
+		stack.push(source);
+		while(!stack.isEmpty() && parents[sink] == -1){
+			int u = stack.pop();
+			for(int v : g.getAdjacents(u)){
+				if(parents[v] == -1) {
+					parents[v] = u;
+					parentsCapacity[v] = Math.min(parentsCapacity[u], g.getCapacity(u, v));
+					stack.push(v);
 				}
 			}
 		}
+
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		int index = sink;
+		path.add(index); 
+		while(parents[index] != -1 && index != source){
+			path.add(parents[index]); 
+			index = parents[index];
+		}
+
+		if(index == source) {
+			applyPath(parentsCapacity[sink], path);
+		}
+		return parentsCapacity[sink];
 	}
 }

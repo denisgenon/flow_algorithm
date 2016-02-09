@@ -16,25 +16,22 @@ public abstract class AugmentingPathScaling extends AugmentingPath {
 		this.source = source;
 		this.sink = sink;
 		int addedFlow = 0;
-		timeStart=System.currentTimeMillis();
-		int delta = (int) Math.pow(2, Math.log(g.getMaxCapacity()));
-		while(delta>=1 && !timeout) {
-			int [] myPath = getPath(delta);
-			if(myPath == null) { // If there is no path found with the current delta value, we update the delta
+		timeStart = System.currentTimeMillis();
+		int delta = (int) Math.pow(2, Math.log(g.getMaxCapacity())); //TODO
+		while(delta >= 1 && !timeout) {
+			addedFlow = getPath(delta);
+			if(addedFlow == 0) { // If there is no path found with the current delta value, we update the delta
 				delta = (int) Math.round(delta/2);
 			}
 			else {
-				addedFlow = getMinFlow(myPath);
 				super.flow += addedFlow;
-				applyPath(addedFlow, myPath);
 			}
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
 	}
 	
-	public abstract int [] getPath(int delta);
-	
-	public int [] getPath(){
-		return null;
+	public abstract int getPath(int delta);
+	public int getPath() {
+		return 0;
 	}
 }
