@@ -31,7 +31,6 @@ public class NewGeneratorInstance {
 			if(a!=0) doubleLinked.add(a);
 			connected.add(i);
 		}
-		System.out.println("On a la base");
 
 		// Enlever les culs de sacs
 		for(int i=0; i<V; i++){
@@ -41,7 +40,6 @@ public class NewGeneratorInstance {
 				doubleLinked.add(i);
 			}
 		}
-		System.out.println("On a la base sans cul de sac");
 
 		// Rajouter des arêtes pour avoir le pourcentage voulu
 		int currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
@@ -62,7 +60,6 @@ public class NewGeneratorInstance {
 				oldprct=currentprct;
 			}
 		}
-		System.out.println("On a le graphe final");
 	}
 
 	public static void createGraphFile(String filename) {
@@ -83,7 +80,7 @@ public class NewGeneratorInstance {
 	}
 
 	public static void main (String [] args) {	
-		generateInstance(30);
-		createGraphFile("instanceprct30");
+		generateInstance(50);
+		createGraphFile("instanceprct50");
 	}
 }
