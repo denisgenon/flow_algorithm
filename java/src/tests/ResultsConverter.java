@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ResultsConverter {
 	
 	public static void resultsToFile(String [][] results, String title) throws IOException{
-		File f = new File ("resultsBySolver/"+title+".txt");
+		File f = new File ("resultsBySolver/"+title+".csv");
 		FileWriter fw = new FileWriter(f);
 		fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap\n");
 		for(int nbrInstance=5; nbrInstance<=50; nbrInstance+=5){
