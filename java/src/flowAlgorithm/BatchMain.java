@@ -13,7 +13,7 @@ public class BatchMain {
 	 * 				EK : Edmonds Karp
 	 * 				PR : Push Relabel
 	 * 			args[1] pour la structure de données
-	 * 				AL : AdjacencyList
+	 * 				LL : LinkedList
 	 * 				HM : HashMap
 	 * 				SA : SplitArray
 	 * 				TM : TreeMap
@@ -24,7 +24,7 @@ public class BatchMain {
 		Graph g;
 		Solver s;
 
-		if(args[1].equals("AL")) g = new LinkedListGraph(args[2]);
+		if(args[1].equals("LL")) g = new LinkedListGraph(args[2]);
 		else if(args[1].equals("HM")) g = new HashMapGraph(args[2]);
 		else if(args[1].equals("SA")) g = new SplitArrayGraph(args[2]);
 		else if(args[1].equals("TM")) g = new TreeMapGraph(args[2]);
