@@ -9,7 +9,7 @@ public class PushRelabel implements Solver {
 	public Graph g;
 	public int source;
 	public int sink;
-	public ArrayList<Vertex> actifV = new ArrayList<Vertex>();
+	public ArrayList<Vertex> activeNodes = new ArrayList<Vertex>();
 	public long timeStart;
 	/**
 	 * Compute the push relabeling algorithm on the graph
@@ -30,16 +30,16 @@ public class PushRelabel implements Solver {
 		this.source = source;
 		this.sink = sink;
 		timeStart=System.currentTimeMillis();
-		preProcess();
-		while(!actifV.isEmpty()) { // While there is active vertex (vertex with excedent)
-			Vertex elu = actifV.get(0);// We take any active node (we need to change this heuristic)
-			process(elu);
+		preFlow();
+		while(!activeNodes.isEmpty()) { // While there is active vertex (vertex with excedent)
+			Vertex elu = activeNodes.get(0);// We take any active node (we need to change this heuristic)
+			pushFlow(elu);
 		}
 	}
 	/**
 	 * Compute the distance label and push a flow on all the neighbors edges of the source
 	 */
-	public void preProcess() {
+	public void preFlow() {
 		computeDistanceLabel();
 		for(int i : g.getAdjacents(source)) {
 			int v = i;
@@ -63,7 +63,7 @@ public class PushRelabel implements Solver {
 			for(int i : g.getAdjacents(v.id)) {
 				int u = i;
 				// V -5-> U became V <-5- U in invertedCapaMatrix
-				invertedVertices[u].adjaDijkstra.add(new Vertex(v.id));
+				invertedVertices[u].adjacents.add(new Vertex(v.id));
 			}
 		}
 
@@ -115,7 +115,7 @@ public class PushRelabel implements Solver {
 	 * We push a flow on the neighbors of v if we can.
 	 * @param v
 	 */
-	public void process(Vertex v) {
+	public void pushFlow(Vertex v) {
 		int hMin=Integer.MAX_VALUE;
 		for(int i : g.getAdjacents(v.id)) {
 			int uint = i;
@@ -135,48 +135,48 @@ public class PushRelabel implements Solver {
 	 * @param desti
 	 */
 	public void pushFillingFlow(int origin, int desti) {
-		int newCapa = g.removeEdge(origin,desti);
-		g.addEdge(desti, origin, newCapa);
+		int newCapacity = g.removeEdge(origin,desti);
+		g.addEdge(desti, origin, newCapacity);
 		
 		Vertex dest = g.getVertex(desti);
 
-		dest.e+=newCapa;
+		dest.e+=newCapacity;
 		if(dest.e>0) {
-			actifV.add(dest);
+			activeNodes.add(dest);
 		}
 	}
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
 	 * @param origin
-	 * @param desti
-	 * @param flow_value is flow value pushed
+	 * @param destination
+	 * @param flowValue is flow value pushed
 	 */
-	public void pushFlow(Vertex origin, Vertex desti, int flow_value) {
+	public void pushFlow(Vertex origin, Vertex destination, int flowValue) {
 		// We update the capacity in the residual graph u -> v
-		int capacity = g.getCapacity(origin.id, desti.id);
-		if(capacity<=flow_value) { // If the edge is full, we remove it
-			g.removeEdge(origin.id, desti.id);
+		int capacity = g.getCapacity(origin.id, destination.id);
+		if(capacity<=flowValue) { // If the edge is full, we remove it
+			g.removeEdge(origin.id, destination.id);
 		}
 		else {
-			g.setCapacity(origin.id, desti.id, capacity-flow_value);
+			g.setCapacity(origin.id, destination.id, capacity-flowValue);
 		}
 		// We update the excedent on the origin and on the desitnation
-		origin.e-=flow_value;
+		origin.e-=flowValue;
 		if(origin.e<=0) {
-			actifV.remove(origin);
+			activeNodes.remove(origin);
 		}
-		desti.e+=flow_value;
-		if(desti.e>0 && desti.id!=(g.getV()-1) && desti.id!=0 && !actifV.contains(desti)) {
-			actifV.add(desti);
+		destination.e+=flowValue;
+		if(destination.e>0 && destination.id!=(g.getV()-1) && destination.id!=0 && !activeNodes.contains(destination)) {
+			activeNodes.add(destination);
 		}
 
 		// We update the capacity in the residual graph v -> u
-		capacity = g.getCapacity(desti.id, origin.id);
+		capacity = g.getCapacity(destination.id, origin.id);
 		if(capacity==-1) {
-			g.addEdge(desti.id, origin.id, flow_value);
+			g.addEdge(destination.id, origin.id, flowValue);
 		}
 		else {
-			g.setCapacity(desti.id, origin.id, capacity+flow_value);
+			g.setCapacity(destination.id, origin.id, capacity+flowValue);
 		}
 	}
 	

@@ -67,20 +67,20 @@ public abstract class AugmentingPath implements Solver {
 	 */
 	public void applyPath(int capacity, ArrayList<Integer> path) {
 		for(int i = 0; i < path.size()-1; i++) {
-			int currentCapa = g.getCapacity(path.get(i+1), path.get(i));
-			if(currentCapa <= capacity) { // On enleve l'arete si la capa dispo est 0
+			int currentCapacity = g.getCapacity(path.get(i+1), path.get(i));
+			if(currentCapacity <= capacity) { // On enleve l'arete si la capa dispo est 0
 				g.removeEdge(path.get(i+1), path.get(i));
 			}
 			else { // on enleve la capa dans le bon sens sinon
-				g.setCapacity(path.get(i+1), path.get(i), currentCapa-capacity);
+				g.setCapacity(path.get(i+1), path.get(i), currentCapacity-capacity);
 			}
 
-			currentCapa = g.getCapacity(path.get(i), path.get(i+1));
-			if(currentCapa == -1) { // on crée l'arete si elle n'existe pas
+			currentCapacity = g.getCapacity(path.get(i), path.get(i+1));
+			if(currentCapacity == -1) { // on crée l'arete si elle n'existe pas
 				g.addEdge(path.get(i), path.get(i+1), capacity);
 			}
 			else { // on rajoute la capa dans le sens inverse sinon
-				g.setCapacity(path.get(i), path.get(i+1), currentCapa+capacity);
+				g.setCapacity(path.get(i), path.get(i+1), currentCapacity+capacity);
 			}
 		}
 	}

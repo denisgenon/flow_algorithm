@@ -1,20 +1,20 @@
 package object;
 
 public class Node {
-	private Edge element;
+	private Arc element;
 	private Node next;
 
-	public Node(Edge element, Node next){
+	public Node(Arc element, Node next){
 		this.element = element;
 		this.next = next;
 	}
-	public Edge getElement() {
+	public Arc getElement() {
 		return element;
 	}
 	public Node getNext() {
 		return next;
 	}
-	public void setElement(Edge element) {
+	public void setElement(Arc element) {
         this.element = element;
     }
  

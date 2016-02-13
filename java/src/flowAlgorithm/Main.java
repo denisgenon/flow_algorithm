@@ -99,12 +99,12 @@ public class Main {
 		else {
 			try {
 				if(args[0].equals("all")) {
-					File directoryToScan = new File("instances"); 
+					File directoryToScan = new File("instancesPrct"); 
 					for(File f : directoryToScan.listFiles()){
 						//if(f.getName().contains("5")){
 							System.out.println(f.getName()+" : ");
-							Graph g = new LinkedListGraph(f.getPath());
-							Solver s = new FordFulkersonScaling(g);
+							Graph g = new SplitArrayGraph(f.getPath());
+							Solver s = new EdmondsKarp(g);
 							s.getResults();
 						//}
 					}

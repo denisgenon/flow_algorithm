@@ -4,75 +4,75 @@ import java.util.ArrayList;
 
 public class SplitArray {
 
-	public Edge [] dom;
+	public Arc [] dom;
 	public int split;
-	public ArrayList<Edge> adjacents;
-	public ArrayList<Edge> futurAdjacents;
+	public ArrayList<Arc> adjacents;
+	public ArrayList<Arc> futurAdjacents;
 
 	public SplitArray(){
-		adjacents = new ArrayList<Edge>();
-		futurAdjacents = new ArrayList<Edge>();
+		adjacents = new ArrayList<Arc>();
+		futurAdjacents = new ArrayList<Arc>();
 	}
 	
-	public void add(Edge t) {
+	public void add(Arc t) {
 		adjacents.add(t);
 	}
 	
-	public void addFutur(Edge t) {
+	public void addFutur(Arc t) {
 		futurAdjacents.add(t);
 	}
 	
 	public int remove(int i) {
 		
-		int oldCapa=-1;
+		int oldCapacity=-1;
 		
 		int index=-1;
 		for(int in=0; in<split; in++){
-			if(dom[in].idDesti==i) {
+			if(dom[in].idDestination==i) {
 				index=in;
 				in=dom.length;
 			}
 		}
 		int newIndex = split-1;
 		
-		Edge t = dom[index];
-		oldCapa=t.capa;
+		Arc t = dom[index];
+		oldCapacity=t.capacity;
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
 		
 		split--;
 		
-		return oldCapa;
+		return oldCapacity;
 	}
 	
-	public void add(int i, int capa){
+	public void add(int i, int capacity){
 		int index=-1;
 		for(int in=split; in<dom.length; in++){
-			if(dom[in].idDesti==i) {
+			if(dom[in].idDestination==i) {
 				index=in;
 				in=dom.length;
 			}
 		}
 		int newIndex = split;
 
-		Edge t = dom[index];
+		Arc t = dom[index];
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
-		dom[newIndex].setCapa(capa);
+		dom[newIndex].setCapacity(capacity);
 		
 		split++;
 	}
 	
 	public void compile() {
-		dom=new Edge [adjacents.size()+futurAdjacents.size()];
+		dom=new Arc [adjacents.size()+futurAdjacents.size()];
 		int bigSize = dom.length;
 		split=bigSize-futurAdjacents.size();
 		int index=0;
-		for(Edge t : adjacents){
+		for(Arc t : adjacents){
 			dom[index]=t;
 			index++;
 		}
-		for(Edge t : futurAdjacents){
+		for(Arc t : futurAdjacents){
 			dom[index]=t;
 			index++;
 		}
@@ -93,7 +93,7 @@ public class SplitArray {
 		System.out.println();
 	}
 	
-	public Edge[] getDom() {
+	public Arc[] getDom() {
 		return dom;
 	}
 	

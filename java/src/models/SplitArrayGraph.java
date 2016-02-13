@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import interfaces.Graph;
-import object.Edge;
+import object.Arc;
 import object.SplitArray;
 import object.Vertex;
 
@@ -31,7 +31,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
 			residualGraph = new SplitArray[V];
-			maxCapa = 0;
+			maxCapacity = 0;
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -40,7 +40,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
-				maxCapa = Math.max(capa, maxCapa);
+				maxCapacity = Math.max(capa, maxCapacity);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {
@@ -53,8 +53,8 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 				// On ajoute le voisin+distance dans le tableau de sparse Set
 				if(residualGraph[idVertex1]==null) residualGraph[idVertex1]= new SplitArray();
 				if(residualGraph[idVertex2]==null) residualGraph[idVertex2]= new SplitArray();
-				residualGraph[idVertex1].add(new Edge(capa,idVertex2));
-				residualGraph[idVertex2].addFutur(new Edge(0,idVertex1)); //TODO: add futur ????
+				residualGraph[idVertex1].add(new Arc(capa,idVertex2));
+				residualGraph[idVertex2].addFutur(new Arc(0,idVertex1));
 
 			}
 
@@ -68,11 +68,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 		}
 	}
 
-	
+
 	@Override
 	public int getCapacity(int u, int v) {
 		for(int i=0; i<residualGraph[u].split; i++){
-			if(residualGraph[u].dom[i].idDesti==v) {
+			if(residualGraph[u].dom[i].idDestination==v) {
 				return residualGraph[u].dom[i].getCapacity();
 			}
 		}
@@ -82,8 +82,8 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	@Override
 	public void setCapacity(int u, int v, int newCapa) {
 		for(int i=0; i<residualGraph[u].split; i++){
-			if(residualGraph[u].dom[i].idDesti==v) {
-				residualGraph[u].dom[i].capa=newCapa;
+			if(residualGraph[u].dom[i].idDestination==v) {
+				residualGraph[u].dom[i].capacity=newCapa;
 			}
 		}
 
@@ -98,11 +98,11 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	@Override
 	public int [] getAdjacents(int vertex) {
 		SplitArray s = residualGraph[vertex];
-		int [] adja = new int [getAdjacentsSize(vertex)];
+		int [] adjacents = new int [getAdjacentsSize(vertex)];
 		for(int i=0; i<s.split; i++){
-			adja[i]=s.dom[i].idDesti;
+			adjacents[i]=s.dom[i].idDestination;
 		}
-		return adja;
+		return adjacents;
 	}
 
 	@Override
@@ -111,8 +111,8 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa) {
-		residualGraph[u].add(v, capa);	
+	public void addEdge(int u, int v, int capacity) {
+		residualGraph[u].add(v, capacity);	
 	}
 
 	
