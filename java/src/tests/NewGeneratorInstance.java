@@ -5,11 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import object.Couple;
+import object.Edge;
 
 public class NewGeneratorInstance {
 
-	public static ArrayList<Couple> edges = new ArrayList<Couple>();
+	public static ArrayList<Edge> edges = new ArrayList<Edge>();
 	public static int V = 1000;
 	public static int capaMax = 10000;
 
@@ -27,7 +27,7 @@ public class NewGeneratorInstance {
 		connected.add(0);
 		for(int i=1; i<V; i++){
 			int a = getRandomElem(connected);
-			edges.add(new Couple(a,i));
+			edges.add(new Edge(a,i));
 			if(a!=0) doubleLinked.add(a);
 			connected.add(i);
 		}
@@ -36,7 +36,7 @@ public class NewGeneratorInstance {
 		for(int i=0; i<V; i++){
 			if(!doubleLinked.contains(i)){
 				int a = getRandomElem(connected);
-				edges.add(new Couple(i,a));
+				edges.add(new Edge(i,a));
 				doubleLinked.add(i);
 			}
 		}
@@ -51,8 +51,8 @@ public class NewGeneratorInstance {
 				rdm2 = getRandomElem(connected);
 			}
 
-			if(!edges.contains(new Couple(rdm1,rdm2)) && !edges.contains(new Couple(rdm2,rdm1))) {
-				edges.add(new Couple(rdm1,rdm2));
+			if(!edges.contains(new Edge(rdm1,rdm2)) && !edges.contains(new Edge(rdm2,rdm1))) {
+				edges.add(new Edge(rdm1,rdm2));
 			}
 			currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
 			if(currentprct!=oldprct) {
@@ -69,9 +69,9 @@ public class NewGeneratorInstance {
 			fw = new FileWriter (f);
 			fw.write(V+" "+edges.size()+"\n");
 			
-			for(Couple c : edges){
+			for(Edge c : edges){
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
-				fw.write(c.a+" "+c.b+" "+rdmcapa+"\n");
+				fw.write(c.u+" "+c.v+" "+rdmcapa+"\n");
 			}
 			fw.close();
 		} catch (IOException e) {

@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import object.Couple;
+import object.Edge;
 
 public class GeneratorInstance {
 
@@ -13,7 +13,7 @@ public class GeneratorInstance {
 		File f = new File ("instances/"+filename+".txt");
 		try
 		{
-			ArrayList<Couple> couples = new ArrayList<Couple>(E);
+			ArrayList<Edge> edges = new ArrayList<Edge>(E);
 			FileWriter fw = new FileWriter (f);
 			fw.write(V+" "+E+"\n");
 			
@@ -21,10 +21,10 @@ public class GeneratorInstance {
 			// Permet d'avoir un graphe connecté
 			for(int i=0; i<V-1; i++) {
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
-				if(!couples.contains(new Couple(i,i+1)) && !couples.contains(new Couple(i+1,i))) {
+				if(!edges.contains(new Edge(i,i+1)) && !edges.contains(new Edge(i+1,i))) {
 					fw.write(i+" "+(i+1)+" "+rdmcapa+"\n");
 					E--;
-					couples.add(new Couple(i,i+1));
+					edges.add(new Edge(i,i+1));
 				}
 				else {
 					i--;
@@ -39,10 +39,10 @@ public class GeneratorInstance {
 				while(rdm1==0) {
 					rdm1 = (int) (Math.random()*(V));
 				}
-				if(!couples.contains(new Couple(0,rdm1)) && !couples.contains(new Couple(rdm1,0))) {
+				if(!edges.contains(new Edge(0,rdm1)) && !edges.contains(new Edge(rdm1,0))) {
 					fw.write(0+" "+rdm1+" "+rdmcapa+"\n");
 					E--;
-					couples.add(new Couple(0,rdm1));
+					edges.add(new Edge(0,rdm1));
 				}
 				else {
 					i--;
@@ -55,10 +55,10 @@ public class GeneratorInstance {
 				while(rdm1==0) {
 					rdm1 = (int) (Math.random()*(V));
 				}
-				if(!couples.contains(new Couple(rdm1,(V-1))) && !couples.contains(new Couple((V-1),rdm1))) {
+				if(!edges.contains(new Edge(rdm1,(V-1))) && !edges.contains(new Edge((V-1),rdm1))) {
 					fw.write(rdm1+" "+(V-1)+" "+rdmcapa+"\n");
 					E--;
-					couples.add(new Couple(rdm1,(V-1)));
+					edges.add(new Edge(rdm1,(V-1)));
 				}
 				else {
 					i--;
@@ -74,9 +74,9 @@ public class GeneratorInstance {
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
 
-				if(!couples.contains(new Couple(rdm1,rdm2)) && !couples.contains(new Couple(rdm2,rdm1))) {
+				if(!edges.contains(new Edge(rdm1,rdm2)) && !edges.contains(new Edge(rdm2,rdm1))) {
 					fw.write(rdm1+" "+rdm2+" "+rdmcapa+"\n");
-					couples.add(new Couple(rdm1,rdm2));
+					edges.add(new Edge(rdm1,rdm2));
 				}
 				else {
 					i--;
