@@ -1,7 +1,6 @@
 package object;
 
 public class Couple {
-
 	public int a;
 	public int b;
 	

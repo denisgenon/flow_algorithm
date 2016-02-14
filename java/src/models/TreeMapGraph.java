@@ -31,7 +31,7 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 			E = Integer.parseInt(data[1]);
 			vertices = new Vertex[V];
 			residualGraph = new TreeMap[V];
-			maxCapa = 0;
+			maxCapacity = 0;
 
 			// Parse the items
 			for (int i = 0; i < E; i++) {
@@ -40,7 +40,7 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
-				maxCapa = Math.max(capa, maxCapa);
+				maxCapacity = Math.max(capa, maxCapacity);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {
@@ -64,18 +64,17 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int [] getAdjacents(int vertex) {
-		TreeMap<Integer, Integer> myMap = residualGraph[vertex];
-		int [] adja = new int [getAdjacentsSize(vertex)];
+		int[] adjacents = new int [getAdjacentsSize(vertex)];
 
-		Iterator<Integer> keySetIterator = myMap.keySet().iterator(); 
+		Iterator<Integer> keySetIterator = residualGraph[vertex].keySet().iterator(); 
 		int i = 0;
 		while(keySetIterator.hasNext()){ 
 			Integer key = keySetIterator.next();
-			adja[i]=key;
+			adjacents[i]=key;
 			i++;
 		}
 
-		return adja;
+		return adjacents;
 	}
 
 	@Override
@@ -89,16 +88,16 @@ public class TreeMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa) {
-		residualGraph[u].put(v, capa);
+	public void addEdge(int u, int v, int capacity) {
+		residualGraph[u].put(v, capacity);
 	}
 
 	@Override
 	public int getCapacity(int u, int v) {
 		if(residualGraph[u]==null) residualGraph[u] = new TreeMap<Integer, Integer>();
-		Integer res = residualGraph[u].get(v);
-		if (res==null) return -1;
-		return res;
+		Integer result = residualGraph[u].get(v);
+		if (result==null) return -1;
+		return result;
 	}
 
 

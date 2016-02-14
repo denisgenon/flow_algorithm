@@ -14,37 +14,37 @@ public class SimpleLinkedList {
 	// Retourne la valeur du node enlevé
 	public int removeNode(int y) {
 		Node current = head;
-		int res = -1;
+		int result = -1;
 		if (current == null) {
 			System.out.println("La liste est vide");
-			return res;
+			return result;
 		}
-		if (current.getElement().idDesti == y) {
+		if (current.getElement().idDestination == y) {
 			head = current.getNext();
 			size--;
 			return current.getElement().getCapacity();
 		}
 		while(current.getNext() != null) {
-			if(current.getNext().getElement().idDesti == y) {
-				res = current.getNext().getElement().getCapacity();
+			if(current.getNext().getElement().idDestination == y) {
+				result = current.getNext().getElement().getCapacity();
 				current.setNext(current.getNext().getNext());
 				size--;
-				return res;
+				return result;
 			}
 			else {
 				current = current.getNext();
 			}
 		}
-		return res;
+		return result;
 	}
 
-	public void addNode(int y, int capa){
+	public void addNode(int y, int capacity){
 		if (size == 0) {
-			head = new Node(new Edge(capa, y), null);
+			head = new Node(new Arc(capacity, y), null);
 		}
 		else {
 			Node current = head;
-			head = new Node(new Edge(capa, y), current);
+			head = new Node(new Arc(capacity, y), current);
 		}
 		size++;
 	}
@@ -52,7 +52,7 @@ public class SimpleLinkedList {
 	public Node getNode(int y){
 		Node current = head;
 		while(current != null) {
-			if(current.getElement().idDesti == y) {
+			if(current.getElement().idDestination == y) {
 				return current;
 			}
 			current=current.getNext();
@@ -71,23 +71,23 @@ public class SimpleLinkedList {
 	public void printList() {
 		Node c = head;
 		while (c != null) {
-			System.out.println(c.getElement().getIndex());
+			System.out.println(c.getElement().getId());
 			c = c.getNext();
 		}
 	}
 	public Iterator<Integer> iterator() {
 		return new Iterator<Integer>() {
-			Node curr = head;
+			Node current = head;
 
 			@Override
 			public boolean hasNext() {
-				return curr != null;
+				return current != null;
 			}
 
 			@Override
 			public Integer next() {
-				int id = curr.getElement().idDesti;
-				curr = curr.getNext();
+				int id = current.getElement().idDestination;
+				current = current.getNext();
 				return id;
 			}
 

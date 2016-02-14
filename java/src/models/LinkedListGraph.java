@@ -33,7 +33,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 			E = Integer.parseInt(data[1]);
 			residualGraph = new SimpleLinkedList[V];
 			vertices = new Vertex[V];
-			maxCapa = 0;
+			maxCapacity = 0;
 			
 			for (int j = 0; j < V; j++) {
 				residualGraph[j] = new SimpleLinkedList();
@@ -47,7 +47,7 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 				int idVertex1 = Integer.parseInt(data[0]);
 				int idVertex2 = Integer.parseInt(data[1]);
 				int capa = Integer.parseInt(data[2]);
-				maxCapa = Math.max(capa, maxCapa);
+				maxCapacity = Math.max(capa, maxCapacity);
 
 				// On ajoute les nouveaux vertices
 				if(vertices[idVertex1] == null) {
@@ -82,15 +82,15 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	public int [] getAdjacents(int vertex) {
 		gA++;
 		
-		int [] adja = new int [getAdjacentsSize(vertex)];
+		int [] adjacents = new int [getAdjacentsSize(vertex)];
 		Node n = residualGraph[vertex].getFirst();
 		int i = 0;
 		while(n!=null){
-			adja[i]=n.getElement().getIndex();
+			adjacents[i]=n.getElement().getId();
 			i++;
 			n = n.getNext();
 		}
-		return adja;
+		return adjacents;
 	}
 
 	@Override
@@ -100,24 +100,24 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public void addEdge(int u, int v, int capa) {
+	public void addEdge(int u, int v, int capacity) {
 		aE++;
-		residualGraph[u].addNode(v, capa);
+		residualGraph[u].addNode(v, capacity);
 	}
 
 	@Override
 	public int getCapacity(int u, int v) {
 		gC++;
-		Node myN = residualGraph[u].getNode(v); //TODO change name
-		if (myN != null) return myN.getElement().getCapacity();
+		Node n = residualGraph[u].getNode(v);
+		if (n != null) return n.getElement().getCapacity();
 		else return -1;
 	}
 
 	
 	@Override
-	public void setCapacity(int u, int v, int newCapa) {
+	public void setCapacity(int u, int v, int capacity) {
 		sC++;
-		residualGraph[u].getNode(v).getElement().setCapa(newCapa);
+		residualGraph[u].getNode(v).getElement().setCapacity(capacity);
 	}
 
 
