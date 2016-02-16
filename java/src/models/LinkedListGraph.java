@@ -12,9 +12,8 @@ import object.Vertex;
 public class LinkedListGraph extends SimpleGraph implements Graph {
 	public SimpleLinkedList[] residualGraph;
 	
-	int gA=0, rE=0, aE=0, gC=0, sC=0;
-
-	public LinkedListGraph(String filePath) {
+	public LinkedListGraph(String filePath, boolean oriented) {
+		this.oriented = oriented;
 		parse(filePath);
 	}
 
@@ -50,14 +49,10 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 				maxCapacity = Math.max(capa, maxCapacity);
 
 				// On ajoute les nouveaux vertices
-				if(vertices[idVertex1] == null) {
-					vertices[idVertex1] = new Vertex(idVertex1);
-				}
-				if(vertices[idVertex2] == null) {
-					vertices[idVertex2] = new Vertex(idVertex2);
-				}
-				
+				if(vertices[idVertex1] == null) vertices[idVertex1] = new Vertex(idVertex1);
+				if(vertices[idVertex2] == null) vertices[idVertex2] = new Vertex(idVertex2);
 				residualGraph[idVertex1].addNode(idVertex2, capa);
+				if(!oriented) residualGraph[idVertex2].addNode(idVertex1, capa);
 			}
 			
 			br.close();
@@ -69,19 +64,11 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int getFlowValue() {
-		System.out.println("gA : "+gA);
-		System.out.println("rE : "+rE);
-		System.out.println("aE : "+aE);
-		System.out.println("gC : "+gC);
-		System.out.println("sC : "+sC);
-		
 		return vertices[V-1].e;
 	}
 
 	@Override
 	public int [] getAdjacents(int vertex) {
-		gA++;
-		
 		int [] adjacents = new int [getAdjacentsSize(vertex)];
 		Node n = residualGraph[vertex].getFirst();
 		int i = 0;
@@ -95,19 +82,16 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 
 	@Override
 	public int removeEdge(int u, int v) {
-		rE++;
 		return residualGraph[u].removeNode(v);
 	}
 
 	@Override
 	public void addEdge(int u, int v, int capacity) {
-		aE++;
 		residualGraph[u].addNode(v, capacity);
 	}
 
 	@Override
 	public int getCapacity(int u, int v) {
-		gC++;
 		Node n = residualGraph[u].getNode(v);
 		if (n != null) return n.getElement().getCapacity();
 		else return -1;
@@ -116,7 +100,6 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 	
 	@Override
 	public void setCapacity(int u, int v, int capacity) {
-		sC++;
 		residualGraph[u].getNode(v).getElement().setCapacity(capacity);
 	}
 

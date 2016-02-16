@@ -70,7 +70,7 @@ public class NeighborsDistributionXYViewer  extends ApplicationFrame {
 		} 
 		else {
 			String path = args[0];
-			Graph g = new LinkedListGraph(path);
+			Graph g = new LinkedListGraph(path,true);
 			NeighborsDistributionXYViewer demo = new NeighborsDistributionXYViewer("Neighbors Distribution " + path, g);  
 			demo.setSize(900, 600);
 			demo.pack();

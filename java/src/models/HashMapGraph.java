@@ -14,7 +14,8 @@ import object.Vertex;
 public class HashMapGraph extends SimpleGraph implements Graph {
 	public HashMap<Integer, Integer> [] residualGraph;
 
-	public HashMapGraph(String filePath) {
+	public HashMapGraph(String filePath, boolean oriented) {
+		this.oriented = oriented;
 		parse(filePath);
 	}
 
@@ -55,6 +56,7 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 				if(residualGraph[idVertex1]==null) residualGraph[idVertex1]= new HashMap<Integer, Integer>();
 				if(residualGraph[idVertex2]==null) residualGraph[idVertex2]= new HashMap<Integer, Integer>();
 				residualGraph[idVertex1].put(idVertex2, capa);
+				if(!oriented) residualGraph[idVertex2].put(idVertex1, capa);
 			}
 
 			br.close();

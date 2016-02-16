@@ -101,7 +101,7 @@ public class NeighborsDistributionBarViewer  extends ApplicationFrame {
 		} 
 		else {
 			String path = args[0];
-			Graph g = new LinkedListGraph(path);
+			Graph g = new LinkedListGraph(path,true);
 			NeighborsDistributionBarViewer demo = new NeighborsDistributionBarViewer("Neighbors Distribution " + path, g);  
 			demo.setSize(900, 600);
 			demo.pack();

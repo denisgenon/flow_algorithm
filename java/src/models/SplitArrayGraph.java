@@ -13,7 +13,8 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public SplitArray[] residualGraph;
 
 
-	public SplitArrayGraph(String filePath) {
+	public SplitArrayGraph(String filePath, boolean oriented) {
+		this.oriented = oriented;
 		parse(filePath);
 	}
 
@@ -55,7 +56,10 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 				if(residualGraph[idVertex2]==null) residualGraph[idVertex2]= new SplitArray();
 				residualGraph[idVertex1].add(new Arc(capa,idVertex2));
 				residualGraph[idVertex2].addFutur(new Arc(0,idVertex1));
-
+				if(!oriented) {
+					residualGraph[idVertex2].add(new Arc(capa,idVertex1));
+					residualGraph[idVertex1].addFutur(new Arc(0,idVertex2));
+				}
 			}
 
 			for(SplitArray s : residualGraph){

@@ -7,6 +7,7 @@ public abstract class SimpleGraph {
 	public int V;
 	public int E;
 	public int maxCapacity;
+	public boolean oriented;
 	
 	public int getV() {
 		return V;
