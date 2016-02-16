@@ -10,6 +10,7 @@ import object.Edge;
 public class NewGeneratorInstance {
 
 	public static ArrayList<Edge> edges = new ArrayList<Edge>();
+	public static ArrayList<Edge> allEdges = new ArrayList<Edge>();
 	public static int V = 1000;
 	public static int capaMax = 10000;
 
@@ -17,17 +18,34 @@ public class NewGeneratorInstance {
 		int index = (int) (Math.random()*array.size());
 		return array.get(index);
 	}
+	
+	public static Edge getRandomEdge(ArrayList<Edge> array){
+		int index = (int) (Math.random()*array.size());
+		return array.get(index);
+	}
 
 	public static void generateInstance(int prct) {
 		ArrayList<Integer> connected = new ArrayList<Integer>();
 		ArrayList<Integer> doubleLinked = new ArrayList<Integer>();
-
+		
+		// On fait une liste de toutes les arêtes possibles
+		for(int u=0; u<V; u++){
+			for(int v=0; v<V;v++){
+				if(u!=v){
+					allEdges.add(new Edge(u,v));
+				}
+			}
+		}
 
 		// D'abord, avoir un graphe connecté minimum
 		connected.add(0);
 		for(int i=1; i<V; i++){
 			int a = getRandomElem(connected);
-			edges.add(new Edge(a,i));
+			Edge e = new Edge(a,i);
+			Edge reverseE = new Edge(i,a);
+			edges.add(e);
+			allEdges.remove(e);
+			allEdges.remove(reverseE);
 			if(a!=0) doubleLinked.add(a);
 			connected.add(i);
 		}
@@ -36,7 +54,11 @@ public class NewGeneratorInstance {
 		for(int i=0; i<V; i++){
 			if(!doubleLinked.contains(i)){
 				int a = getRandomElem(connected);
-				edges.add(new Edge(i,a));
+				Edge e = new Edge(i,a);
+				Edge reverseE = new Edge(a,i);
+				edges.add(e);
+				allEdges.remove(e);
+				allEdges.remove(reverseE);
 				doubleLinked.add(i);
 			}
 		}
@@ -45,15 +67,12 @@ public class NewGeneratorInstance {
 		int currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
 		int oldprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
 		while((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100 < prct){
-			int rdm1 = getRandomElem(connected);
-			int rdm2 = getRandomElem(connected);
-			while(rdm2==rdm1) {
-				rdm2 = getRandomElem(connected);
-			}
-
-			if(!edges.contains(new Edge(rdm1,rdm2)) && !edges.contains(new Edge(rdm2,rdm1))) {
-				edges.add(new Edge(rdm1,rdm2));
-			}
+			
+			Edge newEdge = getRandomEdge(allEdges);
+			edges.add(newEdge);
+			allEdges.remove(newEdge);
+			allEdges.remove(new Edge(newEdge.v,newEdge.u));
+			
 			currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
 			if(currentprct!=oldprct) {
 				System.out.println(currentprct);
@@ -80,7 +99,49 @@ public class NewGeneratorInstance {
 	}
 
 	public static void main (String [] args) {	
-		generateInstance(50);
-		createGraphFile("instanceprct50");
+		generateInstance(65);
+		createGraphFile("instanceprct65");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(70);
+		createGraphFile("instanceprct70");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(75);
+		createGraphFile("instanceprct75");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(80);
+		createGraphFile("instanceprct80");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(85);
+		createGraphFile("instanceprct85");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(90);
+		createGraphFile("instanceprct90");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(95);
+		createGraphFile("instanceprct95");
+		
+		edges = new ArrayList<Edge>();
+		allEdges = new ArrayList<Edge>();
+		
+		generateInstance(100);
+		createGraphFile("instanceprct100");	
 	}
 }
