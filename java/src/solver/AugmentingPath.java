@@ -55,7 +55,7 @@ public abstract class AugmentingPath implements Solver {
 	}
 	
 	public void getTime() {
-		System.out.println((System.currentTimeMillis()-timeStart)+"\n");
+		System.out.println((System.currentTimeMillis()-timeStart));
 	}
 
 	public abstract int getPath();
