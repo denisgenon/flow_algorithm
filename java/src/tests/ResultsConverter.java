@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class ResultsConverter {
 	
+	// TODO a réadapté à l'output du script python
 	public static void resultsToFile(String [][] results, String title) throws IOException{
 		File f = new File ("resultsBySolver/"+title+".csv");
 		FileWriter fw = new FileWriter(f);

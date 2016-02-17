@@ -9,6 +9,7 @@ import object.Edge;
 
 public class GeneratorInstance {
 
+	// TODO à corriger, voir enlever
 	public static void generateInstance(int V, int E, int capaMax, String filename) {
 		File f = new File ("instances/"+filename+".txt");
 		try
