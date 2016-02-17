@@ -21,10 +21,10 @@ public class GeneratorInstance {
 			// Permet d'avoir un graphe connecté
 			for(int i=0; i<V-1; i++) {
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
-				if(!edges.contains(new Edge(i,i+1)) && !edges.contains(new Edge(i+1,i))) {
+				if(!edges.contains(new Edge(i,i+1,capaMax)) && !edges.contains(new Edge(i+1,i,capaMax))) {
 					fw.write(i+" "+(i+1)+" "+rdmcapa+"\n");
 					E--;
-					edges.add(new Edge(i,i+1));
+					edges.add(new Edge(i,i+1,capaMax));
 				}
 				else {
 					i--;
@@ -39,10 +39,10 @@ public class GeneratorInstance {
 				while(rdm1==0) {
 					rdm1 = (int) (Math.random()*(V));
 				}
-				if(!edges.contains(new Edge(0,rdm1)) && !edges.contains(new Edge(rdm1,0))) {
+				if(!edges.contains(new Edge(0,rdm1,capaMax)) && !edges.contains(new Edge(rdm1,0,capaMax))) {
 					fw.write(0+" "+rdm1+" "+rdmcapa+"\n");
 					E--;
-					edges.add(new Edge(0,rdm1));
+					edges.add(new Edge(0,rdm1,capaMax));
 				}
 				else {
 					i--;
@@ -55,10 +55,10 @@ public class GeneratorInstance {
 				while(rdm1==0) {
 					rdm1 = (int) (Math.random()*(V));
 				}
-				if(!edges.contains(new Edge(rdm1,(V-1))) && !edges.contains(new Edge((V-1),rdm1))) {
+				if(!edges.contains(new Edge(rdm1,(V-1),capaMax)) && !edges.contains(new Edge((V-1),rdm1,capaMax))) {
 					fw.write(rdm1+" "+(V-1)+" "+rdmcapa+"\n");
 					E--;
-					edges.add(new Edge(rdm1,(V-1)));
+					edges.add(new Edge(rdm1,(V-1),capaMax));
 				}
 				else {
 					i--;
@@ -74,9 +74,9 @@ public class GeneratorInstance {
 				}
 				int rdmcapa = (int) (Math.random()*(capaMax))+1;
 
-				if(!edges.contains(new Edge(rdm1,rdm2)) && !edges.contains(new Edge(rdm2,rdm1))) {
+				if(!edges.contains(new Edge(rdm1,rdm2,capaMax)) && !edges.contains(new Edge(rdm2,rdm1,capaMax))) {
 					fw.write(rdm1+" "+rdm2+" "+rdmcapa+"\n");
-					edges.add(new Edge(rdm1,rdm2));
+					edges.add(new Edge(rdm1,rdm2,capaMax));
 				}
 				else {
 					i--;

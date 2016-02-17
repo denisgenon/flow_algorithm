@@ -3,10 +3,12 @@ package object;
 public class Edge {
 	public int u;
 	public int v;
+	public int capacity;
 	
-	public Edge(int u, int v) {
+	public Edge(int u, int v, int capacitymax) {
 		this.u=u;
 		this.v=v;
+		capacity = (int) (Math.random()*(capacitymax))+1;
 	}
 	@Override
 	public boolean equals(Object o) {
