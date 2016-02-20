@@ -11,12 +11,13 @@ public class PushRelabel implements Solver {
 	public int sink;
 	public ArrayList<Vertex> activeNodes = new ArrayList<Vertex>();
 	public long timeStart;
+	
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
 	 */
 	public PushRelabel(Graph g) {
-		this(g,0,g.getV()-1);
+		this(g, 0, g.getV() - 1);
 	}
 	
 	/**
@@ -40,52 +41,13 @@ public class PushRelabel implements Solver {
 	 * Compute the distance label and push a flow on all the neighbors edges of the source
 	 */
 	public void preFlow() {
-		computeDistanceLabel();
-		for(int i : g.getAdjacents(source)) {
+		for (int i : g.getAdjacents(source)) {
 			int v = i;
 			pushFillingFlow(source, v);
 		}
 		g.getVertex(source).h = g.getV();
 	}
-	/**
-	 * Compute the distance of each node from the sink
-	 */
-	public void computeDistanceLabel() {
-		// Inverted Dijkstra
-		Vertex[] invertedVertices = new Vertex[g.getV()];
-
-		for (int i = 0; i < g.getV(); i++) {
-			Vertex v = new Vertex(i);
-			invertedVertices[i] = v;
-		}
-
-		for (Vertex v : g.getVertices()) {
-			for(int i : g.getAdjacents(v.id)) {
-				int u = i;
-				// V -5-> U became V <-5- U in invertedCapaMatrix
-				invertedVertices[u].adjacents.add(new Vertex(v.id));
-			}
-		}
-
-		ArrayList<Vertex> notS = new ArrayList<>();
-		for (int i = 0; i < invertedVertices.length; i++) {
-			invertedVertices[i].h = Integer.MAX_VALUE-1;
-			notS.add(invertedVertices[i]);
-		}
-		
-		invertedVertices[sink].h = 0;
-		while (notS.size() > 0) {
-			Vertex i = findMinimumDistance(notS);
-			notS.remove(i);
-			for(int p : g.getAdjacents(i.id)) {
-				int j = p;
-				if (invertedVertices[j].h > invertedVertices[i.id].h + 1) {
-					g.getVertex(j).h = invertedVertices[i.id].h + 1;
-					invertedVertices[j].h = invertedVertices[i.id].h + 1;
-				}
-			}
-		}
-	}
+	
 	/**
 	 * Find the vertex in vertices with the minimum distance from the sink
 	 * @param vertices
@@ -132,16 +94,16 @@ public class PushRelabel implements Solver {
 	/**
 	 * We push the biggest flow we can on the edge origin->desti
 	 * @param origin
-	 * @param desti
+	 * @param destination
 	 */
-	public void pushFillingFlow(int origin, int desti) {
-		int newCapacity = g.removeEdge(origin,desti);
-		g.addEdge(desti, origin, newCapacity);
+	public void pushFillingFlow(int origin, int destination) {
+		int flow = g.removeEdge(origin,destination);
+		g.addEdge(destination, origin, flow);
 		
-		Vertex dest = g.getVertex(desti);
+		Vertex dest = g.getVertex(destination);
 
-		dest.e+=newCapacity;
-		if(dest.e>0) {
+		dest.e += flow;
+		if(dest.e > 0) {
 			activeNodes.add(dest);
 		}
 	}

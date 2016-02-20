@@ -24,13 +24,15 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new SplitArrayGraph(args[0],false);
-					Solver s = new FordFulkersonScaling(g);
+					Graph g = new SplitArrayGraph(args[0], false);
+					Solver s = new PushRelabel(g);
 					s.getResults();
 					
+					/*
 					g = new SplitArrayGraph(args[0],true);
 					s = new FordFulkersonScaling(g);
 					s.getResults();
+					*/
 				}
 
 			} catch (Exception e) {
