@@ -1,6 +1,6 @@
 package solver;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -9,7 +9,7 @@ public class PushRelabel implements Solver {
 	public Graph g;
 	public int source;
 	public int sink;
-	public ArrayList<Vertex> activeNodes = new ArrayList<Vertex>();
+	public TreeSet<Vertex> activesVertices = new TreeSet<Vertex>();
 	public long timeStart;
 	
 	/**
@@ -32,13 +32,13 @@ public class PushRelabel implements Solver {
 		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preFlow();
-		while(!activeNodes.isEmpty()) { // While there is active vertex (vertex with excedent)
-			Vertex elu = activeNodes.get(0);// We take any active node (we need to change this heuristic)
-			pushFlow(elu);
+		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
+			// We take any active node (we need to change this heuristic)
+			pushFlow(activesVertices.iterator().next());
 		}
 	}
 	/**
-	 * Compute the distance label and push a flow on all the neighbors edges of the source
+	 * Push a flow on all the neighbors edges of the source
 	 */
 	public void preFlow() {
 		for (int i : g.getAdjacents(source)) {
@@ -46,22 +46,6 @@ public class PushRelabel implements Solver {
 			pushFillingFlow(source, v);
 		}
 		g.getVertex(source).h = g.getV();
-	}
-	
-	/**
-	 * Find the vertex in vertices with the minimum distance from the sink
-	 * @param vertices
-	 * @return the nearest vertex from the sink
-	 */
-	public Vertex findMinimumDistance(ArrayList<Vertex> vertices) {
-		Vertex minVertex = new Vertex(vertices.size());
-		minVertex.h = Integer.MAX_VALUE;
-		for (Vertex v : vertices) {
-			if (v.h <= minVertex.h) {
-				minVertex = v;
-			}
-		}
-		return minVertex;
 	}
 	
 	/**
@@ -74,21 +58,20 @@ public class PushRelabel implements Solver {
 		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	/**
-	 * We push a flow on the neighbors of v if we can.
-	 * @param v
+	 * We push a flow on the neighbors of u if we can.
+	 * @param u
 	 */
-	public void pushFlow(Vertex v) {
-		int hMin=Integer.MAX_VALUE;
-		for(int i : g.getAdjacents(v.id)) {
-			int uint = i;
-			Vertex u = g.getVertex(uint);
-			hMin = Math.min(hMin, u.h);
-			if (v.h-1 == u.h) { // If we can push the flow v -> u
-				pushFlow(v,u,Math.min(v.e, g.getCapacity(v.id, u.id))); // We push!
+	public void pushFlow(Vertex u) {
+		int minimalDistance = Integer.MAX_VALUE;
+		for(int i : g.getAdjacents(u.id)) {
+			Vertex v = g.getVertex(i);
+			minimalDistance = Math.min(minimalDistance, v.h);
+			if (u.h - 1 == v.h) { // If we can push the flow u -> v
+				pushFlow(u, v, Math.min(u.e, g.getCapacity(u.id, v.id))); // We push!
 				return;
 			}
 		}
-		v.h = hMin + 1; // We update the distance
+		u.h = minimalDistance + 1; // We update the distance
 	}
 
 	/**
@@ -104,7 +87,7 @@ public class PushRelabel implements Solver {
 
 		dest.e += flow;
 		if(dest.e > 0) {
-			activeNodes.add(dest);
+			activesVertices.add(dest);
 		}
 	}
 	/**
@@ -116,29 +99,29 @@ public class PushRelabel implements Solver {
 	public void pushFlow(Vertex origin, Vertex destination, int flowValue) {
 		// We update the capacity in the residual graph u -> v
 		int capacity = g.getCapacity(origin.id, destination.id);
-		if(capacity<=flowValue) { // If the edge is full, we remove it
+		if (capacity <= flowValue) { // If the edge is full, we remove it
 			g.removeEdge(origin.id, destination.id);
 		}
 		else {
-			g.setCapacity(origin.id, destination.id, capacity-flowValue);
+			g.setCapacity(origin.id, destination.id, capacity - flowValue);
 		}
 		// We update the excedent on the origin and on the desitnation
-		origin.e-=flowValue;
-		if(origin.e<=0) {
-			activeNodes.remove(origin);
+		origin.e -= flowValue;
+		if(origin.e <= 0) {
+			activesVertices.remove(origin);
 		}
-		destination.e+=flowValue;
-		if(destination.e>0 && destination.id!=(g.getV()-1) && destination.id!=0 && !activeNodes.contains(destination)) {
-			activeNodes.add(destination);
+		destination.e += flowValue;
+		if(destination.e > 0 && destination.id != (g.getV() - 1) && destination.id != 0) {
+			activesVertices.add(destination);
 		}
 
 		// We update the capacity in the residual graph v -> u
 		capacity = g.getCapacity(destination.id, origin.id);
-		if(capacity==-1) {
+		if(capacity == -1) {
 			g.addEdge(destination.id, origin.id, flowValue);
 		}
 		else {
-			g.setCapacity(destination.id, origin.id, capacity+flowValue);
+			g.setCapacity(destination.id, origin.id, capacity + flowValue);
 		}
 	}
 	
