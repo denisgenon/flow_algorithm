@@ -61,12 +61,6 @@ public class LinkedListGraph extends SimpleGraph implements Graph {
 		}
 	}
 
-
-	@Override
-	public int getFlowValue() {
-		return vertices[V-1].e;
-	}
-
 	@Override
 	public int [] getAdjacents(int vertex) {
 		int [] adjacents = new int [getAdjacentsSize(vertex)];

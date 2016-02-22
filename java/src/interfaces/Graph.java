@@ -40,12 +40,6 @@ public interface Graph {
 	 * @return Les vertices voisins du vertex
 	 */
 	public int [] getAdjacents(int vertex);
-	
-	/**
-	 * 
-	 * @return la valeur du flot
-	 */
-	public int getFlowValue();
 
 	/**
 	 * @param u : Vertex à l'origine

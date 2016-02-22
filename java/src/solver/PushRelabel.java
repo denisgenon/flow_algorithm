@@ -53,7 +53,7 @@ public class PushRelabel implements Solver {
 	public void getResults() {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getFlowValue());
+		System.out.println("Max flot : " + g.getVertex(sink).e);
 		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 	}
 	/**

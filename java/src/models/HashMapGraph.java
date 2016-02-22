@@ -79,11 +79,6 @@ public class HashMapGraph extends SimpleGraph implements Graph {
 	}
 
 	@Override
-	public int getFlowValue() {
-		return vertices[V-1].e;
-	}
-
-	@Override
 	public int removeEdge(int u, int v) {
 		return residualGraph[u].remove(v);
 	}
