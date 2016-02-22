@@ -1,6 +1,6 @@
 package solver;
 
-import java.util.TreeSet;
+import java.util.HashSet;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -9,7 +9,7 @@ public class PushRelabel implements Solver {
 	public Graph g;
 	public int source;
 	public int sink;
-	public TreeSet<Vertex> activesVertices = new TreeSet<Vertex>();
+	public HashSet<Vertex> activesVertices = new HashSet<Vertex>();
 	public long timeStart;
 	
 	/**
@@ -42,8 +42,7 @@ public class PushRelabel implements Solver {
 	 */
 	public void preFlow() {
 		for (int i : g.getAdjacents(source)) {
-			int v = i;
-			pushFillingFlow(source, v);
+			pushFillingFlow(source, i);
 		}
 		g.getVertex(source).h = g.getV();
 	}
@@ -89,6 +88,7 @@ public class PushRelabel implements Solver {
 		if(dest.e > 0) {
 			activesVertices.add(dest);
 		}
+		
 	}
 	/**
 	 * We push a flow on the residual graph and we update our graph representation

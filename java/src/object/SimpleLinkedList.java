@@ -1,7 +1,5 @@
 package object;
 
-import java.util.Iterator;
-
 public class SimpleLinkedList {
 	protected Node head;
 	protected int size;
@@ -74,27 +72,5 @@ public class SimpleLinkedList {
 			System.out.println(c.getElement().getId());
 			c = c.getNext();
 		}
-	}
-	public Iterator<Integer> iterator() {
-		return new Iterator<Integer>() {
-			Node current = head;
-
-			@Override
-			public boolean hasNext() {
-				return current != null;
-			}
-
-			@Override
-			public Integer next() {
-				int id = current.getElement().idDestination;
-				current = current.getNext();
-				return id;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			};
-		};
 	}
 }

@@ -12,7 +12,6 @@ import object.Vertex;
 public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public SplitArray[] residualGraph;
 
-
 	public SplitArrayGraph(String filePath, boolean oriented) {
 		this.oriented = oriented;
 		parse(filePath);
@@ -22,6 +21,7 @@ public class SplitArrayGraph extends SimpleGraph implements Graph{
 	public void parse(String filePath) {
 		try {
 			BufferedReader br;
+			
 			br = new BufferedReader(new FileReader(filePath));
 
 			String line = br.readLine();

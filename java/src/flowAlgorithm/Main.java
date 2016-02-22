@@ -24,7 +24,7 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new SplitArrayGraph(args[0], false);
+					Graph g = new LinkedListGraph(args[0], true);
 					Solver s = new PushRelabel(g);
 					s.getResults();
 					
