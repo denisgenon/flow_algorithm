@@ -34,7 +34,7 @@ public class PushRelabel implements Solver {
 		preFlow();
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
 			// We take any active node (we need to change this heuristic)
-			pushFlow(activesVertices.iterator().next());
+			pushrelabelFlow(activesVertices.iterator().next());
 		}
 	}
 	/**
@@ -60,7 +60,7 @@ public class PushRelabel implements Solver {
 	 * We push a flow on the neighbors of u if we can.
 	 * @param u
 	 */
-	public void pushFlow(Vertex u) {
+	public void pushrelabelFlow(Vertex u) {
 		int minimalDistance = Integer.MAX_VALUE;
 		for(int i : g.getAdjacents(u.id)) {
 			Vertex v = g.getVertex(i);
@@ -70,7 +70,7 @@ public class PushRelabel implements Solver {
 				return;
 			}
 		}
-		u.h = minimalDistance + 1; // We update the distance
+		u.h = minimalDistance + 1; // Relabel the distance
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class EdmondsKarp extends AugmentingPath {
 		}
 		
 		// BFS
-		LinkedList<Integer> queue = new LinkedList<>();
+		LinkedList<Integer> queue = new LinkedList<Integer>();
 		queue.add(source);
 		while (!queue.isEmpty() && parents[sink] == -1) {
 			int u = queue.removeFirst();
