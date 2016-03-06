@@ -36,7 +36,7 @@ public class PushRelabel implements Solver {
 			// We take any active node (we need to change this heuristic)
 			pushFlow(activesVertices.iterator().next());
 		}
-	}
+	} 
 	/**
 	 * Push a flow on all the neighbors edges of the source
 	 */
@@ -54,7 +54,7 @@ public class PushRelabel implements Solver {
 		System.out.println("|V| : " + g.getV());
 		System.out.println("|E| : " + g.getE());
 		System.out.println("Max flot : " + g.getVertex(sink).e);
-		System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
+		System.out.println("Temps d'execution : " + (System.currentTimeMillis()-timeStart) + " ms"+"\n");
 	}
 	/**
 	 * We push a flow on the neighbors of u if we can.
