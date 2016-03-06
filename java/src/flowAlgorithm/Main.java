@@ -13,19 +13,26 @@ public class Main {
 		else {
 			try {
 				if(args[0].equals("all")) {
-					File directoryToScan = new File("instancesPrct"); 
+					File directoryToScan = new File("instancesUniquePrct"); 
 					for(File f : directoryToScan.listFiles()){
 						//if(f.getName().contains("5")){
-							System.out.println(f.getName()+" : ");
-							Graph g = new SplitArrayGraph(f.getPath(),true);
-							Solver s = new EdmondsKarp(g);
-							s.getResults();
+						Graph g = new LinkedListGraph(f.getPath(), true);
+						Solver s = new EdmondsKarp(g);
+						s.getResults();
+						
+						g = new LinkedListGraph(f.getPath(), true);
+						s = new EdmondsKarpScaling(g);
+						s.getResults();
 						//}
 					}
 				}
 				else {
 					Graph g = new LinkedListGraph(args[0], true);
-					Solver s = new PushRelabel(g);
+					Solver s = new EdmondsKarpScaling(g);
+					s.getResults();
+					
+					g = new LinkedListGraph(args[0], true);
+					s = new EdmondsKarp(g);
 					s.getResults();
 					
 					/*

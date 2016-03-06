@@ -148,7 +148,7 @@ public class NewGeneratorInstance {
 	}
 
 	public static void createGraphFile(String filename) {
-		File f = new File ("instancesUniquePrct/"+filename+".txt");
+		File f = new File ("instancesUniquePrct3/"+filename+".txt");
 		FileWriter fw;
 		try {
 			fw = new FileWriter (f);
