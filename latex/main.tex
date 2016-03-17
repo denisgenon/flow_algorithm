@@ -1,0 +1,171 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HEADER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper,11pt, openright]{book}
+
+% Alternative Options:
+% Base Font Size: 10pt / 11pt / 12pt
+
+
+%% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[USenglish]{babel} %francais, polish, spanish, ...
+\usepackage[T1]{fontenc}
+\usepackage[ansinew]{inputenc}
+
+\usepackage{lmodern} %Type1-font for non-english texts and characters
+
+%%%%%%%%%%% margin %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper] {geometry}
+\geometry{hmargin={3cm,2cm}}
+%\geometry{hmargin=2.5cm,top=3cm,bottom=2.3cm}
+
+
+%% Packages for Graphics & Figures %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx} %%For loading graphic files
+\usepackage{caption}
+\usepackage{subcaption} %%Subfigures inside a figure
+\usepackage{pdflscape}
+%\usepackage{pst-all} %%PSTricks - not useable with pdfLaTeX
+
+%%%% SPACING %%%%
+\renewcommand{\baselinestretch}{1}  %%%%%%% space between lines %%%%%
+%\headsep = 10.mm
+%\setlength{\parskip}{2.0ex plus0.5ex minus0.5ex}
+												
+%%%% COMMANDS %%%%
+\renewcommand\title{Study and Analysis of Networks Flows}
+\newcommand\name{\textsc{Denis Genon \& Victor Velghe}}
+\newcommand\options{Artificial Intelligence}
+\newcommand\supervisor{ \textsc{Yves Deville}}
+\newcommand\readerone{ \textsc{Fran\çois Aubry}}
+\newcommand\readertwo{ \textsc{Jean-Charles Delvenne}}
+\newcommand\years{2015-2016}
+
+%% Math Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+%\usepackage{algorithm}
+%\usepackage[noend]{algpseudocode}
+\usepackage[boxed]{algorithm2e}
+
+%% Code Writing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+% "define" Scala
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
+}
+
+\lstset{frame=tb,language=scala,aboveskip=3mm,belowskip=3mm,showstringspaces=false,columns=flexible,basicstyle={\small\ttfamily}}
+\renewcommand{\lstlistingname}{Code}
+%% Line Spacing %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{setspace}
+%\singlespacing        %% 1-spacing (default)
+%\onehalfspacing       %% 1,5-spacing
+%\doublespacing        %% 2-spacing
+
+
+%% Other Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{url} %%for url in the bibliography
+%\usepackage{bold-extra}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\pagestyle{empty} %No headings for the first pages.
+
+
+%% Title Page %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newgeometry{hmargin=2.5cm,top=3cm,bottom=2.3cm}
+\include{sections/cover}
+\restoregeometry
+\cleardoublepage
+\section*{Abstract}
+\input {sections/abstract}
+\cleardoublepage
+\section*{Acknowledgment}
+\input{sections/thanks}
+\cleardoublepage
+%% Table of contents %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tableofcontents %Table of contents
+\cleardoublepage %The first chapter should start on an odd page.
+
+\pagestyle{plain} %Now display headings: headings / fancy / ...
+
+
+
+%% Chapters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Introduction}\label{introduction}
+\input{sections/introduction}
+
+\chapter{ACO abstraction for classes of problems}\label{abstraction}
+\input{sections/abstraction}
+
+\chapter{An ACO Framework}\label{Framework}
+\input{sections/framework}
+
+\chapter{Experimental Results}\label{tests}
+\input{sections/tests}
+
+\chapter{Conclusion}
+\input{sections/conclusion}
+
+
+%% <== End of core
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BIBLIOGRAPHY AND OTHER LISTS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% A small distance to the other stuff in the table of contents (toc)
+\addtocontents{toc}{\protect\vspace*{\baselineskip}}
+
+%% The Bibliography
+%% ==> You need a file 'bibliographie.bib' for this.
+%% ==> You need to run BibTeX for this (Project | Properties... | Uses BibTeX)
+\addcontentsline{toc}{chapter}{Bibliography} %'Bibliography' into toc
+\nocite{*} %Even non-cited BibTeX-Entries will be shown.
+\bibliographystyle{ieeetr} %Style of Bibliography: plain / apalike / amsalpha / ...
+\bibliography{bibliography} %You need a file 'literature.bib' for this.
+
+%% The List of Figures
+\clearpage
+%%\addcontentsline{toc}{chapter}{List of Figures} %%no need in the toc
+\listoffigures
+
+%% The List of Tables
+\clearpage
+%%\addcontentsline{toc}{chapter}{List of Tables} %% no need in the toc.
+\listoftables
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% APPENDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+%% ==> Write your text here or include other files.
+
+%\input{FileName} %You need a file 'FileName.tex' for this.
+%\input{AnnCVRP}
+
+\end{document}
+

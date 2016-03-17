@@ -1,0 +1,270 @@
+%!TEX root = ../main.tex
+In this chapter, an analysis of the applications of ACO for the problems of interest are investigated. The goal of these investigations is to determine what can be abstracted to make an ACO framework. The applications made and analyzed in this chapter contribute towards the chapter \ref{Framework} where the architecture of the Framework is presented along with the choices made for the implementation.
+
+\section{Application of ACO for the TSP}\label{applitsp}
+Let us start with a high level description of the application of ACO for the TSP. A TSP is formulated in the form of a fully connected graph $G=(C,L)$. Because of the fact that this graph is complete, an ant will always build a complete feasible tour (a path that visits all the nodes exactly once). The pheromone trails are associated with the arc $(i,j) \in L$ so that each arc has a value $\tau_{ij}$ corresponding to the pheromone trail. $\tau_{ij}$ gives a value to the desirability of visiting city j directly after i. This information is coupled with a heuristic information $\eta_{ij} = 1/d_{ij}$ that is inversely proportional to the distance between city $i$ and $j$.
+A tour (a solution) is constructed with a simple constructive procedure :
+\begin{itemize}
+	\item An ant is randomly positioned at a start city.
+	\item The ant uses the pheromone and heuristic value to choose probabilistically the next city to add to her path. This is done until all cities have been visited.
+	\item The ant goes back to her start city to complete the tour.
+\end{itemize}
+When all ants have constructed their tour, these tours are compared using a simple objective function that measures the total length of the tour. Pheromones are dropped on the path in a certain manner explained in section \ref{pheromonetsp}. The amount of pheromone dropped is a function of the tour quality. Also, an evaporation of the pheromone is applied (the concentration of pheromone diminishes), this is made to foster exploration. The representation of these pheromones $\tau_{ij}$ and the distance $d_{ij}$ between two cities is made with two square matrices.
+Note that when the ants have built a tour, it can be improved by the application of a local search procedure.
+
+\begin{algorithm}
+set parameters, initialize pheromone trails\;
+\While{termination condition not met}{
+	ConstructAntsSolution\;
+	ApplyLocalSearch //optional \;
+	UpdatePheromones \;}
+\caption{ACO skeleton for TSP}\label{alg:acometa}
+\end{algorithm}
+
+\subsection{Tour Construction}
+When the ants construct a tour, they have to choose the next city they will visit. As we said earlier, that choice is probabilistic and is ruled by the so-called \emph{random proportional rule}. This rule is explained as :  the probability that an ant $k$ at city $i$ goes to city $j$ is :
+\begin{equation}
+	p_{ij}^k =
+	\begin{cases}
+		\frac{[\tau_{ij}]^\alpha [\eta_{ij}]^\beta}{\sum_{l\in N_i^k}{[\tau_{il}]^\alpha [\eta_{il}]^\beta}} & \text{if } j\in N_i^k\\
+		0 & \text{otherwise}
+		\end{cases}
+	\label{eq:random proportional rule}
+\end{equation}
+In this equation \ref{eq:random proportional rule}, $\eta_{ij}$ represents a heuristic information. In this case, as we want to minimize the travel length, $\eta_{ij} = \frac{1}{d_{ij}}$ where $d_{ij}$ is the distance between city $i$ and city $j$. $N_i^k$ is the feasible neighborhood of ant $k$ at city $i$. In other words, it is the set of cities that have not been visited yet by the ant $k$. $\tau_{ij}$ represents the amount of pheromone on the arc $(i,j)$. $\alpha$ and $\beta$ are parameters that affect the importance of the pheromone or the heuristic information. If $\alpha = 0$, the closest city will be chosen more often, and the pheromone information will not be used. If $\beta = 0$, only the pheromones will be used without heuristic. These two cases usually lead to a stagnation situation, all the ants following the same path and constructing the same tour.
+
+
+Using this random proportional rule (equation \ref{eq:random proportional rule}) with good parameters $\alpha$ and $\beta$ permits to balance the construction procedure between exploration and exploitation.
+
+To make things work, each ant $k$ has to keep in memory which cities have already been visited and the order in which they have been visited (indeed, they need to keep in memory the solution path they are building). This is also useful to determine the feasible neighborhood $N_i^k$.
+
+\subsection{Update of pheromone trails}\label{pheromonetsp}
+The pheromone trails are modified in two ways. There is both a reinforcement and an evaporation of the trails. As explained in chapter \ref{introduction}, the evaporation is mandatory to make the algorithm work. There are many different systems that can be used to perform these two operations. We use here the system described in the Ant Colony System (ACS) \cite{dorigo1997acs} in which the reenforcement of pheromones is made using only the ant $k$ that has made the best tour so far (according to the objective function). This method has proven to be the best. The evaporation is done each time an ant uses an arc $(i,j)$ to move from city $i$ to city $j$. This is done to increase the exploration of alternative paths.
+As previously said, in ACS only one ant will be used to add pheromone after an iteration. The update of the pheromone follows the equation :
+\begin{equation}
+	\tau_{ij} \leftarrow (1-\rho)\tau_{ij} + \rho\Delta\tau_{ij}^{bs}, \forall(i,j) \in T^{bs}
+	\label{eq:pheromoneupdate}
+\end{equation}
+
+Where $\Delta\tau_{ij}^{bs} = \frac{1}{C^{bs}}$, $T^{bs}$ is the best tour so far, and $C^{bs}$ is the length of this best tour so far. $\rho$ is a constant chosen to represent the pheromone evaporation rate. The use of it in the pheromone update equation permits to have a new trail that is a weighted average between the old pheromone value and the new amount deposited. As said before, you can see from the equation \ref{eq:pheromoneupdate} that only the arcs belonging to the best solution are updated.
+To increase the exploration of alternative paths, a local pheromone trail update is done each time an ant use an arc $(i,j)$ during the construction of a solution. This local update is made following the rule given hereafter :
+\begin{equation}
+	\tau_{ij} \leftarrow (1 - \mathcal{E})\tau_{ij} + \mathcal{E}\tau_0
+	\label{eq:localpheromone}
+\end{equation}
+With $\mathcal{E}$, $0<\mathcal{E}<1$ and $\tau_0$ are two parameters. $\tau_0$ is the initial value of the pheromone trails and $\mathcal{E}$ represent the importance of this local evaporation.
+
+
+\subsection{Algorithm and data structure used}
+To better understand how all these concepts will work together, an analysis of a first implementation of a TSP solver using an ACO metaheuristic is made. In this section, it is explained how the implementation is done, what kind of data structures are used, what methods are implemented and how they are classified. This will be helpful to understand the choices of implementation given in chapter \ref{Framework}.
+
+To understand how all of the concepts given in the previous sections are put together, an algorithm that shows how the application will work is presented in Algorithm \ref{alg:acotsp}.
+
+\begin{algorithm}
+$Distance \leftarrow$ matrix containing the distance informations\;
+$Cities \leftarrow$ vector containing the different cities\;
+$Tau \leftarrow$ matrix containing the pheromone information\; \tcc*{all values = $\tau_0$ at the beginning}
+
+set parameters $\alpha, \beta, \rho, \mathcal{E}, \tau_0$\;
+
+\While{$nb\_iteration < MAX\_ITERATION$}{
+  $T^{bs}\leftarrow empty$\; \tcc*[r]{contain the best tour of the iteration}
+	\ForEach{Ant k}{
+		$M_k \leftarrow Cities$\;
+		$Path \leftarrow empty$\;
+		$current\_city \leftarrow randomlyChoosenCity()$\;
+		\While{$!M_k is empty$}{
+			$next\_city \leftarrow choseNextCity()$\; \tcc*{choseNextCity() uses the equation \ref{eq:random proportional rule}}
+			remove $next\_city$ from $M_k$\;
+			add $next\_city$ to $Path$\;
+			apply local pheromone update \; //using equation \ref{eq:localpheromone}
+			$current\_city \leftarrow next\_city$\;
+		}
+		localSearch()\; \tcc*{optional} 
+	}
+	$T^{bs} \leftarrow bestPath()\; $ \tcc*{bestPath() select the best path constructed by the ants according to an objective function (for tsp the total length of the tour)}
+	Update Pheromones \; \tcc*{using equation \ref{eq:pheromoneupdate}}}
+\caption{Complete ACO algorithm for the TSP}\label{alg:acotsp}
+\end{algorithm}
+
+In algorithm \ref{alg:acotsp}, each ant builds a complete tour (\texttt{foreach Ant k do ...}). When all the ants have built a tour, the best one is selected and kept in memory. This best path is then used to update the pheromones. This construction step is made a certain number of times, the number \texttt{MAX\_ITERATION}.
+
+To apply this algorithm 3 different classes are used: 
+\begin{description}
+	\item[Ant] The class Ant contains the two vectors named $M_k$ and $Path$ in the algorithm \ref{alg:acotsp}. This class contains also the method $choseNextCity()$ that permits to choose the next city to visit using the equation \ref{eq:random proportional rule}.
+	\item[Colony] The class Colony is used to coordinate the ants and keep the information that are used by them. Like the $Tau$ matrix. There is also an array of the ants that is used to launch the construction of the path of each ant one by one and collect their results. It is in this class that are located the objective function to measure the quality of a solution, and the method that updates the pheromone information.
+	\item[Problem] The class Problem contains the information relative to the problem, in the case of a TSP, the distance matrix only.
+\end{description}
+
+
+\section{Application of ACO for the CVRP}\label{applicvrp}
+The CVRP is similar to the TSP except that data is added on the client: the demand, and a constraint on the ants (representing the vehicles): their maximum load. 
+
+\subsection{Tour Construction}\label{tourCVRP}
+The tour construction is similar to the one used in the TSP except that if the next city chosen makes the ant violate her capacity constraint, she must come back to the depot first, closing the circuit she was building and starting a new one.
+
+In certain pieces of literature, a new random proportional rule is proposed to increase the quality of the results of the ant colony system on the CVRP \cite{bullnheimer1999applying}.
+
+\begin{equation}
+	p_{ij}^k =
+	\begin{cases}
+		\frac{[\tau_{ij}]^\alpha [\eta_{ij}]^\beta [\mu_{ij}]^\gamma [\kappa_{ij}]^\lambda}{\sum_{l\in N_i^k}{[\tau_{il}]^\alpha [\eta_{il}]^\beta [\mu_{il}]^\gamma [\kappa_{il}]^\lambda}} & \text{if } j\in N_i^k\\
+		0 & \text{otherwise}
+	\end{cases}
+	\label{eq:cvrp proportional rule}
+\end{equation}
+
+The first new element introduced in this equation is called the \textit{savings} , $\mu_{ij}$. In a CVRP, it is not only the relative location of two cities which is important (information that is held in $\eta_{ij}$). The savings add an information about the relative location of two cities to the depot. The savings measure the favorability of combining two cities $i$ and $j$ to a tour. The quantification of $\mu_{ij}$ is given by :
+\begin{equation}
+	\mu_{ij} = d_{i0} + d_{0j} - d_{ij}
+	\label{eq:savings}
+\end{equation}
+A high value for $\mu_{ij}$ indicates that visiting city $j$ after city $i$ is a good choice. A new parameter $\gamma$ is introduced to regulate the influence of the savings as does $\alpha$ and $\beta$ for the pheromones and the heuristic information respectively.
+The second element introduced in equation \ref{eq:cvrp proportional rule} is a characterization of the capacity utilization of the vehicles. This information is held in $\kappa_{ij}$ and the quantification is given by :
+\begin{equation}
+ \kappa_{ij} = (Q_i + q_j)/Q
+ \label{eq:capacity utilization}
+\end{equation}
+$Q_i$ is the total capacity used including the capacity requirement of customer $i$, $q_j$ is the capacity requirement of customer $j$ and $Q$ is the maximum capacity of a vehicle.
+A high value of $\kappa_{ij}$ indicates a high capacity utilization through the visit of $j$ after visiting $i$. Again a new parameter $\lambda$ is introduced to determine the influence of $\kappa_{ij}$
+
+\subsection{Update of pheromone trails}
+The pheromone update is made in the same way that for the TSP. As explained in section \ref{pheromonetsp}, a local pheromone update is made every time an ant uses an arc and a global update is made with the best solution constructed by the ants.
+
+\subsection{Algorithm and Data Structures}
+The changes explained in section \ref{tourCVRP} imply a few modifications in the application. Indeed the information about the demand of a customer and the maximum load of a vehicle has to be kept. To do so, a new class is created, the \texttt{Client} class.
+\begin{description}
+\item[Client] The Client class is a data class that contains the information about the clients. For the CVRP, it contains an array with the quantity demanded by each client. 
+\end{description}
+
+In addition to that, two fields are added into the class Ant. One contains the maximum load that an ant can carry, the other the current load of the ant. Also, the method $choseNextCity()$ has been modified to take into account the fact that a trip back to the depot has to be made when the maximum load is reached.
+
+\section{Application of ACO for the VRPTW}\label{applivrptw}
+With the VRPTW, another constraint is added to the route. It is the time window. A vehicle must arrive at a client $i$ in a time frame associated to him. As for the CVRP we must add a new piece of information to the client: the time frame; and to the ants: the current time.
+
+To solve the VRPTW problem, a simple solution is to extend the CVRP model to take into account the new time constraints. This is what we call the simple solution because it leads to poor results. Another solution called Multiple Ant Colony System permits the optimization of a multiple objective function. This approach is developed by Gambardella, Taillard and Agazzi in their paper \cite{gambardella1999macs}. These two solutions are explained hereafter.
+\subsection{Simple Solution}\label{naivevrptw}
+
+\subsubsection{Tour Construction}
+
+For the tour construction in the VRPTW, a filter is used to isolate the feasible cities between the cities that have not been visited yet. A feasible city is a city $j$ for an ant $k$ standing at city $i$ such that visiting $j$ after $i$ does not violate any constraints (load and time). Then, the probabilistic choice is made using this subset of feasible cities. This leads to better results. The tour construction of an ant in the VRPTW is resumed in algorithm \ref{alg:tourVRPTW}. In this algorithm, a loop is made until the set \texttt{$M_k$} of unvisited cities is empty. From this set of cities are filtered the cities that lead to a violation of the constraints. That is, if the current city is $i$, the load of the truck is $Q_i$ (quantity demanded at city $i$ plus the load of all the cities visited before $i$) and the current time is $T_i$ (time to go to city $i$), a city $j$ will be discarded if the load $Q_i + q_j$ is greater than the maximum capacity of a truck, or if the time $T_i + t_{ij}$ is greater than the upper limit of the time window of city $j$. From this filtered set of cities, the next city is chosen and removed from the set $M_k$ using equation \ref{eq:random proportional rule} or \ref{eq:cvrp proportional rule}. Then, the pheromones are updated. 
+
+\begin{algorithm}
+		$M_k \leftarrow Cities$\;
+		$Path \leftarrow empty$\;
+		$feasible\_city \leftarrow empty$\;
+		$current\_city \leftarrow depot$\;
+		\While{$!M_k is empty$}{
+			$feasible\_city \leftarrow computeFeasible()$\;
+			\eIf{$feasible\_city$ is empty}{$next\_city \leftarrow depot$}{
+			$next\_city \leftarrow choseNextCity(feasible\_city)$\;
+			remove $next\_city$ from $M_k$\;}
+			add $next\_city$ to $Path$\;
+			apply local pheromone update \; 
+			$current\_city \leftarrow next\_city$\;
+		}
+\caption{Tour construction for the VRPTW}\label{alg:tourVRPTW}
+\end{algorithm}
+
+\subsubsection{Multiple Ant Colony System}
+The MACS-VRPTW implementation \cite{gambardella1999macs} is an ACO implementation designed to solve the VRPTW with two objective functions : the minimization of the number of vehicles (or tours) and the minimization of the total travel time. Note that the introduction of these two objective functions permits to obtain better results but it is not mandatory to solve a VRPTW (as explained in section \ref{naivevrptw}). 
+
+In this section is presented a simplified MACS-VRPTW version to have something comparable to the implementation presented in section \ref{applitsp} and \ref{applicvrp}. MACS is implemented to use parallelism to the fullest degree. The previous implementation did not use the parallelism so it is removed. Some optional functions that serve to improve the results as an insertion method or a specific local search method have also been removed in the simplified version presented hereafter.
+
+In this implementation, the construction of a solution is made in two steps. The first step concerns the minimization of the number of vehicles used. The second step concerns the minimization of the total travel time.
+
+\paragraph{Vehicle minimization}
+The first step aims to find feasible solutions (solutions that visit all the cities without violating any constraints) with the least possible number of vehicles. The algorithm used is presented in algorithm \ref{alg:vehi}. The algorithm works as follows. A first solution is built with a non limited number of vehicles. This is the so-called \texttt{first\_sol}. This solution has a number of vehicles $v$. The \texttt{min\_vehicle(nb\_vehicle)} method is then called with as argument a number of vehicles $nb\_vehicle = v-1$ as the number of vehicles must be reduced. The different parameters are initialized (pheromone, time, load ...) then for a defined number of iterations, each ant will try to build a feasible solution with the number of vehicles $v-1$ (\texttt{run\_ant(nb\_vehicle, IN)} call). Because the number of vehicles is limited, a solution does not especially visits all of the customers. To favor the construction of a solution with all the nodes, a special vector \texttt{IN} is used. Each time a node $j$ is not in a solution given by an ant, the value $IN[j]$ is incremented by one. This value is then used in the construction algorithm of the ant, that is explained later in algorithm \ref{alg:ant}.
+If the solution built by the ant $k$ is better (visits more clients) than the current solution, it is kept in mind. If that solution is feasible (visits all clients), it replaces the \texttt{best\_feasible\_solution} and a recursive call to the \texttt{min\_vehicle} method is made with the number of vehicles diminished by one. This is done until we reach the maximum number of iterations. If these two conditions are not satisfied a pheromone update is done and the iteration continues.
+ 
+ \begin{algorithm}
+		$best\_feasible\_solution \leftarrow first\_sol$\;
+	 \textbf{def} min\_vehicle(nb\_vehicle)\;
+		$current\_sol$\;
+		initialize pheromone using nb\_vehicle\;
+		$N_i^k \leftarrow$ feasible nodes \;
+		\While{iterations < max\_iteration}{
+			\lForEach{ant $k$} {
+				\tcc{construct a solution $\Psi^k$}
+				run\_ant(nb\_vehicle,IN)\;
+				$\forall$ customer $j \notin \Psi^k$ : $IN[j] \leftarrow IN[j]+1$\;
+				}
+			\If{ $\exists k : visited\_customer(Psi^k) > visited\_customer(current\_sol) $}{
+				$current\_sol \leftarrow \Psi^k$\;
+				$\forall j : IN_j \leftarrow 0$\;
+				\If{$current\_sol$ is feasible }{
+					$best\_feasible\_sol \leftarrow current\_sol$\;
+					min\_vehible(nb\_vehicle-1)\;
+				}
+				pheromone\_update\;
+			}
+			}
+					
+\caption{Algorithm used to minimize the number of vehicle in a VRPTW}\label{alg:vehi}
+\end{algorithm}
+
+
+
+\paragraph{Time minimization}
+The second step aims to minimize the travel time of a solution using the number of vehicles found with the vehicle minimization. The algorithm \ref{alg:time} is the one used to achieve that goal. The algorithm is very similar to the one used in the vehicle minimization except that in this case each feasible solution built by the ants are compared with regards to the time. A solution replaces the best one kept in memory only if it takes less time.
+
+ \begin{algorithm}
+		$best\_feasible\_solution \leftarrow first\_sol$\;
+	 \textbf{def} min\_time(nb\_vehicle)\;
+		$current\_sol$\;
+		initialize pheromone using nb\_vehicle\;
+	  $N_i^k \leftarrow$ feasible nodes \;
+		\While{iterations < max\_iteration}{
+			\lForEach{ant $k$} {
+				\tcc{construct a solution $\Psi^k$}
+				run\_ant(nb\_vehicle,IN)\;
+			\If{$\exists k : Psi^k$ is feasible \&\& $Time_{\Psi^k} < Time_{\Psi^{best\_feasible\_solution}} $}{$best\_feasible\_sol \leftarrow \Psi^k$\;}
+				
+				pheromone\_update\;
+	}
+}
+					
+\caption{Algorithm used to minimize the travel time in a VRPTW}\label{alg:time}
+\end{algorithm}
+
+
+
+
+In the vehicle minimization and time minimization, an \texttt{run\_ant(nb\_vehicles, IN)} method is used. Algorithm \ref{alg:ant} presents that method. From the CVRP implementation, the first difference that stands out is the arguments that are used: \texttt{nb\_vehicle} and \texttt{IN}. In MACS, as explained earlier, we try to minimize the number of vehicle used. To do that, the ant that builds a solution has to know the number of tours it can make, this is why we use the \texttt{nb\_vehicle} parameter. \texttt{IN} is an array that has an entry for each cities of the problem. This vector is used in the \texttt{select\_next\_node} method where the proportional rule presented in equation \ref{eq:cvrp proportional rule} is used. Indeed, the attractiveness $\eta_{ij}$ used in that equation is not anymore given by $1/d_{ij}$. The computation of $\eta_{ij}$ is done as follows:
+\begin{eqnarray*}
+	delivery\_time_j & \leftarrow & max(current\_time_k + t_{ij}, a_j)\\
+	delta\_time_{ij} & \leftarrow  & delivery\_time - current\_time_k\\
+	distance_{ij} & \leftarrow & delta\_time_{ij} * (b_j - current\_time_k)\\
+	distance_{ij} & \leftarrow & max(1.0, (distance_{ij}-IN_j))\\
+	\eta_{ij} & \leftarrow & 1/distance_{ij}
+\label{eq:etavrptw}
+\end{eqnarray*}
+ The delivery\_time is computed as the maximum value between the current time of the ant k plus the time it takes to go from client $i$ (the client where the ant $k$ is) to client $j$ and the beginning of the time window associated to client $j$. This comparison is done because the client can not be delivered to before the beginning of its time window. The delta\_time is computed as the difference of the delivery time and the current time of the ant k. The distance is then computed as the product of the delta\_time and the end of the time windows of client $j$ minus the current time of the ant $k$. The $IN$ vector is taken into account to diminish the distance value. Every time a city $j$ is not visited in a path constructed by the ants, the value $IN[j]$ is incremented. So the distance is virtually lowered to permit the cities that are not often in a path to have a higher probability of being chosen. Finally $\eta_{ij}$ is computed.
+	
+
+
+ \begin{algorithm}
+	 \textbf{def} run\_ant(nb\_vehicle, IN): \;
+		put ant k at depot i\;
+		$\Psi^k \leftarrow i$\;
+		$current\_time_k \leftarrow 0$, $load_k \leftarrow 0$ \;
+		$N_i^k \leftarrow$ feasible nodes \;
+		\While{$N_i^k != empty$}{
+			$\forall j \in N_i^k$ compute attractiveness $\eta_{ij}$\;
+				
+			select\_next\_node(IN)\; //Choose probabilistically the next node $j$ using $\eta_{ij}$
+			$\Psi^k \leftarrow \Psi^k + j$\;
+			$current\_time_k \leftarrow delivery_time_j$\;
+			$load_k \leftarrow load_k + q_j$ \;
+			
+			\If{j is depot}{
+					$current\_time_k \leftarrow 0$, $load_k \leftarrow 0$ \;
+					$nb_vehicle --$\;
+			}
+			local pheromone update \;
+			$i \leftarrow j $\;
+			$N_i^k \leftarrow$ feasible nodes \;
+		}
+		
+\caption{Algorithm used by the ant to build a solution in MACS}\label{alg:ant}
+\end{algorithm}
