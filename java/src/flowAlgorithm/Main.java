@@ -2,8 +2,12 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.*;
-import solver.*;
+import models.LinkedListGraph;
+import models.SplitArrayGraph;
+import solver.EdmondsKarp;
+import solver.EdmondsKarpScaling;
+import solver.FordFulkersonScaling;
+import solver.Solver;
 
 public class Main {
 	public static void main(String[] args) {
@@ -12,7 +16,7 @@ public class Main {
 		} 
 		else {
 			try {
-				if(args[0].equals("all")) {
+				if (args[0].equals("all")) {
 					File directoryToScan = new File("instancesUniquePrct"); 
 					for(File f : directoryToScan.listFiles()){
 						//if(f.getName().contains("5")){
@@ -27,10 +31,10 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new LinkedListGraph(args[0], true);
-					Solver s = new EdmondsKarpScaling(g);
+					Graph g = new ArrayListGraph(args[0], true);
+					Solver s = new FordFulkersonScaling(g);
 					s.getResults();
-					
+					/*
 					g = new LinkedListGraph(args[0], true);
 					s = new EdmondsKarp(g);
 					s.getResults();
