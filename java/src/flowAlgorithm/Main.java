@@ -37,6 +37,10 @@ public class Main {
 					/*
 					g = new LinkedListGraph(args[0], true);
 					s = new EdmondsKarp(g);
+					
+					Thread.sleep(10000);
+					Graph g = new LinkedListGraph(args[0], true);
+					Solver s = new PushRelabel(g);
 					s.getResults();
 					
 					/*
