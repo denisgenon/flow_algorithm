@@ -26,3 +26,5 @@ Thumbs.db
 .ilg
 .idx
 .lot
+java/instancesUniquePrct/**
+java/instances/**
