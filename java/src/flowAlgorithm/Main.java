@@ -31,7 +31,7 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new ArrayListGraph(args[0], true);
+					Graph g = new SplitArrayGraph(args[0], true);
 					Solver s = new FordFulkersonScaling(g);
 					s.getResults();
 					/*
