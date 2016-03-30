@@ -13,7 +13,7 @@ An available path from the source to the sink is called \textit{augmenting path}
 \end{figure}
 
 
-When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of the edges of this path. We update the \textit{residual graph} and then we look for a new augmenting path. \newline
+When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of the edges of this path. We update the \textit{residual graph} by decreasing capacities in forward edges and increasing capacities in backward edges. Then we look for a new augmenting path. \newline
 
 Here is the \textit{residual graph} after sending 4 units of flow through the \textit{augmenting path} A-C-E-F : \newline
 
