@@ -18,6 +18,8 @@ public abstract class AugmentingPathScaling extends AugmentingPath {
 		int addedFlow = 0;
 		timeStart = System.currentTimeMillis();
 		int delta = g.getMaxCapacity();
+		int jfjf = 0;
+
 		while (delta >= 1 && !timeout) {
 			addedFlow = getPath(delta);
 			if(addedFlow == 0) { // If there is no path found with the current delta value, we update the delta
@@ -26,8 +28,11 @@ public abstract class AugmentingPathScaling extends AugmentingPath {
 			else {
 				super.flow += addedFlow;
 			}
+			jfjf++;
 			timeout=(System.currentTimeMillis()-timeStart)>limitTime;
 		}
+		System.out.println(jfjf);
+
 	}
 	
 	public abstract int getPath(int delta);
