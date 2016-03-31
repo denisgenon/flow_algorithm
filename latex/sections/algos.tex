@@ -9,7 +9,7 @@ An available path from the source to the sink is called \textit{augmenting path}
 \begin{figure}[!h]
 \includegraphics[width=7.5cm,height=4.5cm]{images/graph.png}\hfill
 \includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph.png}
-\caption{Graph with its residual graph}
+\caption{A graph with its residual graph}
 \end{figure}
 
 
@@ -34,14 +34,20 @@ The pseudo-code of the augmenting path algorithm is given here :
  }
 \end{algorithm}
 
-\subsection{Ford-Fulkerson vs Edmonds-Karp}
-Je cause de la différence entre FF et EK
+\subsection{Ford-Fulkerson and Edmonds-Karp}
+There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). The second being a variant of the first one. Indeed, the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual graph}. \newline
+
+Ford-Fulkerson uses a depth-first search while Edmonds-Karp uses a breadth-first search.
+
+
 
 \subsection{Complexities}
-Petite intro pour dire que c'est polynomial
-\subsubsection{Ford-Fulkerson}
+The max flow problem, being a problem of complexity class P, can be solved at polynomial time. When the capacities are integers, Ford-Fulkerson is bounded by $O(E*f)$ and Edmonds-Karp by $O(V*E^2)$, where $E$ is the number of edges in the graph, $V$ is the number of vertices and $f$ is the maximum flow.
 
-\subsubsection{Edmonds-Karp}
-Il faut démontrer que la complexité grand O est pas possible?
+\begin{description}
+\item[Ford-Fulkerson]{is in $O(E*f)$ because each augmenting path can be found in $O(E)$ and in the worst case, the flow will increase by 1.}
+\item[Edmonds-Karp]{is in $O(V*E^2)$ because the breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. Futhermore, the length of the augmenting path can stay the same for at most $E$ iterations before increasing. We also know that the length of the augmenting path is between $1$ and $V-1$. Thus there are at most $V*E$ iterations and each augmenting path can be found in $O(E)$.}
+\end{description}
+
 
 \section{Pre-flow algorithms}
