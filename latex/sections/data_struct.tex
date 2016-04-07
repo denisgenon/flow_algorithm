@@ -32,7 +32,7 @@ These constraints imply an important property of the Red-Black trees : the longe
 
 \begin{center}
 \includegraphics[width=9cm,height=4.5cm]{images/Red-Blacktree.png}
-\captionof{figure}{a Red-Black tree}
+\captionof{figure}{A Red-Black tree}
 \end{center}
 
 \subsection{Simple Linked List}
@@ -44,10 +44,10 @@ A split array is a simplified version of a sparse set. It contains a single arra
 \begin{figure}[!h]
 \includegraphics[width=7.5cm,height=4.5cm]{images/SplitArrayGraph.png}\hfill
 \includegraphics[width=5cm,height=3cm]{images/SplitArray.png}
-\caption{A graph with the Split Array of node 2}
+\caption{A graph with the split array of node 2}
 \end{figure}
 
-To add a node (for example after sending units of flow on the path 0-1-2-4-5, an edge is created from 2 to 1 and 1 becomes a current neighbour of 2), we need to go through the right part of the array to find the futur neighbour node, exchange its place with the place of the node on the right of \textit{split} and increase \textit{split} by 1. \newline
+To add a node (for example after sending units of flow on the path 0-1-2-4-5, an edge is created from 2 to 1 and 1 becomes a current neighbour of 2), we need to go through the right part of the array to find the futur neighbour node, exchange its place with the node on the right of \textit{split} and increase \textit{split} by 1. \newline
 
 To remove a node, it's the reverse operation.
 
