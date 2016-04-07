@@ -17,7 +17,23 @@ The \textit{load factor} is the number of records divided by the number of bucke
 TODO Je met un exemple de hash map? \newline
 
 In our case, the key is the id of the nearby node and the value is the capacity of the edge.
+
 \subsection{Tree Map}
+A tree map, or Red-Black tree, is self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each node, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a node :
+
+\begin{itemize}
+\item A node is either red or black
+\item The root is black
+\item The parent of a red node is black
+\item For each leaf, the path to the root contains the same number of black nodes
+\end{itemize}
+
+These constraints imply an important property of the Red-Black trees : the longest possible path from a root to a leaf can be only twice as long as the smallest possible. We thus have an almost balanced tree.
+
+\begin{center}
+\includegraphics[width=7.5cm,height=4.5cm]{images/Red-Blacktree.png}
+\captionof{figure}{a Red-Black tree}
+\end{center}
 
 \subsection{Simple Linked List}
 
