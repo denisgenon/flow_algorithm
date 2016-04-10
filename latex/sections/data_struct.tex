@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graph, the traditional adjacency matrix became too heavy. So we decide to use a structure defined below. \newline
+For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graph, the traditional adjacency matrix became too heavy. So we decide to use a structure defined below. \newline
 
 Like for the adjacency matrix, we use a array where each row represents the neighbours of a node. For example, the first row contains the information on the neighbours of the node 0. But contrary to the adjacency matrix, we do not use a array to represent neighbours but a different structure requiring less memory space. \newline
 
@@ -53,3 +53,16 @@ To remove a node, it's the reverse operation.
 
 
 \subsection{Complexities}
+
+Toutes les bornes minimum, c'est du Omega(1) donc je sais pas trop si je les rajoute ou pas. Je suis plutot chaud de parler juste du O de la hash map parce que c'est vrai que c'est pas a son avantage. \newline
+
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split Array} \\
+     \hline	
+   entrySet & $O(n)$ & $O(n)$ & $O(n$) & $O(n)$\\
+   get/set & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
+   put & $O(n)$ & $O(log$ $n)$ & $O(1)$ & $O(n^-)$\\
+   remove & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
+   \hline
+\end{tabular}
