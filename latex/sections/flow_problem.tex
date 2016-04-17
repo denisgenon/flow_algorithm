@@ -126,11 +126,85 @@ We have now defined all terms we will use and make all the assumptions needed. T
 
 \section{Applications}
 \label{sec:applications}
-As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problem. In this section, we will describe three applications of the maximum flow problem.
+As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problem. In this section, we will describe two applications of the maximum flow problem.
 
 \subsection{Problem of representatives}
 
+\subsubsection{Problem Statement}
+
+A city has $c$ citizen $C_1, C_2, C_3, ..., C_c$; $a$ associations $A_1, A_2, A_3, ..., A_a$ and $p$ political parties $P_1, P_2, P_3, ..., P_p$. Each resident is member of at least one association and belong to one political party. Each association  must elect one of its members to represent it on the governement so that the number of council member of the political party $P_k$ is at most $u_k$. The task is to know if an arrangement is possible in regards to the property.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{images/represent.png}
+\caption{A directed network representing the problem of representatives.}
+\label{img:represent}
+\end{figure}
+
+\subsubsection{Solution}
+
+We can transform this problem to a directed network as shown in the figure \ref{img:represent}. In the network, we added a source node and a sink node. There is an arc from the source node to each association nodes with an unitary capacity. If a citizen is member of an association, there is an arc from the assocation node $A_i$ to the citizen node $C_j$ with an unitary capacity. If a citizen is member of a political party, there is an arc from the citizen node $C_i$ to the political party node $P_j$ with an unitary capacity. Finally, each political party nodes have an outgoing arc to the sink, with a capacity of $u_k$ (defined in the problem).
+
+If the maximum flow of this directed network is equals to the number of associations ($a$), we can say that the city has a balanced council; otherwise, it does not. It is because if the value of the maximum flow is not $a$, it means that one association is not represented.
+
+This type of model has applications in several ressource assignment settings.
+
+
 \subsection{Distributed computing on a two-processor computer}
 
-\subsection{Image Segmentation}
+\subsubsection{Problem Statement}
+We consider a computer with two processors (which not need to be identicals) and a program which contains several threads. Each of the threads must be loaded on one of the processor. There are several costs:
+\begin{enumerate}
+	\item $\alpha_i$ and $\beta_i$ are the cost of computation of thread $i$ on processors 1 and 2, respectively (processing costs);
+	\item $c_ij$ is the interproessor communication cost if threads $i$ and $j$ are assigned to differents processors, this cost equals $0$ if the two threads are on assigned to the same processor (interprocessor communication costs).
+\end{enumerate}
+The goal of the distributed computing on a two-processor computer problem is to find the allocation of the threads on the two processors which minimize the total costs of processing and interprocessor communication.
 
+\begin{figure}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+	\hline
+	$i$ & 1 & 2 & 3 \\
+	\hline
+	$\alpha_i$ & 3 & 7 & 8 \\
+	\hline
+	$\beta_i$ & 2 & 4 & 5 \\
+	\hline
+\end{tabular}
+\caption{Processing costs.}
+\end{figure}
+
+\begin{figure}[H]
+\begin{tabular}{|l|l|l|l|}
+	\hline
+	$i$ & 1 & 2 & 3 \\
+	\hline
+	1 & 0 & 3 & 0 \\
+	\hline
+	2 & 3 & 0 & 2 \\
+	\hline
+	3 & 0 & 2 & 0 \\
+	\hline
+\end{tabular}
+\centering
+\caption{Interrocessor communication costs.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{images/computing.png}
+\caption{A undirected network representing the problem (min cut value is 16).}
+\label{img:computing}
+\end{figure}
+
+\subsubsection{Solution}
+
+As ce can see in the figure \ref{img:computing}, we can formulate this problem on a undirected network. We define the source as the processor 1 and the sink as the processor 2. For each thread $i$, there is a node from the source (resp. sink) and the thread node with a capacity of $\alpha_i$ (resp. $\beta_i$). Finally, if the thread $i$ interact with the thread $j$ ($c_ij > 0$), we include an arc $(i, j)$ with the capacity $c_ij$.
+
+The solution of this problem is to find the minimum cut of the network. As we know with the Max-flow min-cut theorem \ref{mincut_maxflow}, the minimum cut is equals to the maximum flow.
+
+\begin{theorem}
+\label{mincut_maxflow}
+The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts.
+\end{theorem}
+%todo source
