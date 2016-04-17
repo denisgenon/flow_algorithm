@@ -49,4 +49,64 @@ The max flow problem, being a problem of complexity class P, can be solved at po
 \end{description}
 
 
-\section{Pre-flow algorithms}
+\section{Preflow-push algorithms}
+
+\subsection{Introduction}
+
+The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$. One example of this case can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the network represented in the figure \ref{img:bad_augmenting}. In this case, a better solution is to push directly from the source node 10 units of flow. This is the idea behing preflow-push algorithms.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/bad_augmenting.png}
+\caption{Extreme case for augmenting path algorithms.}
+\label{img:bad_augmenting}
+\end{figure}
+
+The preflow-push algorithms don't push flow on augmenting path, they push flow on individual edges. Because of this, preflow-push algorithms does not respect the flow conservatin constraint. Indeed, these algorithms permit the flow entering a node to exceed the flow leaving the node. We call this flow a preflow.
+
+\begin{definition}
+\label{preflow}
+A \textbf{preflow} is a function $x: E \to \mathbb{R}$ that satisfies the capacity constraint and the following relaxation of the flow conservation constraint:
+$$\sum\limits_{\{j : (j,i) \in E\}} x_{ji} - \sum\limits_{\{j : (i,j) \in E\}} x_{ij} \geq 0 \text{	for each } i \in V \setminus \{s, t\}.$$
+\end{definition}
+
+\begin{definition}
+\label{excess}
+The \textbf{excess} of each node $i \in V$ is 
+$$e(i) = \sum\limits_{\{j : (j,i) \in E\}} x_{ji} - \sum\limits_{\{j : (i,j) \in E\}} x_{ij}.$$
+\end{definition}
+
+We call a node with positive excess as an \textbf{active node}. The fact that there are active nodes means that the current solution is not feasible. Thus, the goal of the algorithm is to remove the excess from those nodes. The intuition is to push the flow to the node closer to the sink. Each node has its own distance label which is the distance between the node and the sink: the algorithm only push a flow from a node to another if the first one is an active node and if his distance label if greater than the distance label of the other node. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the distance label of the node. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active node.
+
+\begin{algorithm}
+ preprocess\;
+ \While{the network contains an active node}{
+ select an active node $i$\;
+ push/relabel($i$)\;
+ }
+\caption{Generic preflow-push algorithm.}
+\end{algorithm}
+
+\begin{algorithm}
+ $x\gets 0$\;
+ compute distance labels $d(i)$\;
+ $x_{sj}\gets c_{sj} \text{ for each arc } (s, j) \in E(s)$\;
+ $d(s)\gets v$\;
+\caption{Preprocess.}
+\end{algorithm}
+
+\begin{algorithm}
+\If{the network contains an admissible arc $(i, j)$} 
+  {push $\delta\gets min\{e(i), r_{ij}\}$ units of flow from $i$ to $j$\;}
+\Else
+   {replace $d(i)$ by $min\{d(j)+1 : (i, j) \in E(i) \text{ and } r_{ij} > 0 \}$\;}
+\caption{Push/Relabel($i$).}
+\end{algorithm}
+
+\subsection{Complexity}
+
+There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum distance is $2*|V| - 1$ and we can decrease the label distance at minium one per opration. We know that there is $|V| - 2$ nodes which can be relabeled (the sink and source nodes can't be relabeled). Then, the maximum number of relabelling is $(2*|V| - 1) * (|V| - 2) \approx |V|^2$.%todo why distance 2V-1
+
+The number of saturing push per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label distance of the destination node must be reduced augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V||E|)$.
+
+Thus, the generic preflow algorithm runs in $O(|V|^2 |E|)$.

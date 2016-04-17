@@ -66,13 +66,13 @@ The \textbf{capacity} of an edge is a mapping $c: E \to \mathbb{R}^{+}$, and rep
 \subsection{Flow}
 \begin{definition}
 \label{flow}
-A \textbf{flow} is a mapping $f: E \in \to \mathbb{R}^{+}$, is denoted $f_{ij}$ for the flow between \textit{i} and \textit{j}, and is subject to two constraints:
+A \textbf{flow} is a mapping $f: E \to \mathbb{R}^{+}$, is denoted $f_{ij}$ for the flow between \textit{i} and \textit{j}, and is subject to two constraints:
 \indent
 \begin{description}
 	\label{cap_constraint}
 	\item[Capacity constraint] $f_{ij} \leq c_{ij}$, for each $(i, j) \in E$;
 	\label{flow_constraint}
-	\item[Flow conservation constraint] $\sum\limits_{i : (i,j) \in E} f_{ij} = \sum\limits_{i : (j,i) \in E} f_{ji}$ for each $j \in V \setminus \{s, t\}$.
+	\item[Flow conservation constraint] $\sum\limits_{\{i : (i,j) \in E\}} f_{ij} = \sum\limits_{\{i : (j,i) \in E\}} f_{ji}$ for each $j \in V \setminus \{s, t\}$.
 \end{description}
 \end{definition}
 
@@ -156,7 +156,7 @@ This type of model has applications in several ressource assignment settings.
 We consider a computer with two processors (which not need to be identicals) and a program which contains several threads. Each of the threads must be loaded on one of the processor. There are several costs:
 \begin{enumerate}
 	\item $\alpha_i$ and $\beta_i$ are the cost of computation of thread $i$ on processors 1 and 2, respectively (processing costs);
-	\item $c_ij$ is the interproessor communication cost if threads $i$ and $j$ are assigned to differents processors, this cost equals $0$ if the two threads are on assigned to the same processor (interprocessor communication costs).
+	\item $c_{ij}$ is the interproessor communication cost if threads $i$ and $j$ are assigned to differents processors, this cost equals $0$ if the two threads are on assigned to the same processor (interprocessor communication costs).
 \end{enumerate}
 The goal of the distributed computing on a two-processor computer problem is to find the allocation of the threads on the two processors which minimize the total costs of processing and interprocessor communication.
 
@@ -199,7 +199,7 @@ The goal of the distributed computing on a two-processor computer problem is to 
 
 \subsubsection{Solution}
 
-As ce can see in the figure \ref{img:computing}, we can formulate this problem on a undirected network. We define the source as the processor 1 and the sink as the processor 2. For each thread $i$, there is a node from the source (resp. sink) and the thread node with a capacity of $\alpha_i$ (resp. $\beta_i$). Finally, if the thread $i$ interact with the thread $j$ ($c_ij > 0$), we include an arc $(i, j)$ with the capacity $c_ij$.
+As ce can see in the figure \ref{img:computing}, we can formulate this problem on a undirected network. We define the source as the processor 1 and the sink as the processor 2. For each thread $i$, there is a node from the source (resp. sink) and the thread node with a capacity of $\alpha_i$ (resp. $\beta_i$). Finally, if the thread $i$ interact with the thread $j$ ($c_{ij} > 0$), we include an arc $(i, j)$ with the capacity $c_{ij}$.
 
 The solution of this problem is to find the minimum cut of the network. As we know with the Max-flow min-cut theorem \ref{mincut_maxflow}, the minimum cut is equals to the maximum flow.
 
