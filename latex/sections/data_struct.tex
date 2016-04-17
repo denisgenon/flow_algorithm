@@ -1,8 +1,19 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graph, the traditional adjacency matrix became too heavy. So we decide to use a structure defined below. \newline
+For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graph, the traditional adjacency matrix became too heavy and the access time was too low. As a reminder, a adjacency matrix is two dimension array, where each line represents a starting node and each column represents a ending node. The values represent the capacity between both nodes, 0 meaning that there are no edge between them. \newline
 
-Like for the adjacency matrix, we use a array where each row represents the neighbours of a node. For example, the first row contains the information on the neighbours of the node 0. But contrary to the adjacency matrix, we do not use a array to represent neighbours but a different structure requiring less memory space. \newline
+\begin{figure}[!h]
+\includegraphics[width=7.5cm,height=4.5cm]{images/graph.png}
+\includegraphics[scale=0.7]{images/adjacencyMatrix.png}
+\caption{A graph with its adjacency matrix}
+\end{figure}
+
+TODO Voir avec Denis comment mettre cette table mieux \newline
+
+
+So we decide to use a structure defined below. \newline
+
+Like for the adjacency matrix, we use a array where each line represents the neighbours of a node. For example, the first line contains the information on the neighbours of the node 0. But contrary to the adjacency matrix, we do not use a array to represent neighbours but a different structure requiring less memory space. \newline
 
 We used four various data structures : hash map, tree map, simple linked list and one home-made structure, split array. Each node will have its structure, storing which nodes are neighbours and what are the capacities of the edges to these nodes. If we had to represent a graph with 10 nodes, we would have a array of 10, for example, hash map. Each hash map representing the neighbourhood of a single node.
 
@@ -13,8 +24,6 @@ A hash map is an unordered associative array, associates a key with a value, so 
 Ideally, the hash function assigns to every key a different bucket but it is possible to have several keys giving the same hash code. This is called a \textit{collision}. The bucket can thus contain several records. \newline
 
 The \textit{load factor} is the number of records divided by the number of buckets.  The more the load factor is high, the more the hash map is slow. But having a too low load factor does not save search time, it just uses some memory pointlessly. To keep the load factor to a defined value (eg between $2/3$ and $3/4$), we must, when inserting new records, resize the hash map. \newline
-
-TODO Je met un exemple de hash map? \newline
 
 In our case, the key is the id of the nearby node and the value is the capacity of the edge.
 
@@ -31,7 +40,7 @@ A tree map, or Red-Black tree, is a self-balancing binary search tree. In additi
 These constraints imply an important property of the Red-Black trees : the longest possible path from a root to a leaf can be only twice as long as the smallest possible. We thus have an almost balanced tree.
 
 \begin{center}
-\includegraphics[width=9cm,height=4.5cm]{images/Red-Blacktree.png}
+\includegraphics[scale=0.4]{images/Red-Blacktree.png}
 \captionof{figure}{A Red-Black tree}
 \end{center}
 
@@ -53,3 +62,17 @@ To remove a node, it's the reverse operation.
 
 
 \subsection{Complexities}
+
+This table below represents the complexities with the notation big O, what it means "in the worst case". Although for the last 3 structures, the worst case is not too penalizing but that is not the case for the hash map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arrive. \newline
+
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split Array} \\
+     \hline	
+   entrySet & $O(n)$ & $O(n)$ & $O(n$) & $O(n)$\\
+   get/set & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
+   put & $O(n)$ & $O(log$ $n)$ & $O(1)$ & $O(n^-)$\\
+   remove & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
+   \hline
+\end{tabular} \newline
+with $n$ the number of forward edges of a node and $n^-$ the number of backward edges. So, $n$ is also the number of neighbours.
