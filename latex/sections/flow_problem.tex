@@ -1,19 +1,20 @@
 %!TEX root = ../main.tex
 % Introduction
-%TODO otpimization problem + analogy to water
 The maximum flow problem can be stated as follow: in a capacitated network, we need to push as much flow as we can between two specials vertices: the source and the sink. The two constraints are that we cannot exceed the capacity of any edge and a vertex cannot hold flow. A common analogy is a water distribution in a country. The vertices can be source of water, cities needing water or just some transfer nodes. The edges can be viewed as pipes with a maximal volume of water per second (or capacity). The goal is to find the maximum flow of water that can be send from a source of water to a needing city given the capacities of each pipes. As we need to find the maximum flow that can be pushed, this an optimization problem. We will see in the section Applications \ref{sec:applications} that the maximum flow problem is important because it can be used to express and resolve a wide variety of different kinds of problems.\\
 
 To solve this problem, two families of algorithm have been developped these last decades. The first one is the family of the augmenting path algorithms. The aim of thoses algorithms is to find an augmenting path in the residual network until it become impossible. We will return on these principles later. The second family, more recent, is the family of preflow-push algorithms. The aim of thoses is to flood the network to quickly find the maximum flow. \\
 
+%todo we can make it longer if needed
+
 \section{Notations and Definitions}
 
-In this section, we will fix the conventions that we will use along this master thesis. This problem is based on the graph theory, we will then use the definitions of this theory to frame the problem.
+In this section, we will set the conventions that we will use along this master thesis. This problem is based on the graph theory, we will then use the definitions of this theory to frame the problem.
 
-\subsection{Capacited network}
+\subsection{Capacitated network}
 %p24
 \begin{definition}
 \label{dgraph}
-A \textbf{directed graph} $G = (V, E)$ consists of a set V of vertices and a set E of edges whose elements are ordered pairs of distinct vertices. Each vertex has a numercial value associated which is simply used to identify the vertex. The edges are represented as an ordered pair of its vertices.
+A \textbf{directed graph} $G = (V, E)$ consists of a set $V$ of vertices and a set $E$ of edges. Each vertex has a numercial value associated which is simply used to identify the vertex. The edges are represented as an ordered pair of its vertices.
 \end{definition}
 
 \begin{figure}
@@ -27,7 +28,7 @@ The figure~\ref{img:dgraph} gives us an example of a directed graph.
 
 \begin{definition}
 \label{dnetwork}
-A \textbf{directed network} is a directed graph whose edges have a numerical value associated to it. In the case of the maximum flow problem, this value represent the capacity of the edge and then the network is called a \textit{capacitated network}.
+A \textbf{directed network} is a directed graph whose edges have a numerical value associated to it. In the case of the maximum flow problem, this value represents the capacity of the edge. The network is called a \textit{capacitated network}.
 \end{definition}
 
 The figure~\ref{img:dnetwork} gives us an example of a directed network. \\
@@ -43,8 +44,14 @@ The figure~\ref{img:dnetwork} gives us an example of a directed network. \\
 
 In this master thesis, everything that will be mentionned by the terms \textit{graph}, \textit{network}, \dots will refer to a \textit{capacitated network}.
 
+\begin{definition}
+\label{iedge}
+incoming edge %todo
+\end{definition}
+
 
 \subsection{Source and sink vertices}
+%todo faire phrase
 \begin{definition}
 \label{source}
 A \textbf{source} is an arbitrary vertice \textit{s} which possede at least one outgoing edge.
@@ -53,7 +60,7 @@ $$s \in V \text{ such that } \exists (s, k) \in E \text{ with } k \in V$$
 
 \begin{definition}
 \label{sink}
-A \textbf{sink} is an arbitrary vertice \textit{t} which possede at least one ingoing edge. 
+A \textbf{sink} is an arbitrary vertice \textit{t} which possede at least one incoming edge. 
 $$t \in V \text{ such that } \exists (k, t) \in E \text{ with } k \in V$$
 \end{definition}
 
@@ -72,7 +79,7 @@ A \textbf{flow} is a mapping $f: E \to \mathbb{R}^{+}$, is denoted $f_{ij}$ for 
 	\label{cap_constraint}
 	\item[Capacity constraint] $f_{ij} \leq c_{ij}$, for each $(i, j) \in E$;
 	\label{flow_constraint}
-	\item[Flow conservation constraint] $\sum\limits_{\{i : (i,j) \in E\}} f_{ij} = \sum\limits_{\{i : (j,i) \in E\}} f_{ji}$ for each $j \in V \setminus \{s, t\}$.
+	\item[Flow conservation constraint] $\sum\limits_{\{i : (i,j) \in E\}} f_{ij} = \sum\limits_{\{i : (j,i) \in E\}} f_{ji}$ , for each $j \in V \setminus \{s, t\}$.
 \end{description}
 \end{definition}
 
@@ -91,24 +98,26 @@ Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c
 
 \begin{definition}
 \label{rnetwork}
-Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the directed network with all edges of positive residual capacity, each one labeled by its residual capacity. This may include back-edges of the original graph G.
+Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the directed network with all edges of positive residual capacity, each one labeled by its residual capacity.
 \end{definition}
+
+%todo When we push a flow through .. backtrack
 
 \section{Assumptions}
 
-All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
+All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative  capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
 
-%All capacities are positives integers. \\
+All capacities are positives integers. If the capacity are not integers, there are networks that can have %todo ford fulkerson wiki
 
 The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the problem become unsolvable.\\
 
 The network does not contain any path from the source to the sink composed only of infinite capacity edges. The reason of this is that if a such path exist, we can send an infinite amount of flow along this path, and therefore the maximum flow value cannot be bounded. \\
 
-The network does not allow multiples edges with the same tail and head vertices. This assumption is not requiered if we consider that the capacities those edges add up. This assumption allow us to keep the representation of the problem simple.
+The network does not allow multiples edges bewteen two same vertices. This assumption is not requiered if we consider that the capacities of those edges add up. This assumption allows us to keep the representation of the problem simple.
 
 \section{Problem statement}
 
-We have now defined all terms we will use and make all the assumptions needed. Thus we can now state the problem formally. The maximum flow problem is to maximize $\left\vert{f}\right\vert$, that is, to route as much flow as possible from s to t. The flow f must satisfy the capacity constraint and the flow conservation constraint at all vertices (except s and t). We can state the problem formally as follows.
+We have now defined all terms we will use and made all the assumptions needed. Thus we can now state the problem formally. The maximum flow problem is to maximize $\left\vert{f}\right\vert$, that is, to route as much flow as possible from s to t. The flow f must satisfy the capacity constraint and the flow conservation constraint at all vertices (except s and t). We can state the problem formally as follows.
 
 \begin{equation}
 \begin{aligned}
@@ -208,3 +217,4 @@ The solution of this problem is to find the minimum cut of the network. As we kn
 The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts.
 \end{theorem}
 %todo source
+%todo out of scope
