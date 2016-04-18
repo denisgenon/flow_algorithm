@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy and the access time was too low. 
-%todo deux problemes: stockage et parcours pour trouver voisin
+For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy and the access time was too low. Indeed, the neighbourhood of a vertex is obtain in $O(|E|)$ given that	it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
+
 As a reminder, an adjacency matrix is a two dimension array, where each line represents a starting vertex and each column represents a ending vertex. The values represent the capacity between both vertices, 0 meaning that there are no edge between them. \newline
 
 \begin{figure}[!h]
