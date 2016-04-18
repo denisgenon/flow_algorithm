@@ -4,16 +4,16 @@
 The idea behind the augmenting path algorithms is as follows : 
 As long as there is a path from the source to the sink, we send flow along this path. And so on until there is no more path from the source to the sink. \newline
 
-An directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. For instance here is a network with its \textit{residual network}: \newline
+A directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. For instance here is a network with its \textit{residual network}: \newline
 
 \begin{figure}[!h]
 \includegraphics[width=7.5cm,height=4.5cm]{images/graph.png}\hfill
 \includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph.png}
-\caption{A network with its residual graph}
+\caption{A network with its residual graph.}
 \end{figure}
 
 
-When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of any edge in the path. We update the \textit{residual network} by decreasing capacities in forward edges and increasing capacities in backward edges. Then we look for a new augmenting path. \newline
+When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of any edge in the path. We update the \textit{residual network} by decreasing capacities in forward edges and increasing capacities in backward edges. Then we look for a new augmenting path in the new \textit{residual network}. \newline
 
 Here is the \textit{residual network} after sending 4 units of flow through the \textit{augmenting path} A-C-E-F : \newline
 
@@ -28,24 +28,24 @@ The pseudo-code of the augmenting path algorithm is given here :
 
  \While{$G_f$ contains a directed path from node s to node t}{
   identify an augmenting path P from node s to node t\;
-  $c$ = min\{$c_{ij} : (i,j) \in P$\}\;
-  augment $c$ units of flow along P and update $G_f$\;
+  $\delta$ = min\{$c_{ij} : (i,j) \in P$\}\;
+  augment $\delta$ units of flow along P and update $G_f$\;
  }
 \end{algorithm}
 
 \subsection{Ford-Fulkerson and Edmonds-Karp}
-There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). The second being a variant of the first one. Indeed, the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual graph}. \newline
+There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). The second being a variant of the first one. Indeed, the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
 Ford-Fulkerson uses a depth-first search while Edmonds-Karp uses a breadth-first search.
-
+%todo
 
 
 \subsection{Complexities}
-The max flow problem, being a problem of complexity class P, can be solved at polynomial time. When the capacities are integers, Ford-Fulkerson is bounded by $O(E*f)$ and Edmonds-Karp by $O(V*E^2)$, where $E$ is the number of edges in the graph, $V$ is the number of vertices and $f$ is the maximum flow.
+The max flow problem, being a problem of complexity class P, can be solved at polynomial time. When the capacities are integers, Ford-Fulkerson is bounded by $O(|E|*|f|)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $|f|$ is the value of the flow.
 
 \begin{description}
-\item[Ford-Fulkerson]{is in $O(E*f)$ because each augmenting path can be found in $O(E)$ and in the worst case, the flow will increase by 1.}
-\item[Edmonds-Karp]{is in $O(V*E^2)$ because the breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. Futhermore, the length of the augmenting path can stay the same for at most $E$ iterations before increasing. We also know that the length of the augmenting path is between $1$ and $V-1$. Thus there are at most $V*E$ iterations and each augmenting path can be found in $O(E)$.}
+\item[Ford-Fulkerson]{is in $O(|E|*|f|)$ because each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1.}
+\item[Edmonds-Karp]{is in $O(|V|*|E|^2)$ because the breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. Futhermore, the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. We also know that the length of the augmenting path is between $1$ and $|V|-1$. Thus there are at most $|V|*|E|$ iterations and each augmenting path can be found in $O(|E|)$.}
 \end{description}
 
 
@@ -53,7 +53,7 @@ The max flow problem, being a problem of complexity class P, can be solved at po
 
 \subsection{Introduction}
 
-The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$. One example of this case can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the network represented in the figure \ref{img:bad_augmenting}. In this case, a better solution is to push directly from the source node 10 units of flow. This is the idea behing preflow-push algorithms.
+The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$, where $n$ is the number of vertcices in the augmenting path. One example of this case can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the network represented in the figure \ref{img:bad_augmenting}. In this case, a better solution is to push directly from the source node 10 units of flow. This is the idea behing preflow-push algorithms.
 
 \begin{figure}
 \centering
@@ -62,7 +62,7 @@ The drawback of the augmenting path algorithms is the operation of sending flow 
 \label{img:bad_augmenting}
 \end{figure}
 
-The preflow-push algorithms don't push flow on augmenting path, they push flow on individual edges. Because of this, preflow-push algorithms does not respect the flow conservatin constraint. Indeed, these algorithms permit the flow entering a node to exceed the flow leaving the node. We call this flow a preflow.
+The preflow-push algorithms don't push flow on augmenting path, they push flow on individual vertices. Because of this, preflow-push algorithms does not respect the flow conservation constraint. Indeed, these algorithms permit the flow entering a node to exceed the flow leaving the node. We call this flow a preflow.
 
 \begin{definition}
 \label{preflow}
@@ -105,8 +105,8 @@ We call a node with positive excess as an \textbf{active node}. The fact that th
 
 \subsection{Complexity}
 
-There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum distance is $2*|V| - 1$ and we can decrease the label distance at minium one per opration. We know that there is $|V| - 2$ nodes which can be relabeled (the sink and source nodes can't be relabeled). Then, the maximum number of relabelling is $(2*|V| - 1) * (|V| - 2) \approx |V|^2$.%todo why distance 2V-1
+There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum distance is $2*|V| - 1$ and we can decrease the label distance at minimum one per operation. We know that there is $|V| - 2$ nodes which can be relabeled (the sink and source nodes can't be relabeled). Then, the maximum number of relabelling is $(2*|V| - 1) * (|V| - 2) \approx |V|^2$.%todo why distance 2V-1
 
-The number of saturing push per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label distance of the destination node must be reduced augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V||E|)$.
+The number of saturing push per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label distance of the destination node must be augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V||E|)$.
 
-Thus, the generic preflow algorithm runs in $O(|V|^2 |E|)$.
+Thus, the generic preflow algorithm runs in $O(|V|^2 |E|)$. %todo
