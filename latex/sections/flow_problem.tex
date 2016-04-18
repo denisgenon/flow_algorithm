@@ -44,14 +44,9 @@ The figure~\ref{img:dnetwork} gives us an example of a directed network. \\
 
 In this master thesis, everything that will be mentionned by the terms \textit{graph}, \textit{network}, \dots will refer to a \textit{capacitated network}.
 
-\begin{definition}
-\label{iedge}
-incoming edge %todo
-\end{definition}
-
-
 \subsection{Source and sink vertices}
-%todo faire phrase
+As said earlier, the maximum flow problem distinguish two specials nodes in the problem: the source and the sink.
+
 \begin{definition}
 \label{source}
 A \textbf{source} is an arbitrary vertice \textit{s} which possede at least one outgoing edge.
@@ -100,14 +95,14 @@ Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c
 \label{rnetwork}
 Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the directed network with all edges of positive residual capacity, each one labeled by its residual capacity.
 \end{definition}
+See that there can be a path from $i$ to $j$ in the residual network, even though there is not path from $j$ to $i$ in the original network. This is used as a backtrack mechanism.
 
-%todo When we push a flow through .. backtrack
 
 \section{Assumptions}
 
 All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative  capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
 
-All capacities are positives integers. If the capacity are not integers, there are networks that can have %todo ford fulkerson wiki
+All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.
 
 The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the problem become unsolvable.\\
 
@@ -210,11 +205,11 @@ The goal of the distributed computing on a two-processor computer problem is to 
 
 As ce can see in the figure \ref{img:computing}, we can formulate this problem on a undirected network. We define the source as the processor 1 and the sink as the processor 2. For each thread $i$, there is a node from the source (resp. sink) and the thread node with a capacity of $\alpha_i$ (resp. $\beta_i$). Finally, if the thread $i$ interact with the thread $j$ ($c_{ij} > 0$), we include an arc $(i, j)$ with the capacity $c_{ij}$.
 
-The solution of this problem is to find the minimum cut of the network. As we know with the Max-flow min-cut theorem \ref{mincut_maxflow}, the minimum cut is equals to the maximum flow.
+The solution of this problem is to find the minimum cut of the network. As we know with the Max-flow min-cut theorem \ref{mincut_maxflow}, the minimum cut is equals to the maximum flow. The proof of this theorem is outside the scope of this master thesis.
 
 \begin{theorem}
 \label{mincut_maxflow}
 The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts.
 \end{theorem}
-%todo source
-%todo out of scope
+
+
