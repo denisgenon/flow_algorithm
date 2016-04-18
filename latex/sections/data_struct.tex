@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy and the access time was too low. 
-%todo deux problemes: stockage et parcours pour trouver voisin
+For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy and the access time was too low. Indeed, the neighbourhood of a vertex is obtain in $O(|E|)$ given that	it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
+
 As a reminder, an adjacency matrix is a two dimension array, where each line represents a starting vertex and each column represents a ending vertex. The values represent the capacity between both vertices, 0 meaning that there are no edge between them. \newline
 
 \begin{figure}[!h]
@@ -44,13 +44,16 @@ These constraints implies an important property of the Red-Black trees : the lon
 
 \begin{center}
 \includegraphics[scale=0.4]{images/Red-Blacktree.png}
-\captionof{figure}{A Red-Black tree}
+\captionof{figure}{A Red-Black tree.}
 \end{center}
 
 \subsection{Simple Linked List}
-A simple linked list is one of the simplest data structure. Each vertex consists of two fields, a data and a reference to the next vertex. It's unordered.
+A simple linked list is one of the simplest data structure. Each node consists of two fields, an object and a reference to the next node. It is unordered given that the put operation is systematically made on the head of the list.
 
-%todo schema
+\begin{figure}[!h]
+\includegraphics[scale=0.5]{images/SimpleLinkedList.png}
+\caption{A simple linked list.}
+\end{figure}
 
 \subsection{Split Array}
 A split array is a simplified version of a sparse set. It contains a single array of all possible neighbouring vertices (outgoing and incoming edges). The array is divided into two parts, one with the current neighbour vertices (outgoing edges) and the other one with the vertices which are not, or no more, neighbours (incoming edges). An integer value \textit{split} indicates the position of the array's separation.

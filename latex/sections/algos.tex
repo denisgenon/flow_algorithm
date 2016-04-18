@@ -19,7 +19,7 @@ Here is the \textit{residual network} after sending 4 units of flow through the 
 
 \begin{center}
 \includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph2.png}
-\captionof{figure}{Residual graph}
+\captionof{figure}{The residual graph.}
 \end{center}
 
 The pseudo-code of the augmenting path algorithm is given here :
@@ -36,8 +36,9 @@ The pseudo-code of the augmenting path algorithm is given here :
 \subsection{Ford-Fulkerson and Edmonds-Karp}
 There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). The second being a variant of the first one. Indeed, the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
-Ford-Fulkerson uses a depth-first search while Edmonds-Karp uses a breadth-first search.
-%todo
+Ford-Fulkerson uses a depth-first search, looking for the longest path. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
+
+While Edmonds-Karp uses a breadth-first search, looking for the shortest path. A bigger quantity of flow is thus sent on a smaller number of edges. \newline
 
 
 \subsection{Complexities}
