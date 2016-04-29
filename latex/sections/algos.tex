@@ -2,7 +2,7 @@
 \section{Augmenting path algorithms}
 \subsection{Introduction}
 The idea behind the augmenting path algorithms is as follows : 
-As long as there is a path from the source to the sink, we send flow along this path. And so on until there is no more path from the source to the sink. \newline
+As long as there is a path from the source to the sink in the residual network, we send flow along this path. And so on until there is no more path from the source to the sink.\newline
 
 A directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. For instance here is a network with its \textit{residual network}: \newline
 
@@ -11,7 +11,6 @@ A directed path from the source to the sink in the \textit{residual network} is 
 \includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph.png}
 \caption{A network with its residual graph.}
 \end{figure}
-
 
 When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of any edge in the path. We update the \textit{residual network} by decreasing capacities in forward edges and increasing capacities in backward edges. Then we look for a new augmenting path in the new \textit{residual network}. \newline
 
@@ -22,6 +21,20 @@ Here is the \textit{residual network} after sending 4 units of flow through the 
 \captionof{figure}{The residual graph.}
 \end{center}
 
+The residual network is essential to be able to backtrack. For instance, after sending 4 units of flow through the path A-B-E-F in the graph A, we obtain the graph B. On this graph, it is not possible to find a new path from the source to the sink. But on its residual graph C, we can push flow through A-C-E-B-D-F to obtain the maximal flow.
+
+\begin{figure}[!h]
+\includegraphics[scale=0.4]{images/graph1a.png}\hfill
+\includegraphics[scale=0.4]{images/graph2.png}
+\caption{The graphs A and B.}
+\end{figure}
+
+\begin{center}
+\includegraphics[scale=0.4]{images/residualgraph1.png}
+\captionof{figure}{The residual graph C.}
+\end{center}
+
+\newpage
 The pseudo-code of the augmenting path algorithm is given here :
 
 \begin{algorithm}[h]
@@ -34,20 +47,30 @@ The pseudo-code of the augmenting path algorithm is given here :
 \end{algorithm}
 
 \subsection{Ford-Fulkerson and Edmonds-Karp}
-There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). The second being a variant of the first one. Indeed, the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
+There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). They instantiate in their own way the augmenting path algorithm given that the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
-Ford-Fulkerson uses a depth-first search, looking for the longest path. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
+Ford-Fulkerson uses a depth-first search, looking for long paths. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
 
-While Edmonds-Karp uses a breadth-first search, looking for the shortest path. A bigger quantity of flow is thus sent on a smaller number of edges. \newline
+On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of the number of edges). A bigger quantity of flow is thus sent on a smaller number of edges. \newline
 
 
 \subsection{Complexities}
-The max flow problem, being a problem of complexity class P, can be solved at polynomial time. When the capacities are integers, Ford-Fulkerson is bounded by $O(|E|*|f|)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $|f|$ is the value of the flow.
+The max flow problem, being a problem of complexity class P, can be solved at polynomial time. When the capacities are integers, the remaining time of Ford-Fulkerson is bounded by $O(|E|*|V|*U)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $|U|$ is the maximum capacity of the graph.
 
 \begin{description}
-\item[Ford-Fulkerson]{is in $O(|E|*|f|)$ because each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1.}
-\item[Edmonds-Karp]{is in $O(|V|*|E|^2)$ because the breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. Futhermore, the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. We also know that the length of the augmenting path is between $1$ and $|V|-1$. Thus there are at most $|V|*|E|$ iterations and each augmenting path can be found in $O(|E|)$.}
+\item[Ford-Fulkerson]{Each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1. So the time complexity is $O(|E|*|f|)$, $|f|$ being the value of the maximal flow. 
+
+This complexity is expressed in terms of the final result, we can reformulate it. Indeed, the maximal flow cannot be greater than $|V|*U$. The time complexity of Ford-Fulkerson is then $O(|E|*|V|*U)$.
+
+Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|*|V|*U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$.}
+
+\item[Edmonds-Karp]{The breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. We also know that there is a maximum of $|E|$ path of the same length. So we conclude that the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. 
+
+We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|*|E|$ iterations.
+
+We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|*|E|^2)$.}
 \end{description}
+
 
 
 \section{Preflow-push algorithms}
