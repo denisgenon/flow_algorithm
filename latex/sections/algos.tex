@@ -4,37 +4,39 @@
 The idea behind the augmenting path algorithms is as follows : 
 As long as there is a path from the source to the sink in the residual network, we send flow along this path. And so on until there is no more path from the source to the sink.\newline
 
-A directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. For instance here is a network with its \textit{residual network}: \newline
-
-\begin{figure}[!h]
-\includegraphics[width=7.5cm,height=4.5cm]{images/graph.png}\hfill
-\includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph.png}
-\caption{A network with its residual graph.}
-\end{figure}
+A directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. \newline
 
 When an \textit{augmenting path} is found, we send a flow equivalent to the minimum capacity of any edge in the path. We update the \textit{residual network} by decreasing capacities in forward edges and increasing capacities in backward edges. Then we look for a new augmenting path in the new \textit{residual network}. \newline
 
-Here is the \textit{residual network} after sending 4 units of flow through the \textit{augmenting path} A-C-E-F : \newline
-
-\begin{center}
-\includegraphics[width=7.5cm,height=4.5cm]{images/residualgraph2.png}
-\captionof{figure}{The residual graph.}
-\end{center}
-
-The residual network is essential to be able to backtrack. For instance, after sending 4 units of flow through the path A-B-E-F in the graph A, we obtain the graph B. On this graph, it is not possible to find a new path from the source to the sink. But on its residual graph C, we can push flow through A-C-E-B-D-F to obtain the maximal flow.
+Here is a graph with its \textit{residual network} after sending 4 units of flow through the \textit{augmenting path} A-C-E-F : \newline
 
 \begin{figure}[!h]
-\includegraphics[scale=0.4]{images/graph1a.png}\hfill
-\includegraphics[scale=0.4]{images/graph2.png}
-\caption{The graphs A and B.}
+\includegraphics[scale=0.4]{images/graph.png}\hfill
+\includegraphics[scale=0.4]{images/graph-residual.png}
+\end{figure}
+\newpage
+The residual network is essential to be able to backtrack. For instance, after sending 4 units of flow through the path A-B-E-F in the graph $G1$, we obtain the graph $G2$. On this graph, it is not possible to find a new path from the source A to the sink F. But on its residual graph $G3$, we can send 2 units of flow through A-C-E-B-D-F to obtain the maximal flow represented in the graph $G4$.
+
+
+\begin{figure}[h!]
+   \begin{minipage}[b]{0.40\linewidth}
+      \centering \includegraphics[scale=0.4]{images/graph1a.png}
+      \caption{Graph $G1$.}
+   \end{minipage}\hfill
+   \begin{minipage}[b]{0.48\linewidth}   
+      \centering \includegraphics[scale=0.4]{images/graph2.png}
+      \caption{Graph $G2$.}
+   \end{minipage}\hfill
+   \begin{minipage}[b]{0.48\linewidth}   
+      \centering \includegraphics[scale=0.4]{images/residualgraph1.png}
+      \caption{Residual graph $G3$.}
+   \end{minipage}\hfill
+   \begin{minipage}[b]{0.48\linewidth}  
+      \centering \includegraphics[scale=0.4]{images/graph3.png}
+      \caption{Graph $G4$.}
+   \end{minipage}
 \end{figure}
 
-\begin{center}
-\includegraphics[scale=0.4]{images/residualgraph1.png}
-\captionof{figure}{The residual graph C.}
-\end{center}
-
-\newpage
 The pseudo-code of the augmenting path algorithm is given here :
 
 \begin{algorithm}[h]
@@ -46,12 +48,13 @@ The pseudo-code of the augmenting path algorithm is given here :
  }
 \end{algorithm}
 
+\newpage
 \subsection{Ford-Fulkerson and Edmonds-Karp}
 There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). They instantiate in their own way the augmenting path algorithm given that the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
 Ford-Fulkerson uses a depth-first search, looking for long paths. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
 
-On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of the number of edges). A bigger quantity of flow is thus sent on a smaller number of edges. \newline
+On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of number of edges). A bigger quantity of flow is thus sent on a smaller number of edges. \newline
 
 
 \subsection{Complexities}
