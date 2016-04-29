@@ -114,7 +114,7 @@ public class NewGeneratorInstance {
 	public static void main (String [] args) {	
 		/*generateInstance(65);
 		createGraphFile("instanceprct65");*/
-		for(int i=2; i<=100; i++){
+		for(int i=94; i<=100; i++){
 			generateUniqueInstance("instancesUniquePrct"+i);
 		}
 
