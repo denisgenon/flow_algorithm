@@ -1,8 +1,8 @@
 %!TEX root = ../main.tex
 % Introduction
-The maximum flow problem can be stated as follow: in a capacitated network, we need to push as much flow as we can between two specials vertices: the source and the sink. The two constraints are that we cannot exceed the capacity of any edge and a vertex cannot hold flow. A common analogy is a water distribution in a country. The vertices can be source of water, cities needing water or just some transfer nodes. The edges can be viewed as pipes with a maximal volume of water per second (or capacity). The goal is to find the maximum flow of water that can be send from a source of water to a needing city given the capacities of each pipes. As we need to find the maximum flow that can be pushed, this an optimization problem. We will see in the section Applications \ref{sec:applications} that the maximum flow problem is important because it can be used to express and resolve a wide variety of different kinds of problems.\\
+The maximum flow problem can be stated as follow: in a capacitated network, we need to push as much flow as we can between two specials vertices: the source and the sink. The two constraints are that we cannot exceed the capacity of any edge and a vertex cannot hold flow. A common analogy is a water distribution in a country. The vertices can be sources of water, cities needing water or just some transfer nodes. The edges can be viewed as pipes with a maximal volume of water per second (or capacity). The flow is the amount of water flowing through the pipes. The goal is to find the maximum flow of water that can be send from a source of water to a needing city given the capacities of each pipes. As we need to find the maximum flow that can be pushed, this an optimization problem. We will see in the section Applications \ref{sec:applications} that the maximum flow problem is important because it can be used to express and resolve a wide variety of different kinds of problems.\\
 
-To solve this problem, two families of algorithm have been developped these last decades. The first one is the family of the augmenting path algorithms. The aim of thoses algorithms is to find an augmenting path in the residual network until it become impossible. We will return on these principles later. The second family, more recent, is the family of preflow-push algorithms. The aim of thoses is to flood the network to quickly find the maximum flow. \\
+To solve this problem, two families of algorithms have been developped these last decades. The first one is the family of the augmenting path algorithms. The aim of thoses algorithms is to find an augmenting path in the residual network until it becomes impossible. We will return on these principles later. The second family, newest, is the family of preflow-push algorithms. The aim of thoses is to flood the network to quickly find the maximum flow. \\
 
 %todo we can make it longer if needed
 
@@ -14,7 +14,7 @@ In this section, we will set the conventions that we will use along this master 
 %p24
 \begin{definition}
 \label{dgraph}
-A \textbf{directed graph} $G = (V, E)$ consists of a set $V$ of vertices and a set $E$ of edges. Each vertex has a numercial value associated which is simply used to identify the vertex. The edges are represented as an ordered pair of its vertices.
+A \textbf{directed graph} $G = (V, E)$ consists of a set $V$ of vertices and a set $E$ of edges. We assume, without loss of generality, that $V = \left\{0, 1, ..., n-1\right\}$, where $n$ is the number of vertices. The edges are represented as an ordered pair of its vertices and is, $E \subseteq V \times V$.
 \end{definition}
 
 \begin{figure}
@@ -28,7 +28,7 @@ The figure~\ref{img:dgraph} gives us an example of a directed graph.
 
 \begin{definition}
 \label{dnetwork}
-A \textbf{directed network} is a directed graph whose edges have a numerical value associated to it. In the case of the maximum flow problem, this value represents the capacity of the edge. The network is called a \textit{capacitated network}.
+A \textbf{directed network} is a directed graph whose edges have a numerical value associated to it. In the case of the maximum flow problem, this value represents the capacity of the edge. The \textbf{capacity} of an edge is a mapping $c: E \to \mathbb{R}^{+}$, and represent the maximum flow amount that can pass through the edge. The capacity of the edge $(i, j)$ is denoted $c_{ij}$. The network is called a \textit{capacitated network}.
 \end{definition}
 
 The figure~\ref{img:dnetwork} gives us an example of a directed network. \\
@@ -49,21 +49,17 @@ As said earlier, the maximum flow problem distinguish two specials nodes in the 
 
 \begin{definition}
 \label{source}
-A \textbf{source} is an arbitrary vertice \textit{s} which possede at least one outgoing edge.
+A \textbf{source} is an arbitrary vertice \textit{s} which possesses at least one outgoing edge.
 $$s \in V \text{ such that } \exists (s, k) \in E \text{ with } k \in V$$
 \end{definition}
 
 \begin{definition}
 \label{sink}
-A \textbf{sink} is an arbitrary vertice \textit{t} which possede at least one incoming edge. 
+A \textbf{sink} is an arbitrary vertice \textit{t} which possesses at least one incoming edge. 
 $$t \in V \text{ such that } \exists (k, t) \in E \text{ with } k \in V$$
 \end{definition}
 
-\subsection{Capacity of an edge}
-\begin{definition}
-\label{cedge}
-The \textbf{capacity} of an edge is a mapping $c: E \to \mathbb{R}^{+}$, and represent the maximum flow amount that can pass through the edge. The capacity of the edge $(i, j)$ is denoted $c_{ij}$.
-\end{definition}
+In this master thesis, we will use the letters $s$ and $t$ to represent the source and the sink, respectively.
 
 \subsection{Flow}
 \begin{definition}
@@ -74,14 +70,16 @@ A \textbf{flow} is a mapping $f: E \to \mathbb{R}^{+}$, is denoted $f_{ij}$ for 
 	\label{cap_constraint}
 	\item[Capacity constraint] $f_{ij} \leq c_{ij}$, for each $(i, j) \in E$;
 	\label{flow_constraint}
-	\item[Flow conservation constraint] $\sum\limits_{\{i : (i,j) \in E\}} f_{ij} = \sum\limits_{\{i : (j,i) \in E\}} f_{ji}$ , for each $j \in V \setminus \{s, t\}$.
+	\item[Flow conservation constraint] $\sum\limits_{\{(i, j) \in E : i \in V\}} f_{ij} = \sum\limits_{\{(j, i) \in E : i \in V\}} f_{ji}$ , for each $j \in V \setminus \{s, t\}$.
 \end{description}
 \end{definition}
 
 \begin{definition}
 \label{vflow}
-The \textbf{value of a flow} is defined by $\left\vert{f}\right\vert = \sum\limits_{j:(s,j) \in E} f_{sj}$ or $\left\vert{f}\right\vert = \sum\limits_{i:(i,t) \in E} f_{it}$. It represents the amount of flow passing from the source to the sink.
+The \textbf{value of a flow} is defined by $\left\vert{f}\right\vert = \sum\limits_{\{(s,j) \in E : j \in V\}} f_{sj}$ or $\left\vert{f}\right\vert = \sum\limits_{\{(i,t) \in E : i \in V\}} f_{it}$. It represents the amount of flow passing from the source to the sink.
 \end{definition}
+
+Since $s$ and $t$ are the only vertices that do not conserve flow, $\left\vert{f}\right\vert$ can be equivalently stated as the amount of flow leaving $s$ or entering $t$.
 
 \subsection{Residual network} 
 To resolve the maximum flow problem, it is convenient to use another representation of the capacitated network. To be able to find the maximum flow, several algorithms update the current flow in an incremental process. Then, it will be useful to have a representation of the graph which gives the amount of remaining flow which can be added to the current flow through an edge. This representation is called \textit{residual network}.
@@ -93,18 +91,17 @@ Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c
 
 \begin{definition}
 \label{rnetwork}
-Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the directed network with all edges of positive residual capacity, each one labeled by its residual capacity.
+Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the directed network (defined on the same set of vertices) with all edges of positive residual capacity, each one labeled by its residual capacity.
 \end{definition}
-See that there can be a path from $i$ to $j$ in the residual network, even though there is not path from $j$ to $i$ in the original network. This is used as a backtrack mechanism.
 
 
 \section{Assumptions}
 
 All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative  capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
 
-All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.
+All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.\\
 
-The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the problem become unsolvable.\\
+The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the flow is simply $0$.\\
 
 The network does not contain any path from the source to the sink composed only of infinite capacity edges. The reason of this is that if a such path exist, we can send an infinite amount of flow along this path, and therefore the maximum flow value cannot be bounded. \\
 
@@ -116,27 +113,28 @@ We have now defined all terms we will use and made all the assumptions needed. T
 
 \begin{equation}
 \begin{aligned}
-& {\text{Maximize}} & f & & &\\
+& {\text{Maximize}} & \left\vert{f}\right\vert & & &\\
 & \text{subject to} & & & &\\
-& & & \sum\limits_{\{j:(i,j)\in E\}} x_{ij} - \sum\limits_{\{j:(j,i)\in E\}} x_{ji} & = & \begin{cases}
+& & & \sum\limits_{\{(i,j)\in E\ : j \in V\}} x_{ij} - \sum\limits_{\{(j,i)\in E\ : j \in V\}} x_{ji} & = & \begin{cases}
                f & \text{for i = s} \\
                0 & \text{for all } i \in N \setminus \{s, t\} \\
                -f & \text{for i = t}
             \end{cases}\\
 & \text{and} & & & & \\
-& & & 0 \leq x_{ij} \leq c_{ij} & & \text{for each } (i, j) \in E
+& & & 0 \leq x_{ij} \leq c_{ij} & & \text{for each } (i, j) \in E\\
+& & & x_{ij} \text{ is an integer.}& &
 \end{aligned}
 \end{equation}
 
 \section{Applications}
 \label{sec:applications}
-As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problem. In this section, we will describe two applications of the maximum flow problem.
+As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problems. In this section, we will describe one applications of the maximum flow problem.
 
 \subsection{Problem of representatives}
 
 \subsubsection{Problem Statement}
 
-A city has $c$ citizen $C_1, C_2, C_3, ..., C_c$; $a$ associations $A_1, A_2, A_3, ..., A_a$ and $p$ political parties $P_1, P_2, P_3, ..., P_p$. Each resident is member of at least one association and belong to one political party. Each association  must elect one of its members to represent it on the governement so that the number of council member of the political party $P_k$ is at most $u_k$. The task is to know if an arrangement is possible in regards to the property.
+A city has $c$ citizens $C_1, C_2, C_3, ..., C_c$; $a$ associations $A_1, A_2, A_3, ..., A_a$ and $p$ political parties $P_1, P_2, P_3, ..., P_p$. Each resident is member of at least one association and belong to one political party. Each association  must elect one of its members to represent it on the governement so that the number of council member of the political party $P_k$ is at most $u_k$. The task is to know if an arrangement is possible in regards to the property.
 
 \begin{figure}[H]
 \centering
@@ -149,67 +147,9 @@ A city has $c$ citizen $C_1, C_2, C_3, ..., C_c$; $a$ associations $A_1, A_2, A_
 
 We can transform this problem to a directed network as shown in the figure \ref{img:represent}. In the network, we added a source node and a sink node. There is an arc from the source node to each association nodes with an unitary capacity. If a citizen is member of an association, there is an arc from the assocation node $A_i$ to the citizen node $C_j$ with an unitary capacity. If a citizen is member of a political party, there is an arc from the citizen node $C_i$ to the political party node $P_j$ with an unitary capacity. Finally, each political party nodes have an outgoing arc to the sink, with a capacity of $u_k$ (defined in the problem).
 
-If the maximum flow of this directed network is equals to the number of associations ($a$), we can say that the city has a balanced council; otherwise, it does not. It is because if the value of the maximum flow is not $a$, it means that one association is not represented.
+If the maximum flow of this directed network is equals to the number of associations ($a$), we can say that the city has a balanced council; otherwise, it does not. This is because if the value of the maximum flow is not $a$, it means that at least one association is not represented.
 
 This type of model has applications in several ressource assignment settings.
 
-
-\subsection{Distributed computing on a two-processor computer}
-
-\subsubsection{Problem Statement}
-We consider a computer with two processors (which not need to be identicals) and a program which contains several threads. Each of the threads must be loaded on one of the processor. There are several costs:
-\begin{enumerate}
-	\item $\alpha_i$ and $\beta_i$ are the cost of computation of thread $i$ on processors 1 and 2, respectively (processing costs);
-	\item $c_{ij}$ is the interproessor communication cost if threads $i$ and $j$ are assigned to differents processors, this cost equals $0$ if the two threads are on assigned to the same processor (interprocessor communication costs).
-\end{enumerate}
-The goal of the distributed computing on a two-processor computer problem is to find the allocation of the threads on the two processors which minimize the total costs of processing and interprocessor communication.
-
-\begin{figure}[H]
-\centering
-\begin{tabular}{|l|l|l|l|}
-	\hline
-	$i$ & 1 & 2 & 3 \\
-	\hline
-	$\alpha_i$ & 3 & 7 & 8 \\
-	\hline
-	$\beta_i$ & 2 & 4 & 5 \\
-	\hline
-\end{tabular}
-\caption{Processing costs.}
-\end{figure}
-
-\begin{figure}[H]
-\begin{tabular}{|l|l|l|l|}
-	\hline
-	$i$ & 1 & 2 & 3 \\
-	\hline
-	1 & 0 & 3 & 0 \\
-	\hline
-	2 & 3 & 0 & 2 \\
-	\hline
-	3 & 0 & 2 & 0 \\
-	\hline
-\end{tabular}
-\centering
-\caption{Interrocessor communication costs.}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.5]{images/computing.png}
-\caption{A undirected network representing the problem (min cut value is 16).}
-\label{img:computing}
-\end{figure}
-
-\subsubsection{Solution}
-
-As ce can see in the figure \ref{img:computing}, we can formulate this problem on a undirected network. We define the source as the processor 1 and the sink as the processor 2. For each thread $i$, there is a node from the source (resp. sink) and the thread node with a capacity of $\alpha_i$ (resp. $\beta_i$). Finally, if the thread $i$ interact with the thread $j$ ($c_{ij} > 0$), we include an arc $(i, j)$ with the capacity $c_{ij}$.
-
-The solution of this problem is to find the minimum cut of the network. As we know with the Max-flow min-cut theorem \ref{mincut_maxflow}, the minimum cut is equals to the maximum flow. The proof of this theorem is outside the scope of this master thesis.
-
-\begin{theorem}
-\label{mincut_maxflow}
-The maximum value of an s-t flow is equal to the minimum capacity over all s-t cuts.
-\end{theorem}
 
 

@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy and the access time was too low. Indeed, the neighbourhood of a vertex is obtain in $O(|E|)$ given that	it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
+For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy. The neighbourhood of a vertex is obtain in $O(|V|)$ given that it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
 
 As a reminder, an adjacency matrix is a two dimension array, where each line represents a starting vertex and each column represents a ending vertex. The values represent the capacity between both vertices, 0 meaning that there are no edge between them. \newline
 
@@ -18,7 +18,9 @@ So we decide to use a structure defined below. \newline
 
 Like for the adjacency matrix, we use an array where each line represents the neighbours of a vertex. For example, the first line contains the information on the neighbours of the first vertex. But contrary to the adjacency matrix, we do not use an array to represent neighbours but a different structure requiring less memory space. \newline
 
-We used four various data structures : hash map, tree map, simple linked list and one home-made structure, split array. Each vertex will have its structure, storing which vertices are neighbours and what are the capacities of the edges to these vertices. If we had to represent a graph with 10 vertices, we would have a array of 10, for example, hash map. Each hash map representing the neighbourhood of a single vertex.
+We used five various data structures : hash map, tree map, simple linked list and two home-made structures based on the sparse set, split array and sparse map. 
+
+Each vertex will have its structure, storing which vertices are neighbours and what are the capacities of the edges to these vertices. If we had to represent a graph with 10 vertices, we would have a array of 10, for example, hash map. Each hash map representing the neighbourhood of a single vertex.
 
 \section{Data structures}
 \subsection{Hash Map}
@@ -31,7 +33,7 @@ The \textit{load factor} is the number of records divided by the number of bucke
 In our case, the key is the id of the nearby vertex and the value is the capacity of the edge.
 
 \subsection{Tree Map}
-A tree map, or Red-Black tree, is a self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each vertex, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a vertex :
+A tree map, implemented by a Red-Black tree in Java, is a self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each vertex, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a vertex :
 
 \begin{itemize}
 \item A vertex is either red or black
@@ -54,34 +56,48 @@ A simple linked list is one of the simplest data structure. Each node consists o
 \includegraphics[scale=0.5]{images/SimpleLinkedList.png}
 \caption{A simple linked list.}
 \end{figure}
+\newpage
+\subsection{Home-made structures}
+We have implemented two home-made structures based on the sparse set. A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. An integer value \textit{split} represents the separation between current elements and invalid elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
 
-\subsection{Split Array}
-A split array is a simplified version of a sparse set. It contains a single array of all possible neighbouring vertices (outgoing and incoming edges). The array is divided into two parts, one with the current neighbour vertices (outgoing edges) and the other one with the vertices which are not, or no more, neighbours (incoming edges). An integer value \textit{split} indicates the position of the array's separation.
-
-\begin{figure}[!h]
+Here is an example of sparse set : 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{images/sparseset.png}
+\end{center}
+\caption{A sparse set.}
+\end{figure}
+We cannot use this structure like that because the neighbourhood of a vertex doesn't form a suite of index. For example, if a vertex had three neighbours 8, 72 and 13, we can't directly know which vertex is contained in which index.
+So we implemented a first data structure, the split array, which is a simplified version of the sparse set without \textit{map}. We also implemented an other structure, the sparse map, which is a sparse set with a hash map instead of an array for \textit{map}, permitting to associate a vertex with its position in \textit{dom}.
+\newpage
+\subsubsection{Split array}
+A split array is composed only by the \textit{dom} array which contains all possible neighbouring vertices. The array is divided into two parts, one with the current neighbour vertices and the other one with the vertices which are not, or no more, neighbours. An integer value \textit{split} indicates the position of the array's separation.
+\begin{figure}[H]
 \includegraphics[width=7.5cm,height=4.5cm]{images/SplitArrayGraph.png}\hfill
-\includegraphics[width=5cm,height=3cm]{images/SplitArray.png} %todo aligner
+\includegraphics[width=5cm,height=3cm]{images/SplitArray.png}
 \caption{A graph with the split array of vertex 2.}
 \end{figure}
+To add a vertex (for example after sending units of flow on the path 0-1-2-4-5, an edge is created from 2 to 1 and 1 becomes a current neighbour of 2), we need to go through the right part of \textit{dom} to find the future neighbour vertex, exchange its place with the vertex on the right of \textit{split} and increase \textit{split} by 1. \newline
 
-To add a vertex (for example after sending units of flow on the path 0-1-2-4-5, an edge is created from 2 to 1 and 1 becomes a current neighbour of 2), we need to go through the right part of the array to find the futur neighbour vertex, exchange its place with the vertex on the right of \textit{split} and increase \textit{split} by 1. \newline
+To remove a vertex, it is the reverse operation. We need to go through the left part of \textit{dom} to find the neighbour vertex, exchange its place with the vertex on the left of \textit{split} and decrease \textit{split} by 1.
+\subsubsection{Sparse map}
+A sparse map is a sparse set with a hash map instead of an array for \textit{map}. The hash map associate each vertex with its position in \textit{dom}.
 
-To remove a vertex, it's the reverse operation.
-
-
+To add or remove a vertex, it is the same as for the split array but we don't need to go through \textit{dom} because we can obtain the position of a vertex in \textit{dom} thanks to the hash map, saving valuable time. In compensation, we need to update the hash map so it remains consistent. We simply need to swap the values of the two vertices which were exchanged in \textit{dom}.
+\newpage
 \subsection{Complexities}
 
-This table below represents the complexities with the notation big O, which means "in the worst case". Although for the last 3 structures, the worst case is not too penalizing but that is not the case for the hash map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arise. \newline
+This table below represents the complexities with the notation big O, which means "in the worst case". Although for the tree map, the simple linked list and the split array, the worst case is not too penalizing but that is not the case for the hash map and thus for the sparse map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arise. \newline
 \begin{figure}[H]
 \centering
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 	\hline
-     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split Array} \\
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
      \hline	
-   entrySet & $O(n)$ & $O(n)$ & $O(n$) & $O(n)$\\
-   get/set & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
-   put & $O(n)$ & $O(log$ $n)$ & $O(1)$ & $O(n^-)$\\
-   remove & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$\\
+   entrySet & $O(n)$ & $O(n)$ & $O(n$) & $O(n)$ & $O(n)$ \\
+   get/set & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$ & $O(n)$ \\
+   put & $O(n)$ & $O(log$ $n)$ & $O(1)$ & $O(n^-)$ & $O(n)$ \\
+   remove & $O(n)$ & $O(log$ $n)$ & $O(n)$ & $O(n)$ & $O(n)$ \\
    \hline
 \end{tabular} 
 \end{figure}
