@@ -28,7 +28,8 @@ public class Main {
 				}
 				else {
 					Graph g = new HashMapGraph(args[0], true);
-					Solver s = new FIFOPushRelabel(g);
+					//Solver s = new PushRelabel(g);
+					Solver s = new HighestLabelPushRelabel(g);
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);
