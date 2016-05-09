@@ -2,12 +2,8 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.LinkedListGraph;
-import models.SplitArrayGraph;
-import solver.EdmondsKarp;
-import solver.EdmondsKarpScaling;
-import solver.FordFulkersonScaling;
-import solver.Solver;
+import models.*;
+import solver.*;
 
 public class Main {
 	public static void main(String[] args) {
@@ -31,8 +27,8 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new SplitArrayGraph(args[0], true);
-					Solver s = new FordFulkersonScaling(g);
+					Graph g = new HashMapGraph(args[0], true);
+					Solver s = new FIFOPushRelabel(g);
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);
