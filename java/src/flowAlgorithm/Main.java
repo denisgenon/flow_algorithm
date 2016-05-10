@@ -2,18 +2,9 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-<<<<<<< HEAD
-import models.LinkedListGraph;
-import models.SplitArrayGraph;
-import solver.EdmondsKarp;
-import solver.EdmondsKarpScaling;
-import solver.FordFulkersonScaling;
-import solver.PushRelabel;
-import solver.Solver;
-=======
+
 import models.*;
 import solver.*;
->>>>>>> e6604ebbfc3652318a27fb89ac0f879c458f7f1e
 
 public class Main {
 	public static void main(String[] args) {
