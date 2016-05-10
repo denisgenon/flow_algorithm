@@ -80,7 +80,7 @@ We know that each augmenting path can be found in $O(|E|)$. The time complexity 
 
 \subsection{Introduction}
 
-The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$, where $n$ is the number of vertcices in the augmenting path. One example of this  can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the edge $(12, 13)$ in the network represented in the figure \ref{img:bad_augmenting}. In this case, a better solution is to push directly from the vertice 12, 10 units of flow to the sink. This is the idea behing preflow-push algorithms.
+The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$, where $n$ is the number of vertices in the augmenting path. One example of this  can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the edge $(12, 13)$ in the network. In this case, a better solution is to push directly from the vertice 12, 10 units of flow to the sink. This is the idea behing preflow-push algorithms.
 
 \begin{figure}[H]
 \centering
@@ -94,16 +94,16 @@ The preflow-push algorithms don't push flow on augmenting path, they push flow o
 \begin{definition}
 \label{preflow}
 A \textbf{preflow} is a function $x: E \to \mathbb{R}$ that satisfies the capacity constraint and the following relaxation of the flow conservation constraint:
-$$\sum\limits_{\{(j,i) \in E:j \in V\}} x_{ji} - \sum\limits_{\{(i,j) \in E : j \in V\}} x_{ij} \geq 0 \text{	for each } i \in V \setminus \{s, t\}.$$
+$$\sum\limits_{(j,i) \in E} x_{ji} - \sum\limits_{(i,j) \in E} x_{ij} \geq 0 \text{	for each } i \in V \setminus \{s, t\}.$$
 \end{definition}
 
 \begin{definition}
 \label{excess}
 The \textbf{excess} of each vertex $i \in V$ is 
-$$e(i) = \sum\limits_{\{(j,i) \in E:j \in V\}} x_{ji} - \sum\limits_{\{(i,j) \in E: j \in V\}} x_{ij}.$$
+$$e(i) = \sum\limits_{(j,i) \in E} x_{ji} - \sum\limits_{(i,j) \in E} x_{ij}.$$
 \end{definition}
 
-We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in the algorithm \ref{pralgo}.
+We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo}.
 
 
 \begin{algorithm}
@@ -134,13 +134,13 @@ We call a vertex with positive excess as an \textbf{active vertex}. The fact tha
 
 \subsection{Complexity}
 
-To compute the complexity of the generic preflow-push algorithm we need to distinguish three kind of operations: relabels, saturing pushes, non-saturing pushes.
+To compute the complexity of the generic preflow-push algorithm we need to distinguish three kinds of operations: relabels, saturing pushes, non-saturing pushes.
 \begin{itemize}
 \item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2*|V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2*|V| - 1) * (|V| - 2) \approx |V|^2$.
 
-\item The number of saturing push per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|*|E|)$.
+\item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|*|E|)$.
 
-\item The number of non-saturing push is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increase $\phi$ at maximum $(2*|V| - 1)*(|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2*|V|-1)*(2*|V|*|E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2*|V|-1)*(|V|-2) + (2*|V|-1)*(2*|V|*|E|) = O(|V|^2*|E|)$ non-saturing push to have $\phi = 0$.
+\item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2*|V| - 1)*(|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2*|V|-1)*(2*|V|*|E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2*|V|-1)*(|V|-2) + (2*|V|-1)*(2*|V|*|E|) = O(|V|^2*|E|)$ non-saturing push to have $\phi = 0$.
 \end{itemize}
 We have $O(|V|^2)$ relabel operation, $O(|V|*|E|)$ saturing push and $O(|V|^2*|E|)$ non-saturing push. Thus, the generic preflow algorithm runs in $O(|V|^2) + O(|V|*|E|) + O(|V|^2*|E|) = O(|V|^2 *|E|)$. 
 
@@ -148,7 +148,7 @@ We have $O(|V|^2)$ relabel operation, $O(|V|*|E|)$ saturing push and $O(|V|^2*|E
 
 \subsubsection{The ping-pong effect}
 
-To describe the ping-pong effect, we will execute the preflow push algorithm on the network in the figure \ref{img:pingpong1}.
+To describe the ping-pong effect, we will execute the preflow push algorithm on the network in Figure \ref{img:pingpong1}.
 
 \begin{figure}[H]
 \centering
@@ -157,7 +157,7 @@ To describe the ping-pong effect, we will execute the preflow push algorithm on 
 \label{img:pingpong1}
 \end{figure}
 
-After the preprocess, we obtain the residual network given in the figure \ref{img:pingpong2} with the corresponding labels for each vertices. The active vertex is the vertex 1. The algorithm relabel it with the distance 3. Then, the flow is pushed along the path from the vertex 1 to the vertex 8, and relabel the distance labels of the vertices visited. After thoses push and relabel operations, we obtain the residual network described in the figure \ref{img:pingpong3}.
+After the preprocess, we push a flow along the path 8-7-6-5-4-3-2-1-t. To be able to do this push, the vertices must be relabeled. We obtain the residual network given in the figure \ref{img:pingpong2} with the corresponding labels for each vertices. The vertex 1 is active. The algorithm relabels it with the height 3. Then, the flow is pushed along the path from the vertex 1 to the vertex 8, and relabel the height labels of the visited vertices. After thoses push and relabel operations, we obtain the residual network described in the figure \ref{img:pingpong3}.
 
 \begin{figure}[H]
 \centering
@@ -166,7 +166,7 @@ After the preprocess, we obtain the residual network given in the figure \ref{im
 \label{img:pingpong2}
 \end{figure}
 
-The algorithm will now select the vertex 8, relabels it to the distance label 5 and push the excess flow from 8 to 7. The vertex 7 is selected, his distance label modified to 6 and the excess flow is pushed from 7 to 6. The algorithm repeat those operations for each vertices along the path $\{6,5,4,3,2,1\}$. We obtain now the residual network described in the figue \ref{img:pingpong4}.
+The algorithm will now select the vertex 8, relabels it to the height label 5 and push the excess flow from 8 to 7. The vertex 7 is selected, his height label modified to 6 and the excess flow is pushed from 7 to 6. The algorithm repeats those operations for each vertices along the path 6-5-4-3-2-1. We obtain now the residual network described in the figue \ref{img:pingpong4}.
 
 \begin{figure}[H]
 \centering
@@ -175,7 +175,7 @@ The algorithm will now select the vertex 8, relabels it to the distance label 5 
 \label{img:pingpong3}
 \end{figure}
 
-We obtain a residual network that look like the residual network in the figure \ref{img:pingpong2}. The only differences are the distance label of the bottom vertices. The algorithm will relabel and push the vertices along the path $\{1,2,3,4,5,6,7,8\}$. We have now the residual network described in the figure \ref{img:pingpong5}.
+We obtain a residual network that look like the residual network in the figure \ref{img:pingpong2}. The only differences are the height label of the bottom vertices. The algorithm will relabel and push the vertices along the path 1-2-3-4-5-6-7-8. We have now the residual network described in the figure \ref{img:pingpong5}.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{images/pingpong4.png}
@@ -183,7 +183,7 @@ We obtain a residual network that look like the residual network in the figure \
 \label{img:pingpong4}
 \end{figure}
 
-This round trip between the vertex 1 and the vertex 8 is called the ping-pong effect and is the main drawback of the preflow push algorithms.
+This round trip between the vertex 1 and the vertex 8 is called the ping-pong effect and is the main drawback of the preflow push algorithms. This flow exchange terminates when the height label of the vertex 8 become greater than the height label of the source.
 
 
 \begin{figure}[H]

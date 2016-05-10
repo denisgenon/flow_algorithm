@@ -1,8 +1,8 @@
 %!TEX root = ../main.tex
 % Introduction
-The maximum flow problem can be stated as follow: in a capacitated network, we need to push as much flow as we can between two specials vertices: the source and the sink. The two constraints are that we cannot exceed the capacity of any edge and a vertex cannot hold flow. A common analogy is a water distribution in a country. The vertices can be sources of water, cities needing water or just some transfer nodes. The edges can be viewed as pipes with a maximal volume of water per second (or capacity). The flow is the amount of water flowing through the pipes. The goal is to find the maximum flow of water that can be send from a source of water to a needing city given the capacities of each pipes. As we need to find the maximum flow that can be pushed, this an optimization problem. We will see in the section Applications \ref{sec:applications} that the maximum flow problem is important because it can be used to express and resolve a wide variety of different kinds of problems.\\
+The maximum flow problem can be stated as follows: in a capacitated network, we need to push as much flow as we can between two specials vertices: the source and the sink. The two constraints are that we cannot exceed the capacity of any edge and a vertex cannot hold flow. A common analogy is a water distribution in a country. The vertices can be sources of water, cities needing water or just some transfer nodes. The edges can be viewed as pipes with a maximal volume of water per second (or capacity). The flow is the amount of water flowing through the pipes. The goal is to find the maximum flow of water that can be send from a source of water to a needing city given the capacities of each pipes. As we need to find the maximum flow that can be pushed, this an optimization problem. We will see in the section Applications \ref{sec:applications} that the maximum flow problem is important because it can be used to express and resolve a wide variety of different kinds of problems.\\
 
-To solve this problem, two families of algorithms have been developped these last decades. The first one is the family of the augmenting path algorithms. The aim of thoses algorithms is to find an augmenting path in the residual network until it becomes impossible. We will return on these principles later. The second family, newest, is the family of preflow-push algorithms. The aim of thoses is to flood the network to quickly find the maximum flow. \\
+To solve this problem, two families of algorithms have been developped these last decades. The first one is the family of the augmenting path algorithms. The aim of thoses algorithms is to find an augmenting path in the residual network until it becomes impossible. We will return on these principles later. The second family, newest, is the family of preflow-push algorithms. The aim of those is to flood the network to quickly find the maximum flow. \\
 
 %todo we can make it longer if needed
 
@@ -24,7 +24,7 @@ A \textbf{directed graph} $G = (V, E)$ consists of a set $V$ of vertices and a s
 \label{img:dgraph}
 \end{figure}
 
-The figure~\ref{img:dgraph} gives us an example of a directed graph.
+Figure~\ref{img:dgraph} gives us an example of a directed graph.
 
 \begin{definition}
 \label{dnetwork}
@@ -45,7 +45,7 @@ The figure~\ref{img:dnetwork} gives us an example of a directed network. \\
 In this master thesis, everything that will be mentionned by the terms \textit{graph}, \textit{network}, \dots will refer to a \textit{capacitated network}.
 
 \subsection{Source and sink vertices}
-As said earlier, the maximum flow problem distinguish two specials nodes in the problem: the source and the sink.
+As said earlier, the maximum flow problem distinguishes two specials nodes in the problem: the source and the sink.
 
 \begin{definition}
 \label{source}
@@ -70,22 +70,22 @@ A \textbf{flow} is a mapping $f: E \to \mathbb{R}^{+}$, is denoted $f_{ij}$ for 
 	\label{cap_constraint}
 	\item[Capacity constraint] $f_{ij} \leq c_{ij}$, for each $(i, j) \in E$;
 	\label{flow_constraint}
-	\item[Flow conservation constraint] $\sum\limits_{\{(i, j) \in E : i \in V\}} f_{ij} = \sum\limits_{\{(j, i) \in E : i \in V\}} f_{ji}$ , for each $j \in V \setminus \{s, t\}$.
+	\item[Flow conservation constraint] $\sum\limits_{(i, j) \in E} f_{ij} = \sum\limits_{(j, i) \in E} f_{ji}$ , for each $j \in V \setminus \{s, t\}$.
 \end{description}
 \end{definition}
 
 \begin{definition}
 \label{vflow}
-The \textbf{value of a flow} is defined by $\left\vert{f}\right\vert = \sum\limits_{\{(s,j) \in E : j \in V\}} f_{sj}$ or $\left\vert{f}\right\vert = \sum\limits_{\{(i,t) \in E : i \in V\}} f_{it}$. It represents the amount of flow passing from the source to the sink.
+The \textbf{value of a flow} is defined by $\left\vert{f}\right\vert = \sum\limits_{(s,j) \in E} f_{sj}$ or $\left\vert{f}\right\vert = \sum\limits_{(i,t) \in E} f_{it}$. It represents the amount of flow passing from the source to the sink.
 \end{definition}
 
-Since $s$ and $t$ are the only vertices that do not conserve flow, $\left\vert{f}\right\vert$ can be equivalently stated as the amount of flow leaving $s$ or entering $t$.
+$\left\vert{f}\right\vert$ can be equivalently stated as the amount of flow leaving $s$ or entering $t$.
 
 \subsection{Residual network} 
 To resolve the maximum flow problem, it is convenient to use another representation of the capacitated network. To be able to find the maximum flow, several algorithms update the current flow in an incremental process. Then, it will be useful to have a representation of the graph which gives the amount of remaining flow which can be added to the current flow through an edge. This representation is called \textit{residual network}.
 \begin{definition}
 \label{rcapacity}
-Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c_f (i,j)$ is defined as $c_f (i,j) = c_{i,j} - f_{i,j}$.
+Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c_f (i,j)$ is defined as $c_f (i,j) = c_{ij} - f_{ij}$.
 \end{definition}
 
 
@@ -99,7 +99,7 @@ Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the d
 
 All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative  capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
 
-All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.\\
+All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.\\%TODO Donner un exemple dans la partie FF et en faire reference ici
 
 The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the flow is simply $0$.\\
 
@@ -113,16 +113,12 @@ We have now defined all terms we will use and made all the assumptions needed. T
 
 \begin{equation}
 \begin{aligned}
-& {\text{Maximize}} & \left\vert{f}\right\vert & & &\\
+& {\text{Maximize}} & \sum\limits_{(s,i) \in E} f_{si} & & &\\
 & \text{subject to} & & & &\\
-& & & \sum\limits_{\{(i,j)\in E\ : j \in V\}} x_{ij} - \sum\limits_{\{(j,i)\in E\ : j \in V\}} x_{ji} & = & \begin{cases}
-               f & \text{for i = s} \\
-               0 & \text{for all } i \in N \setminus \{s, t\} \\
-               -f & \text{for i = t}
-            \end{cases}\\
+& & & \sum\limits_{(i,j)\in E} f_{ij} = \sum\limits_{(j,i)\in E} f_{ji} & & \text{for all } i \in V \setminus \{s, t\}\\
 & \text{and} & & & & \\
-& & & 0 \leq x_{ij} \leq c_{ij} & & \text{for each } (i, j) \in E\\
-& & & x_{ij} \text{ is an integer.}& &
+& & & 0 \leq f_{ij} \leq c_{ij} & & \text{for each } (i, j) \in E\\
+& & & f_{ij} \text{ is an integer.}& &
 \end{aligned}
 \end{equation}
 
@@ -151,5 +147,6 @@ If the maximum flow of this directed network is equals to the number of associat
 
 This type of model has applications in several ressource assignment settings.
 
+%TODO Another application ...
 
 
