@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-For this master thesis, we wanted to be able to analyse the difference between several data structures. Moreover, willing to work with big graphs, the traditional adjacency matrix became too heavy. The neighbourhood of a vertex is obtain in $O(|V|)$ given that it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
+For this master thesis, we want to be able to analyse the difference between several data structures. Moreover, the traditional adjacency matrix is not adapted for the big graphs. Indeed the neighbourhood of a vertex is obtain in $O(|V|)$ given that it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
 
 As a reminder, an adjacency matrix is a two dimension array, where each line represents a starting vertex and each column represents a ending vertex. The values represent the capacity between both vertices, 0 meaning that there are no edge between them. \newline
 
@@ -14,11 +14,11 @@ As a reminder, an adjacency matrix is a two dimension array, where each line rep
 \caption{A graph with its adjacency matrix.}
 \end{figure}
 
-So we decide to use a structure defined below. \newline
+We thus decide to use an other structure; \newline
 
-Like for the adjacency matrix, we use an array where each line represents the neighbours of a vertex. For example, the first line contains the information on the neighbours of the first vertex. But contrary to the adjacency matrix, we do not use an array to represent neighbours but a different structure requiring less memory space. \newline
+With the same principle as the adjacency matrix, we use an array where each line represents the neighbours of a vertex. For example, the first line contains the information on the neighbours of the first vertex. But contrary to the adjacency matrix, we do not use an array to represent neighbours but a different structure requiring less memory space. \newline
 
-We used five various data structures : hash map, tree map, simple linked list and two home-made structures based on the sparse set, split array and sparse map. 
+We used five different data structures : hash map, tree map, simple linked list and two home-made structures based on the sparse set, split array and sparse map. 
 
 Each vertex will have its structure, storing which vertices are neighbours and what are the capacities of the edges to these vertices. If we had to represent a graph with 10 vertices, we would have a array of 10, for example, hash map. Each hash map representing the neighbourhood of a single vertex.
 
@@ -28,7 +28,7 @@ A hash map is an unordered associative array, which associates a key with a valu
 
 Ideally, the hash function assigns to every key a different bucket but it is possible to have several keys giving the same hash code. This is called a \textit{collision}. One bucket can thus contain several records. \newline
 
-The \textit{load factor} is the number of records divided by the number of buckets.  At more the load factor is high, at more the hash map is slow. But having a too low load factor does not save search time, it just uses some memory pointlessly. To keep the load factor to a defined value (eg between $\frac{2}{3}$ and $\frac{3}{4}$), we must, when inserting new records, resize the hash map. \newline
+The \textit{load factor} is the number of records divided by the number of buckets.  If the load factor is too high, the hash map will be slower. But having a too low load factor does not save search time, it just uses some memory pointlessly. To keep the load factor to a defined value (eg between $\frac{2}{3}$ and $\frac{3}{4}$), we must, when inserting new records, resize the hash map. \newline
 
 In our case, the key is the id of the nearby vertex and the value is the capacity of the edge.
 
@@ -58,7 +58,7 @@ A simple linked list is one of the simplest data structure. Each node consists o
 \end{figure}
 \newpage
 \subsection{Home-made structures}
-We have implemented two home-made structures based on the sparse set. A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. An integer value \textit{split} represents the separation between current elements and invalid elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
+We have implemented two home-made structures based on the sparse set. A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
 
 Here is an example of sparse set : 
 \begin{figure}[H]
@@ -103,3 +103,5 @@ This table below represents the complexities with the notation big O, which mean
 \end{figure}
 
 With $n$ the number of outgoing edges of a vertex and $n^-$ the number of incoming edges. So, $n$ is also the number of neighbours.
+
+TODO Il faut vraiment dire que entrySet c'est pour avoir un set d'entry, que get c'est pour get un element, set pour set un element, put pour put un element et remove pour remove un element?
