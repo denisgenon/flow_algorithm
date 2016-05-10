@@ -7,6 +7,7 @@ import models.SplitArrayGraph;
 import solver.EdmondsKarp;
 import solver.EdmondsKarpScaling;
 import solver.FordFulkersonScaling;
+import solver.PushRelabel;
 import solver.Solver;
 
 public class Main {
@@ -32,7 +33,7 @@ public class Main {
 				}
 				else {
 					Graph g = new SplitArrayGraph(args[0], true);
-					Solver s = new FordFulkersonScaling(g);
+					Solver s = new PushRelabel(g);
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);
