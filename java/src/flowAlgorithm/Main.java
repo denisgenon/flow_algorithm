@@ -2,6 +2,7 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
+
 import models.*;
 import solver.*;
 
@@ -27,9 +28,9 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new HashMapGraph(args[0], true);
+					Graph g = new SparseMapGraph(args[0], true);
 					//Solver s = new PushRelabel(g);
-					Solver s = new HighestLabelPushRelabel(g);
+					Solver s = new PushRelabel(g);
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);

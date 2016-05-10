@@ -17,6 +17,7 @@ public class BatchMain {
 	 * 				HM : HashMap
 	 * 				SA : SplitArray
 	 * 				TM : TreeMap
+	 * 				SM : SparseMap
 	 * 			args[2] pour l'instance
 	 * 			args[3] pour ordonné
 	 */
@@ -29,6 +30,7 @@ public class BatchMain {
 		else if(args[1].equals("HM")) g = new HashMapGraph(args[2],Boolean.parseBoolean(args[3]));
 		else if(args[1].equals("SA")) g = new SplitArrayGraph(args[2],Boolean.parseBoolean(args[3]));
 		else if(args[1].equals("TM")) g = new TreeMapGraph(args[2],Boolean.parseBoolean(args[3]));
+		else if(args[1].equals("SM")) g = new SparseMapGraph(args[2],Boolean.parseBoolean(args[3]));
 		else g = null;
 
 		if(args[0].equals("FF")) s = new FordFulkersonScaling(g);

@@ -1,6 +1,5 @@
 package solver;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 
 import interfaces.Graph;
