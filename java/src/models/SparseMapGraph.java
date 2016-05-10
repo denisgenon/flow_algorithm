@@ -75,12 +75,12 @@ public class SparseMapGraph extends SimpleGraph implements Graph{
 
 	@Override
 	public int getCapacity(int u, int v) {
-		return residualGraph[u].dom[residualGraph[u].map.get(v)].getCapacity();
+		return residualGraph[u].get(v);
 	}
 
 	@Override
 	public void setCapacity(int u, int v, int newCapa) {
-		residualGraph[u].dom[residualGraph[u].map.get(v)].capacity=newCapa;
+		residualGraph[u].set(v,newCapa);
 	}
 
 	@Override

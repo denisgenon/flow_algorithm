@@ -59,6 +59,18 @@ public class SparseMap {
 		split++;
 	}
 	
+	public int get(int i){
+		int index = map.get(i);
+		if(index < split){
+			return dom[index].getCapacity();
+		}
+		else return -1;
+	}
+	
+	public void set(int i, int newCapacity){
+		dom[map.get(i)].capacity=newCapacity;
+	}
+	
 	public void compile() {
 		dom=new Arc [adjacents.size()+futurAdjacents.size()];
 		int bigSize = dom.length;

@@ -29,12 +29,8 @@ public class Main {
 				}
 				else {
 					Graph g = new SparseMapGraph(args[0], true);
-					System.out.println("Graphe crée");
-					
-					
 					//Solver s = new PushRelabel(g);
 					Solver s = new PushRelabel(g);
-					
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);
