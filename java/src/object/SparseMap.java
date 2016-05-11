@@ -97,9 +97,7 @@ public class SparseMap {
 			if(i==split){
 				sdom+=("|");
 			}
-			if(dom[i].idDestination==0){
-				sdom+=(dom[i]+" ");
-			}
+			sdom+=(dom[i]+" ");
 		}
 		System.out.println(sdom);
 		System.out.println();

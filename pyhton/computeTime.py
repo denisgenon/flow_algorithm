@@ -3,7 +3,7 @@ import os
 
 var = input("Are you sure you want to reset the results? ")
 if(var=="yes"):
-	for x in range(1,101):
+	for x in range(1,10):
 		print('Tests for '+str(x)+' launch')
 		od = os.getcwd()
 		os.chdir(od+'\..\\java\\results')

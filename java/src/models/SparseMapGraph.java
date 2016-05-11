@@ -62,11 +62,8 @@ public class SparseMapGraph extends SimpleGraph implements Graph{
 				}
 			}
 
-			int count=0;
 			for(SparseMap s : residualGraph){
 				s.compile();
-				if(count==15) s.print();
-				count++;
 			}
 
 			br.close();
@@ -103,15 +100,7 @@ public class SparseMapGraph extends SimpleGraph implements Graph{
 
 	@Override
 	public void addEdge(int u, int v, int capacity) {
-		if(u==15){
-			System.out.println("J'ajoute "+v+" dans "+u+" avec une capa de "+capacity);
-			residualGraph[u].print();
-			residualGraph[u].add(v, capacity);
-			residualGraph[u].print();
-		}
-		else {
-			residualGraph[u].add(v, capacity);
-		}
+		residualGraph[u].add(v, capacity);
 	}
 
 
