@@ -58,7 +58,8 @@ A simple linked list is one of the simplest data structure. Each node consists o
 \end{figure}
 \newpage
 \subsection{Home-made structures}
-We have implemented two home-made structures based on the sparse set. A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
+We have implemented two home-made structures based on the sparse set. 
+A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
 
 Here is an example of sparse set : 
 \begin{figure}[H]
@@ -87,6 +88,14 @@ To add or remove a vertex, it is the same as for the split array but we don't ne
 \newpage
 \subsection{Complexities}
 
+We use 5 functions on our data structures ;
+\begin{description}
+\item[entrySet] which is used to obtain the set of neighbours
+\item[get/set] which, respectively, returns or modifies a capacity
+\item[add/remove] which is used to add or to remove a vertex
+\end{description}
+
+
 This table below represents the complexities with the notation big O, which means "in the worst case". Although for the tree map, the simple linked list and the split array, the worst case is not too penalizing but that is not the case for the hash map and thus for the sparse map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arise. \newline
 \begin{figure}[H]
 \centering
@@ -103,5 +112,3 @@ This table below represents the complexities with the notation big O, which mean
 \end{figure}
 
 With $n$ the number of outgoing edges of a vertex and $n^-$ the number of incoming edges. So, $n$ is also the number of neighbours.
-
-TODO Il faut vraiment dire que entrySet c'est pour avoir un set d'entry, que get c'est pour get un element, set pour set un element, put pour put un element et remove pour remove un element?

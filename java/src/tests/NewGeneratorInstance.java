@@ -72,9 +72,6 @@ public class NewGeneratorInstance {
 		}
 
 		// Rajouter des arêtes pour avoir le pourcentage voulu
-		int currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-		int oldprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-
 		for(int prct=5;prct<=100; prct+=5){
 			while((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100 < prct){
 
@@ -82,12 +79,6 @@ public class NewGeneratorInstance {
 				edges.add(newEdge);
 				allEdges.remove(newEdge);
 				allEdges.remove(new Edge(newEdge.v,newEdge.u,capaMax));
-
-				currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-				if(currentprct!=oldprct) {
-					System.out.println(currentprct);
-					oldprct=currentprct;
-				}
 			}
 
 			String pr;
