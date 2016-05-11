@@ -6,9 +6,9 @@ if(var=="yes"):
 	for x in range(1,101):
 		print('Tests for '+str(x)+' launch')
 		od = os.getcwd()
-		os.chdir(od+'\..\java\results')
+		os.chdir(od+'\..\\java\\results')
 		results = open('resultsOriented'+str(x)+'.txt', 'w')	
-		os.chdir(od+'\..\java\bin')
+		os.chdir(od+'\..\\java\\bin')
 
 		instances = ["05","10","15","20","25","30","35","40","45","50","55","60","65","70","75","80","85","90","95","100"]
 		solvers = ["FF","EK"]
@@ -22,9 +22,7 @@ if(var=="yes"):
 					i=0
 					b=0
 					while i<10:
-						print("test1")
-						b+=int(os.popen('java -cp . flowAlgorithm.BatchMain '+solver+' '+graph+' \..\instances\instancesUniquePrct'+str(x)+'\instanceuniqueprct'+instance+'.txt '+'true').read())
-						print("test2")
+						b+=int(os.popen('java -cp . flowAlgorithm.BatchMain '+solver+' '+graph+' ..\instances\instancesUniquePrct'+str(x)+'\instanceuniqueprct'+instance+'.txt '+'true').read())
 						i+=1
 					b/=10
 					results.write(solver+' '+graph+' '+instance+' '+str(b)+'\n')

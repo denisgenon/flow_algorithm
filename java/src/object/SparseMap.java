@@ -16,49 +16,49 @@ public class SparseMap {
 		futurAdjacents = new ArrayList<Arc>();
 		map = new HashMap<Integer, Integer>();
 	}
-	
+
 	public void add(Arc t) {
 		adjacents.add(t);
 	}
-	
+
 	public void addFutur(Arc t) {
 		futurAdjacents.add(t);
 	}
-	
+
 	public int remove(int i) {
-		
+
 		int index = map.get(i);
 		Arc t = dom[index];
 		int oldCapacity = t.capacity;
 		int otheri = dom[split-1].idDestination;
-		
+
 		dom[index]=dom[split-1];
 		dom[split-1]=t;
-		
+
 		map.replace(i, split-1);
 		map.replace(otheri, index);
-		
+
 		split--;
 		return oldCapacity;
 	}
-	
+
 	public void add(int i, int capacity){
 		int index=map.get(i);
 		int newIndex = split;
-		
+
 		int otheri = dom[split].idDestination;
 
 		Arc t = dom[index];
 		dom[index]=dom[newIndex];
 		dom[newIndex]=t;
 		dom[newIndex].setCapacity(capacity);
-		
+
 		map.replace(i, split);
 		map.replace(otheri, index);
-		
+
 		split++;
 	}
-	
+
 	public int get(int i){
 		int index = map.get(i);
 		if(index < split){
@@ -66,11 +66,11 @@ public class SparseMap {
 		}
 		else return -1;
 	}
-	
+
 	public void set(int i, int newCapacity){
 		dom[map.get(i)].capacity=newCapacity;
 	}
-	
+
 	public void compile() {
 		dom=new Arc [adjacents.size()+futurAdjacents.size()];
 		int bigSize = dom.length;
@@ -86,31 +86,33 @@ public class SparseMap {
 			map.put(t.idDestination, index);
 			index++;
 		}
-		
+
 		adjacents=null;
 		futurAdjacents=null;
 	}
-	
+
 	public void print(){
 		String sdom="";
 		for(int i=0; i<dom.length; i++){
 			if(i==split){
 				sdom+=("|");
 			}
-			sdom+=(dom[i]+" ");
+			if(dom[i].idDestination==0){
+				sdom+=(dom[i]+" ");
+			}
 		}
 		System.out.println(sdom);
 		System.out.println();
 	}
-	
+
 	public Arc[] getDom() {
 		return dom;
 	}
-	
+
 	public HashMap<Integer, Integer> getMap() {
 		return map;
 	}
-	
+
 	public int getSize() {
 		return split;
 	}

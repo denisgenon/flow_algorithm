@@ -55,12 +55,15 @@ public class NewGeneratorInstance {
 			connected.add(i);
 		}
 
-		// Enlever les culs de sacs
-		for(int i=0; i<V; i++){
+		// Rajouter des arêtes pour enlever les culs de sacs
+		for(int i=1; i<V; i++){
 			if(!doubleLinked.contains(i)){
 				int a = getRandomElem(connected);
 				Edge e = new Edge(i,a,capaMax);
 				Edge reverseE = new Edge(a,i,capaMax);
+				if(edges.contains(e)){
+					System.out.println("INSTANCE CORROMPUE!");
+				}
 				edges.add(e);
 				allEdges.remove(e);
 				allEdges.remove(reverseE);
@@ -114,7 +117,7 @@ public class NewGeneratorInstance {
 	public static void main (String [] args) {	
 		/*generateInstance(65);
 		createGraphFile("instanceprct65");*/
-		for(int i=94; i<=100; i++){
+		for(int i=1; i<=10; i++){
 			generateUniqueInstance("instancesUniquePrct"+i);
 		}
 
