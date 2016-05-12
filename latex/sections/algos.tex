@@ -58,7 +58,7 @@ On the other hand, Edmonds-Karp uses a breadth-first search, looking for the sho
 
 
 \subsection{Complexities}
-The max flow problem, being a problem of complexity class P, can be solved in polynomial time. When the capacities are integers, the remaining time of Ford-Fulkerson is bounded by $O(|E|*|V|*U)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $|U|$ is the maximum capacity of the graph.
+The max flow problem, being a problem of complexity class P, can be solved in polynomial time. When the capacities are integers, the remaining time of Ford-Fulkerson is bounded by $O(|E|*|V|*U)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $U$ is the maximum capacity of the graph.
 
 \begin{description}
 \item[Ford-Fulkerson]{Each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1. So the time complexity is $O(|E|*|f|)$, $|f|$ being the value of the maximal flow. 
