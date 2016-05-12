@@ -56,17 +56,12 @@ public class NewGeneratorInstance {
 		}
 
 		// Rajouter des arêtes pour enlever les culs de sacs
-		for(int i=1; i<V; i++){
+		for(int i=0; i<V; i++){
 			if(!doubleLinked.contains(i)){
-				int a = getRandomElem(connected);
-				Edge e = new Edge(i,a,capaMax);
-				Edge reverseE = new Edge(a,i,capaMax);
-				if(edges.contains(e)){
-					System.out.println("INSTANCE CORROMPUE!");
-				}
-				edges.add(e);
-				allEdges.remove(e);
-				allEdges.remove(reverseE);
+				Edge newEdge = getRandomEdge(allEdges);
+				edges.add(newEdge);
+				allEdges.remove(newEdge);
+				allEdges.remove(new Edge(newEdge.v,newEdge.u,capaMax));
 				doubleLinked.add(i);
 			}
 		}

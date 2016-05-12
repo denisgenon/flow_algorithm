@@ -2,6 +2,7 @@ package object;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class SparseMap {
 
@@ -43,6 +44,10 @@ public class SparseMap {
 	}
 
 	public void add(int i, int capacity){
+		if(capacity==-1){
+			examine();
+			System.exit(-1);
+		}
 		int index=map.get(i);
 		int newIndex = split;
 
@@ -90,14 +95,27 @@ public class SparseMap {
 		adjacents=null;
 		futurAdjacents=null;
 	}
+	
+	public void examine(){
+		ArrayList<Integer> s = new ArrayList<Integer>();
+		for(int i=0; i<dom.length; i++){
+			if(s.contains(dom[i].idDestination)){
+				System.out.println("CORROMPU : "+dom[i].idDestination);
+				print(dom[i].idDestination);
+				return;
+			}
+			s.add(dom[i].idDestination);
+		}
+		System.out.println("OK");
+	}
 
-	public void print(){
+	public void print(int indice){
 		String sdom="";
 		for(int i=0; i<dom.length; i++){
 			if(i==split){
 				sdom+=("|");
 			}
-			sdom+=(dom[i]+" ");
+			if(indice==dom[i].idDestination) sdom+=(dom[i]+" ");
 		}
 		System.out.println(sdom);
 		System.out.println();
