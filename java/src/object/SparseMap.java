@@ -44,10 +44,6 @@ public class SparseMap {
 	}
 
 	public void add(int i, int capacity){
-		if(capacity==-1){
-			examine();
-			System.exit(-1);
-		}
 		int index=map.get(i);
 		int newIndex = split;
 
