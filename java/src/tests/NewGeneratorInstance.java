@@ -51,27 +51,32 @@ public class NewGeneratorInstance {
 			edges.add(e);
 			allEdges.remove(e);
 			allEdges.remove(reverseE);
-			if(a!=0) doubleLinked.add(a);
+			if(a!=0) {
+				if(!doubleLinked.contains(a)) doubleLinked.add(a);
+			}
 			connected.add(i);
 		}
 
-		// Enlever les culs de sacs
+		// Rajouter des arêtes pour enlever les culs de sacs
 		for(int i=0; i<V; i++){
 			if(!doubleLinked.contains(i)){
 				int a = getRandomElem(connected);
 				Edge e = new Edge(i,a,capaMax);
 				Edge reverseE = new Edge(a,i,capaMax);
-				edges.add(e);
-				allEdges.remove(e);
-				allEdges.remove(reverseE);
-				doubleLinked.add(i);
+				if(edges.contains(e) || edges.contains(reverseE)){
+					i--;
+				}
+				else {
+					edges.add(e);
+					allEdges.remove(e);
+					allEdges.remove(reverseE);
+					doubleLinked.add(i);
+				}
 			}
 		}
+		System.out.println("Doublelinked : "+doubleLinked.size());
 
 		// Rajouter des arêtes pour avoir le pourcentage voulu
-		int currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-		int oldprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-
 		for(int prct=5;prct<=100; prct+=5){
 			while((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100 < prct){
 
@@ -79,14 +84,10 @@ public class NewGeneratorInstance {
 				edges.add(newEdge);
 				allEdges.remove(newEdge);
 				allEdges.remove(new Edge(newEdge.v,newEdge.u,capaMax));
-
-				currentprct = (int)((double)(edges.size()-(V-1))/(((V*(V-1))/2)-(V-1))*100);
-				if(currentprct!=oldprct) {
-					System.out.println(currentprct);
-					oldprct=currentprct;
-				}
 			}
 
+			System.out.println("Edges : "+edges.size());
+			System.out.println("Remaining edges : "+allEdges.size());
 			String pr;
 			if (prct==5)pr="05";
 			else pr=Integer.toString(prct);
@@ -114,7 +115,7 @@ public class NewGeneratorInstance {
 	public static void main (String [] args) {	
 		/*generateInstance(65);
 		createGraphFile("instanceprct65");*/
-		for(int i=94; i<=100; i++){
+		for(int i=8; i<=10; i++){
 			generateUniqueInstance("instancesUniquePrct"+i);
 		}
 

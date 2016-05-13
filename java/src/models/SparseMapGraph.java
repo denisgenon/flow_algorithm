@@ -100,7 +100,7 @@ public class SparseMapGraph extends SimpleGraph implements Graph{
 
 	@Override
 	public void addEdge(int u, int v, int capacity) {
-		residualGraph[u].add(v, capacity);	
+		residualGraph[u].add(v, capacity);
 	}
 
 

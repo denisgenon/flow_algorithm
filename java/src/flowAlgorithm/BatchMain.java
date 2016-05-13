@@ -12,6 +12,7 @@ public class BatchMain {
 	 * 				FF : Ford Fulkerson Scaling
 	 * 				EK : Edmonds Karp
 	 * 				PR : Push Relabel
+	 * 				FPR : FIFO Push Relabel
 	 * 			args[1] pour la structure de données
 	 * 				LL : LinkedList
 	 * 				HM : HashMap
@@ -36,6 +37,7 @@ public class BatchMain {
 		if(args[0].equals("FF")) s = new FordFulkersonScaling(g);
 		else if(args[0].equals("EK")) s = new EdmondsKarp(g);
 		else if(args[0].equals("PR")) s = new PushRelabel(g);
+		else if(args[0].equals("FPR")) s = new FIFOPushRelabel(g);
 		else s = null;
 
 		s.getTime();
