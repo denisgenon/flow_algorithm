@@ -1,4 +1,4 @@
-package tests;
+package results;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import object.Edge;
 
-public class NewGeneratorInstance {
+public class InstanceGeneratorDensity {
 
 	public static ArrayList<Edge> edges;
 	public static ArrayList<Edge> allEdges;
