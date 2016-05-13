@@ -1,15 +1,16 @@
 package solver;
 
-import java.util.LinkedList;
+import java.util.Iterator;
 
 import interfaces.Graph;
+import object.TheTowerHeights;
 import object.Vertex;
 
 public class HighestLabelPushRelabel implements Solver {
 	public Graph g;
 	public int source;
 	public int sink;
-	public LinkedList<Vertex> activesVertices = new LinkedList<Vertex>();
+	public TheTowerHeights activesVertices;
 	public long timeStart;
 	
 	/**
@@ -30,12 +31,34 @@ public class HighestLabelPushRelabel implements Solver {
 		this.g = g;
 		this.source = source;
 		this.sink = sink;
+		activesVertices = new TheTowerHeights(g.getV());
 		timeStart=System.currentTimeMillis();
 		preFlow();
+		int i = 0;
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
 			// We take any active node (we need to change this heuristic)
-			pushrelabelFlow(activesVertices.getFirst());
+			/*
+			System.out.println("Size of activesVertices before: " + activesVertices.size);
+			for (Integer name: activesVertices.tower.keySet()){
+	            String key = name.toString();
+	            String value = activesVertices.tower.get(name).toString();  
+	            System.out.println(key + " " + value);  
+			}
+			System.out.println("In the tower, maxHeight is " + activesVertices.maxHeight);
+			*/
+			Vertex v = activesVertices.getHighest();
+			//System.out.println(v.id + " is the highest node (" + v.h + ")");
+			pushrelabelFlow(v);
+			/*System.out.println("Size of activesVertices after: " + activesVertices.size);
+			for (Integer name: activesVertices.tower.keySet()){
+	            String key = name.toString();
+	            String value = activesVertices.tower.get(name).toString();  
+	            System.out.println(key + " " + value);  
+			}
+			System.out.println();*/
+			i++;
 		}
+		System.out.println(i);
 	} 
 	/**
 	 * Push a flow on all the neighbors edges of the source
@@ -70,7 +93,7 @@ public class HighestLabelPushRelabel implements Solver {
 				return;
 			}
 		}
-		u.h = minimalDistance + 1; // Relabel the distance
+		activesVertices.move(u, minimalDistance + 1);
 	}
 
 	/**
@@ -86,8 +109,8 @@ public class HighestLabelPushRelabel implements Solver {
 
 		dest.e += flow;
 		if(dest.e > 0) {
-			//activesVertices.add(dest);
-			addIn(activesVertices, dest);
+			activesVertices.add(dest);
+			//addIn(activesVertices, dest);
 		}
 		
 	}
@@ -113,8 +136,8 @@ public class HighestLabelPushRelabel implements Solver {
 		}
 		destination.e += flowValue;
 		if(destination.e > 0 && destination.id != (g.getV() - 1) && destination.id != 0) {
-			//activesVertices.add(destination);
-			addIn(activesVertices, destination);
+			activesVertices.add(destination);
+			//addIn(activesVertices, destination);
 		}
 
 		// We update the capacity in the residual graph v -> u
@@ -124,25 +147,6 @@ public class HighestLabelPushRelabel implements Solver {
 		}
 		else {
 			g.setCapacity(destination.id, origin.id, capacity + flowValue);
-		}
-	}
-	
-	public void addIn(LinkedList<Vertex> hs, Vertex v) {
-		int i = 0;
-		int insert_index = -1;
-		for (Vertex u : hs) {
-			if (v.id == u.id) return;
-			if (v.h > u.h) {
-				//insert at i-1
-				if (insert_index == -1) insert_index = i;
-			}
-			i++;
-		}
-		if (insert_index == -1) {
-			//append
-			hs.add(v);
-		} else {
-			hs.add(insert_index, v);
 		}
 	}
 	

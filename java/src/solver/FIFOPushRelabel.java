@@ -32,10 +32,13 @@ public class FIFOPushRelabel implements Solver {
 		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preFlow();
+		int i = 0;
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
 			// We take any active node (we need to change this heuristic)
 			pushrelabelFlow(activesVertices.iterator().next());
+			i++;
 		}
+		System.out.println(i);
 	} 
 	/**
 	 * Push a flow on all the neighbors edges of the source

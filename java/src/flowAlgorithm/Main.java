@@ -2,9 +2,15 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-
-import models.*;
-import solver.*;
+import models.HashMapGraph;
+import models.LinkedListGraph;
+import models.SparseMapGraph;
+import solver.EdmondsKarp;
+import solver.EdmondsKarpScaling;
+import solver.FIFOPushRelabel;
+import solver.HighestLabelPushRelabel;
+import solver.PushRelabel;
+import solver.Solver;
 
 public class Main {
 	public static void main(String[] args) {
@@ -29,8 +35,8 @@ public class Main {
 				}
 				else {
 					Graph g = new SparseMapGraph(args[0], true);
-					//Solver s = new PushRelabel(g);
-					Solver s = new PushRelabel(g);
+					Solver s = new EdmondsKarp(g);
+					//Solver s = new HighestLabelPushRelabel(g);
 					s.getResults();
 					/*
 					g = new LinkedListGraph(args[0], true);

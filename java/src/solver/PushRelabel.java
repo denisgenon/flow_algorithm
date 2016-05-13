@@ -1,6 +1,7 @@
 package solver;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -19,7 +20,7 @@ public class PushRelabel implements Solver {
 	public PushRelabel(Graph g) {
 		this(g, 0, g.getV() - 1);
 	}
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
