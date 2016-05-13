@@ -20,7 +20,7 @@ public class ResultsConverter {
 	}
 
 	public static void main(String [] args){
-		for(int inst=1; inst<=10; inst++){
+		for(int inst=1; inst<=3; inst++){
 			String [][] rek = new String [5][20];
 			String [][] rff = new String [5][20];
 			String [][] rpr = new String [5][20];
