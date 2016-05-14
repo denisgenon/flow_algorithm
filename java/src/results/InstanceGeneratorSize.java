@@ -146,15 +146,17 @@ public class InstanceGeneratorSize {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Création de "+filename);
 	}
 
 	public static void main(String[] args){
 		
 		String foldername = "instancesSize";
-		for(int i=1; i<=10;i++){
+		for(int i=8; i<=10;i++){
+			System.out.println("Instance Size "+i);
 			generateFirstGraph();
 			createGraphFile(foldername+i,"instancesize"+V);
-			while(V<10000){
+			while(V<5000){
 				add500Vertices();
 				createGraphFile(foldername+i,"instancesize"+V);
 			}

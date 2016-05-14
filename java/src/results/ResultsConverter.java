@@ -20,7 +20,7 @@ public class ResultsConverter {
 	}
 
 	public static void main(String [] args){
-		for(int inst=1; inst<=3; inst++){
+		for(int inst=4; inst<=4; inst++){
 			String [][] rek = new String [5][20];
 			String [][] rff = new String [5][20];
 			String [][] rpr = new String [5][20];
@@ -45,11 +45,11 @@ public class ResultsConverter {
 						rpr[index-10][i]=br.readLine().split(" ")[3];
 					}
 				}
-				for(int index=15; index<20; index++){
+				/*for(int index=15; index<20; index++){
 					for(int i=0; i<20; i++){
 						rfpr[index-15][i]=br.readLine().split(" ")[3];
 					}
-				}
+				}*/
 
 				br.close();
 
@@ -57,7 +57,7 @@ public class ResultsConverter {
 				resultsToFile(rek, "Edmonds-Karp", inst);
 				resultsToFile(rff, "Ford-Fulkerson Scaling", inst);
 				resultsToFile(rpr, "Push-Relabel", inst);
-				resultsToFile(rfpr, "FIFO Push-Relabel", inst);
+				//resultsToFile(rfpr, "FIFO Push-Relabel", inst);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

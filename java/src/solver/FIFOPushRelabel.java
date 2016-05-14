@@ -11,7 +11,7 @@ public class FIFOPushRelabel implements Solver {
 	public int sink;
 	public LinkedHashSet<Vertex> activesVertices = new LinkedHashSet<Vertex>();
 	public long timeStart;
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
@@ -19,7 +19,7 @@ public class FIFOPushRelabel implements Solver {
 	public FIFOPushRelabel(Graph g) {
 		this(g, 0, g.getV() - 1);
 	}
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
@@ -32,13 +32,10 @@ public class FIFOPushRelabel implements Solver {
 		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preFlow();
-		int i = 0;
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
 			// We take any active node (we need to change this heuristic)
 			pushrelabelFlow(activesVertices.iterator().next());
-			i++;
 		}
-		System.out.println(i);
 	} 
 	/**
 	 * Push a flow on all the neighbors edges of the source
@@ -49,7 +46,7 @@ public class FIFOPushRelabel implements Solver {
 		}
 		g.getVertex(source).h = g.getV();
 	}
-	
+
 	/**
 	 * Print to the standard output the value of the best flow.
 	 */
@@ -84,14 +81,14 @@ public class FIFOPushRelabel implements Solver {
 	public void pushFillingFlow(int origin, int destination) {
 		int flow = g.removeEdge(origin,destination);
 		g.addEdge(destination, origin, flow);
-		
+
 		Vertex dest = g.getVertex(destination);
 
 		dest.e += flow;
 		if(dest.e > 0) {
 			activesVertices.add(dest);
 		}
-		
+
 	}
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
@@ -127,7 +124,7 @@ public class FIFOPushRelabel implements Solver {
 			g.setCapacity(destination.id, origin.id, capacity + flowValue);
 		}
 	}
-	
+
 	public void getTime() {
 		System.out.println((System.currentTimeMillis()-timeStart));
 	}
