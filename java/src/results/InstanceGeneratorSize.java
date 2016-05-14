@@ -57,7 +57,7 @@ public class InstanceGeneratorSize {
 			}
 		}
 
-		// Rajouter des arêtes pour avoir le pourcentage voulu
+		// Rajouter des arêtes pour avoir 10%
 		while((double)(edges.size())<(double)(V-1)*V/20.0){
 			int u = getRandomElem(connected);
 			int v = getRandomElem(connected);

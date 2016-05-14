@@ -1,7 +1,7 @@
 # Uncomment the following line to install ggplot2, install only one time the package!
 #install.packages("ggplot2")
 library('ggplot2')
-instances=c(1,2,3)
+instances=c(1,2,3,4)
 solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel")
 
 for (instance in instances){
@@ -22,7 +22,7 @@ for (instance in instances){
       ylab('Time (ms)') +
       labs(color="Data structure") +
       ggtitle(title)
-    ggsave(file=filename)
+    ggsave(file=filename, width=10, height=5)
   }
 }
 
