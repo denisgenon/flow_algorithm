@@ -1,12 +1,37 @@
 %!TEX root = ../main.tex
 \section{Introduction}
-J'introduis la manière dont on a obtenu les résultats et la manière dont on a analysé les instances (en fonction de la densité avec un nombre de sommets fixé et en fonction de la quantité de sommets avec une densité fixé). Il y aura les résultats pour les graphes ordonnés et non-ordonnés.
-\section{Instance generation}
-J'explique comment on a fait pour avoir un network. Et je cause de la manière dont on a fait varié la densité
+For the analysis of our algorithms and data structures, we decided to analyse the run time on two types of instances, one with a fixed number of vertices ($|V|=1000$) and a density of edges ranging from 5 to 100\% and an other one with a density of edges fixed (10\%) and a number of vertices varying from $|V|=1000$ to $|V|=5000$. Each algorithm has been tested with each data structure on directed and undirected graphs.
+
+\section{Instances generation}
+To obtain the necessary instances, we implement instances generators which respects the characteristics of the network graphs (a connected graph where each vertex has at least one incoming and one outgoing edge). \\
+
+For the density variation instances, we first create a minimal connected graph. To do this, let $Connected$ be the set of the connected vertices, $DoubleConnected$ the set of vertex having at least one incoming and one outgoing edge, $Edges$ the set of edges and $AllEdges$ the set of all possible edges. Initially, $Connected$ contains the vertex 0, $DoubleConnected$ and $Edges$ are empty and $AllEdges$ contains all possible edges. When we want to add a vertex $v$ to the graph, we take a random vertex $r$ from $Connected$, add the edge ($v$,$r$) in $Edges$, add $v$ in $Connected$, remove the edges ($v$,$r$) and ($r$,$v$) from $AllEdges$ and add $r$ in $DoubleConnected$. After adding our 1000 vertices, we have a connected graph where each vertex has one incoming edge and sometimes at least one outgoing edge (all vertices in $DoubleConnected$).
+
+For each vertex not present in $DoubleConnected$, we take a random vertex from $Connected$, add the edge between them in $Edges$ and remove this edge and its opposite from $AllEdges$. For this step, to avoid adding an edge (or its opposite) which is already present in the graph, we check if the new edge and its opposite are not present in $Edges$. We thus have a connected graph where each vertex has one incoming edge and at least one outgoing edge.
+
+We then add the necessary number of edges to obtain the desired density. We take a random edge from $AllEdges$, add it to $Edges$ and remove it and its opposite from $AllEdges$. A first graph is generated when we have a density of 5\%. We add it edges to obtain a density of 10\% and generate a second graph. And so on up to 100\%. At the end, a density variation instance is composed by twenty graphs where each graph generated before an other one is a sub-graph of the latter.
+
+With $|V|=1000$, a complete graph has $\frac{(|V|-1)(|V|)}{2} = 499500$ edges.\\
+
+For the size variation instances, we use the same technique as for the density variation instances without the $AllEdges$ set. Indeed, it is not necessary to generate all possible edges for graphs with a 10\% of edge density. Especially when we know that a complete graph with $|V|=5000$ has 12497500 edges. To know if an edge (or its opposite) is already present in the graph, we check if it is contained in $Edges$.
+
+We generate a network graph with $|V|=1000$ and an edge density of 10\%. We add it 500 vertices and the corresponding edges to respect the characteristics of the network graphs. We add then the necessary edges to keep a 10\% edge density and generate this new graph. And so on until $|V|=5000$. At the end, a size variation instance is composed by ten graphs where each graph generated before an other one is a sub-graph of the latter. \\
+
+For our tests, we generate 10 instances of each type.
+
 \section{Results}
-\subsection{Density variation}
+Je dis sur quelle machine on a travaillé, qu'on faisait une moyenne de 10 executions et que le résultat sont pertinants (3\% de différence). Et qu'une même instance peut être lue comme orientée ou non orientée. Et que la capa max est toujours 10000.
+\subsection{Directed graphs}
+\subsubsection{Density variation}
 Graphes + grosse grosse explication
-\subsection{Size variation}
+\subsubsection{Size variation}
+Graphes + grosse grosse explication
+\subsection{Undirected graphs}
+\subsubsection{Density variation}
+Graphes + grosse grosse explication
+\subsubsection{Size variation}
 Graphes + grosse grosse explication
 \section{Analysis}
 J'explique quel algo est meilleur avec quel type de graphe et je tire des conclusions.
+
+Faut mettre le profiler quelque part aussi

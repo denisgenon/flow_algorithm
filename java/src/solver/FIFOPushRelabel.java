@@ -11,7 +11,7 @@ public class FIFOPushRelabel implements Solver {
 	public int sink;
 	public LinkedHashSet<Vertex> activesVertices = new LinkedHashSet<Vertex>();
 	public long timeStart;
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
@@ -19,7 +19,7 @@ public class FIFOPushRelabel implements Solver {
 	public FIFOPushRelabel(Graph g) {
 		this(g, 0, g.getV() - 1);
 	}
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
@@ -46,7 +46,7 @@ public class FIFOPushRelabel implements Solver {
 		}
 		g.getVertex(source).h = g.getV();
 	}
-	
+
 	/**
 	 * We push the biggest flow we can on the edge origin->desti
 	 * @param origin
@@ -80,8 +80,6 @@ public class FIFOPushRelabel implements Solver {
 		}
 		u.h = minimalDistance + 1; // Relabel the distance
 	}
-
-	
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
 	 * @param origin
@@ -116,7 +114,7 @@ public class FIFOPushRelabel implements Solver {
 			g.setCapacity(destination.id, origin.id, capacity + flowValue);
 		}
 	}
-	
+
 	public void getTime() {
 		System.out.println((System.currentTimeMillis()-timeStart));
 	}
