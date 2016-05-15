@@ -1,7 +1,6 @@
 package solver;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 
 import interfaces.Graph;
 import object.Vertex;
@@ -12,7 +11,7 @@ public class PushRelabel implements Solver {
 	public int sink;
 	public HashSet<Vertex> activesVertices = new HashSet<Vertex>();
 	public long timeStart;
-	
+
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
@@ -34,7 +33,7 @@ public class PushRelabel implements Solver {
 		timeStart=System.currentTimeMillis();
 		preFlow();
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
-			// We take any active node (we need to change this heuristic)
+			// We take any active node
 			pushrelabelFlow(activesVertices.iterator().next());
 		}
 	} 
@@ -47,16 +46,26 @@ public class PushRelabel implements Solver {
 		}
 		g.getVertex(source).h = g.getV();
 	}
-	
+
 	/**
-	 * Print to the standard output the value of the best flow.
+	 * We push the biggest flow we can on the edge origin->desti
+	 * @param origin
+	 * @param destination
 	 */
-	public void getResults() {
-		System.out.println("|V| : " + g.getV());
-		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getVertex(sink).e);
-		System.out.println("Temps d'execution : " + (System.currentTimeMillis()-timeStart) + " ms"+"\n");
+	public void pushFillingFlow(int origin, int destination) {
+		int flow = g.removeEdge(origin,destination);
+		g.addEdge(destination, origin, flow);
+
+		Vertex dest = g.getVertex(destination);
+
+		dest.e += flow;
+		if(dest.e > 0) {
+			activesVertices.add(dest);
+		}
+
 	}
+
+
 	/**
 	 * We push a flow on the neighbors of u if we can.
 	 * @param u
@@ -74,23 +83,7 @@ public class PushRelabel implements Solver {
 		u.h = minimalDistance + 1; // Relabel the distance
 	}
 
-	/**
-	 * We push the biggest flow we can on the edge origin->desti
-	 * @param origin
-	 * @param destination
-	 */
-	public void pushFillingFlow(int origin, int destination) {
-		int flow = g.removeEdge(origin,destination);
-		g.addEdge(destination, origin, flow);
-		
-		Vertex dest = g.getVertex(destination);
 
-		dest.e += flow;
-		if(dest.e > 0) {
-			activesVertices.add(dest);
-		}
-		
-	}
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
 	 * @param origin
@@ -125,8 +118,18 @@ public class PushRelabel implements Solver {
 			g.setCapacity(destination.id, origin.id, capacity + flowValue);
 		}
 	}
-	
+
 	public void getTime() {
 		System.out.println((System.currentTimeMillis()-timeStart));
+	}
+
+	/**
+	 * Print to the standard output the value of the best flow.
+	 */
+	public void getResults() {
+		System.out.println("|V| : " + g.getV());
+		System.out.println("|E| : " + g.getE());
+		System.out.println("Max flot : " + g.getVertex(sink).e);
+		System.out.println("Temps d'execution : " + (System.currentTimeMillis()-timeStart) + " ms"+"\n");
 	}
 }

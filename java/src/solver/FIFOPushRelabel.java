@@ -32,13 +32,10 @@ public class FIFOPushRelabel implements Solver {
 		this.sink = sink;
 		timeStart=System.currentTimeMillis();
 		preFlow();
-		int i = 0;
 		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
-			// We take any active node (we need to change this heuristic)
+			// We take the first active node added (FIFO order)
 			pushrelabelFlow(activesVertices.iterator().next());
-			i++;
 		}
-		System.out.println(i);
 	} 
 	/**
 	 * Push a flow on all the neighbors edges of the source
@@ -51,14 +48,22 @@ public class FIFOPushRelabel implements Solver {
 	}
 	
 	/**
-	 * Print to the standard output the value of the best flow.
+	 * We push the biggest flow we can on the edge origin->desti
+	 * @param origin
+	 * @param destination
 	 */
-	public void getResults() {
-		System.out.println("|V| : " + g.getV());
-		System.out.println("|E| : " + g.getE());
-		System.out.println("Max flot : " + g.getVertex(sink).e);
-		System.out.println("Temps d'execution : " + (System.currentTimeMillis()-timeStart) + " ms"+"\n");
+	public void pushFillingFlow(int origin, int destination) {
+		int flow = g.removeEdge(origin,destination);
+		g.addEdge(destination, origin, flow);
+		
+		Vertex dest = g.getVertex(destination);
+
+		dest.e += flow;
+		if(dest.e > 0) {
+			activesVertices.add(dest);
+		}	
 	}
+	
 	/**
 	 * We push a flow on the neighbors of u if we can.
 	 * @param u
@@ -76,23 +81,7 @@ public class FIFOPushRelabel implements Solver {
 		u.h = minimalDistance + 1; // Relabel the distance
 	}
 
-	/**
-	 * We push the biggest flow we can on the edge origin->desti
-	 * @param origin
-	 * @param destination
-	 */
-	public void pushFillingFlow(int origin, int destination) {
-		int flow = g.removeEdge(origin,destination);
-		g.addEdge(destination, origin, flow);
-		
-		Vertex dest = g.getVertex(destination);
-
-		dest.e += flow;
-		if(dest.e > 0) {
-			activesVertices.add(dest);
-		}
-		
-	}
+	
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
 	 * @param origin
@@ -130,5 +119,15 @@ public class FIFOPushRelabel implements Solver {
 	
 	public void getTime() {
 		System.out.println((System.currentTimeMillis()-timeStart));
+	}
+	
+	/**
+	 * Print to the standard output the value of the best flow.
+	 */
+	public void getResults() {
+		System.out.println("|V| : " + g.getV());
+		System.out.println("|E| : " + g.getE());
+		System.out.println("Max flot : " + g.getVertex(sink).e);
+		System.out.println("Temps d'execution : " + (System.currentTimeMillis()-timeStart) + " ms"+"\n");
 	}
 }
