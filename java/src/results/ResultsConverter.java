@@ -22,9 +22,9 @@ public class ResultsConverter {
 	}
 
 	public static void getResultsBySolver(){
-		for(int inst=4; inst<=4; inst++){
-			String [][] rek = new String [5][20];
+		for(int inst=1; inst<=8; inst++){
 			String [][] rff = new String [5][20];
+			String [][] rek = new String [5][20];
 			String [][] rpr = new String [5][20];
 			String [][] rfpr = new String [5][20];
 			File f = new File("results/resultsOriented"+inst+".txt");
@@ -54,10 +54,9 @@ public class ResultsConverter {
 				}
 
 				br.close();
-
-
-				resultsToFile(rek, solvers[0], inst);
-				resultsToFile(rff, solvers[1], inst);
+				
+				resultsToFile(rff, solvers[0], inst);
+				resultsToFile(rek, solvers[1], inst);
 				resultsToFile(rpr, solvers[2], inst);
 				resultsToFile(rfpr, solvers[3], inst);
 			} catch (IOException e) {
@@ -68,7 +67,7 @@ public class ResultsConverter {
 
 	public static void getResultsByInstance(){
 
-		for(int inst=1; inst<=4; inst++){
+		for(int inst=1; inst<=8; inst++){
 			
 			double [][] bests = new double[4][20];
 			int s=0;
@@ -137,7 +136,7 @@ public class ResultsConverter {
 	}
 
 	public static void main(String [] args){
-		//getResultsBySolver();
+		getResultsBySolver();
 		getResultsByInstance();
 	}
 }

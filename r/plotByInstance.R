@@ -1,5 +1,5 @@
 library('ggplot2')
-instances=c(1,2,3,4)
+instances=c(1,2,3,4,5,6,7,8)
 
 for (instance in instances){
     f = paste(c("../java/results/resultsByInstance/instance", instance,".csv"), collapse="")

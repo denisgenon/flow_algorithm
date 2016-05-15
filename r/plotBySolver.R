@@ -1,12 +1,11 @@
 # Uncomment the following line to install ggplot2, install only one time the package!
 #install.packages("ggplot2")
 library('ggplot2')
-instances=c(1,2,3,4)
+instances=c(1,2,3,4,5,6,7,8)
 solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel")
 
 for (instance in instances){
   for (solver in solvers){
-    print("OK")
     f = paste(c("../java/results/resultsBySolver/", solver, instance,".csv"), collapse="")
     title = paste(c(solver, " Instance ", instance), collapse="")
     filename = paste(c("../graphiques/",title,".png"), collapse="")
