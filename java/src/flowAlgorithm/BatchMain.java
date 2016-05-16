@@ -13,6 +13,7 @@ public class BatchMain {
 	 * 				EK : Edmonds Karp
 	 * 				PR : Push Relabel
 	 * 				FPR : FIFO Push Relabel
+	 * 				HLPR : Highest Label Push Relabel
 	 * 			args[1] pour la structure de données
 	 * 				LL : LinkedList
 	 * 				HM : HashMap
@@ -38,6 +39,7 @@ public class BatchMain {
 		else if(args[0].equals("EK")) s = new EdmondsKarp(g);
 		else if(args[0].equals("PR")) s = new PushRelabel(g);
 		else if(args[0].equals("FPR")) s = new FIFOPushRelabel(g);
+		else if(args[0].equals("HLPR")) s = new HighestLabelPushRelabel(g);
 		else s = null;
 
 		s.getTime();
