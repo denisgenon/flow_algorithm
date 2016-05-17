@@ -1,4 +1,7 @@
 %!TEX root = ../main.tex
+
+In this chapter, we will describe some improvements that can be done on the algorithms of the Chapter~\ref{algos}.
+
 \section{Ford-Fulkerson Scaling}
 The Ford-Fulkerson algorithm has a pseudo-polynomial time complexity but there is a variant of this algorithm which has a polynomial time complexity. It is the Ford-Fulkerson with scaling algorithm. The scaling consists in looking for an augmenting path which has a large enough residual capacity. To do it, we use $G_\Delta$ which is $G$ with only the edges having a capacity $\geq \Delta$. \\
 
@@ -43,11 +46,30 @@ This algorithm always pushes flow from the active vertex with the highest height
 
 It is fearly easy to develop an $O(|V|^3)$ bound for this algorithm. We define the function $h^{*} = max\{h(i): \text{i is active}\}$. First, the algorithm examine the active vertices with distance labels equal to $h^{*}$ and pushes flow to active vertices with distance labels equals to $h^{*}-1$ and these vertices, in turn, push flow to active vertices with distance labels equals to $h^{*}-2$, and so on. These operations stop when there is no more active vertices or the algorithm relabel a vertex. If the algorithm relabel a vertex, these operations are repeated. In the worst case, the algorithm make $|V| - 1$ vertex examinations and then relabel a vertex. As we know that the maximum of relabel operation is $2*|V|^2$, the highest label preflow-push algorithm runs in $O(|V|^3)$.\\
 
+However, this bound is rather loose and can be improved by a more clever analysis. We will first define some concepts and functions used to compute the complexity of the algorithm.\\
+
+The \textit{set of admissible arcs} is the set, at some point of the execution of the algorithm, of all the arcs where the origin height is greater than one of the destination height. This set forms a \textit{forest}, which is a set of trees, because it has at most $n - 1$ arcs, has at most one outgoing arc per vertex, and does not contain any cycle. The root of each of these trees is the vertex without any outgoing arc. 
+
+For any vertex $i \in V$, we denote $D(i)$ the set of descendants of that vertex in the set of admissible arcs. The height label of the descendants of any vertex $i$ will always be higher than $h(i)$. 
+
+An active vertex with no active descendants (other than itself) will be called a \textit{maximal active vertex}. We denote the set of the maximal active vertices $H$.
+
+We define the potential function $\phi = \sum_{i \in H} \phi(i)$ with $\phi(i) = max\{0, K + 1 - |D(i)|\}$ where $K$ will be defined later. For any vertex $i$, $\phi(i)$ is at most $K$ because $|D(i)| \ge 1$.\\
+
+We will now see how each operations performed by the algorithm will change the value of $\phi$. First, a non-saturing push on the arc $(i, j)$ will make $i$ inactive and $j$ might become a new maximal active vertex. Since $|D(j)| > |D(i)|$, this push increase $\phi(i) + \phi(j)$ by at least one if $|D(i)| \le K$. When a saturing push occurs on the arc $(i, j)$, this arc become inadmissible and will be no more in the current forest (the set of admissible arcs). The vertex $i$ is still a maximal active vertex and $j$ might become a new maximal vertex. This operation increase $\phi$ up to $K$ units. Let's consider now a relabel operation on the vertex $i$. This vertex has no admissible arc because we relabel it. Thus, this vertex is a root vertex in the current forest and it has no active proper decendants. After the relabel operation, all the incoming arcs at vertex $i$ become inadmissible. Therefore, all the currend arc entering vertex $i$ will no longer belong to the current forest. The relabel operation decrease the number of descendants of $i$ to one: $\phi$ increase by at most $K$. The last operation is to introduce new arcs in the current forest. This does not create new maximal active vertices and might remove maximal active vertices and increase the number of descendants of some vertices. $\phi$ does not increase.\\
+
+To compute the worst-case, we define $h_{max} = max\{h(i) : i\text{ is active}\}$. A phase is the sequence of pushes during which $d_{max}$ remains unchanged. There is $O(|V|^2)$ phases because there can be more than $2*|V|^2$ relabel operations. We disinguish two types of phases: \textit{cheap} phases and \textit{expensive} phases. A phase is cheap when it perfoms at most $\frac{2*|V|}{K}$ non-saturing pushes and expensive otherwise. The number of non-saturing pushes in cheap phases is at most $O(|V|^2 * \frac{2*|V|}{K}) = O(\frac{|V|^3}{K})$.
+
+By definiation, an expensive phase performs at least $\frac{2*|V|}{K}$ non-saturing pushes. Since the network can contain at most $\frac{|V|}{K}$ vertices witk $K$ descendants or more, at least $\frac{|V|}{K}$ non-saturing pushes must be from vertices with fewer than $K$ descendants. AS we said earlier, the total increase of $\phi$ due to saturing pushes and relabels is at most $O(|V|*|E|*K)$. The algorithm perform $O(|V|*|E|*K)$ non-saturing pushes in expensive phases.\\
+
+By balancing the complexity of each case, we obtain the optimal value of $K$ when both are equal: $\frac{|V|^3}{K} = |V|*|E|*K$ or $K = \frac{|V|}{\sqrt{|E|}}$. We have now the number of non-saturing pushes: $O(|V|^2*\sqrt{|E|})$ which is the complexity of our algorithm.\\
+
+
 To be able to choose an active vertex with the highest label quickly, we implemented a custom data structure based on the idea of Fran\c cois Aubry, PhD student at UCL. This data structure will be described in the next sub section.
 
 \subsubsection{The Tower}
 
-The data structure is divided in two parts: the tower and the next array. The tower, as shown on Figure~\ref{fig:tower}, is a array of linked lists of size $|V|*2$. The tower can be defined as follow: $tower(k) = \{i : i \text{ is active and } h(i) = k\} \text{ } \forall \text{ } 0 \le k < |V|*2$. When a vertex become active, he is added to the linked list at the indice of the array corresponding to his height. The next array is an integer array of size $|V|*2$ where all of his element are pointers of the next element in the data structure. For example, let's take the case of the Figure~\ref{fig:TheTower}, where there is no active vertices with heights between 3 and $2*|V|-1$ (all active vertices are shown in the figure). The first (top) element of the data structure is 9 and the second 6. In the next array, the value at the indice $h(9)$ must be equals to $h(6)$ and so on. Note that the minimum height of the active vertices must point to $-1$ because there is no following elements. A variable used to point at the top of the tower is used too. Here is the operations needed:
+The data structure is divided in two parts: the tower and the next array. The tower, as shown on Figure~\ref{fig:tower}, is a array of linked lists of size $|V|*2$. The tower can be defined as follow: $tower(k) = \{i : i \text{ is active and } h(i) = k\} \text{ } \forall \text{ } 0 \le k < |V|*2$. When a vertex become active, he is added to the linked list at the indice of the array corresponding to his height. The next array is an integer array of size $|V|*2$ where all of his element are pointers of the next element in the data structure. For example, let's take the case of the Figure~\ref{fig:TheTower}, where there is no active vertices with heights between 3 and $2*|V|-1$ (all active vertices are shown in the figure). The first (top) element of the data structure is 9 and the second 6. In the next array, the value at the indice $h(9)$ must be equals to $h(6)$ and so on. Note that the minimum height of the active vertices must point to $-1$ because there is no following elements. A variable is used to point at the top of the tower. Here is the operations needed:
 
 \begin{description}
 	\item[getTop] Give the top element of the tower. It is used when the highest label preflow-push algorithm must examinates a vertex;
