@@ -15,4 +15,66 @@ To compute the complexity of the Ford-Fulkerson Scaling algorithm, we need to kn
 
 The Ford-Fulkerson Scaling algorithm is thus bounded by $O(|E|^2* log(U))$.
 
-\section{Push relabel}
+\section{Preflow-push heuristics}
+
+In Section~\ref{sec:preflow}, we defined the generic preflow-push algorithm. In this algorithm, we do not make a particular choice when it comes to push on a vertex. In this section, we will define two heuristics that aims to reduce the number of non-saturing pushes which is the bottle neck of the generic preflow-push algorithm.
+
+\subsection{FIFO heuristic}
+
+This algorithm examines the active vertices in the first-in, first-out (FIFO) order. The set of the active vertices is now a queue. The algorithm will always choose the first vertex from the queue while there is active vertices. The algorithm terminates when the queue is empty. 
+
+\subsubsection{Complexity}
+
+To analyze the complexity of the FIFO preflow-push algorithm, we must define the concept of a \textit{vertex examination}. We call vertex examination the sequence of operation that make an active vertex inactive or relabeled. For example, the algorithm could perfoms several saturing pushes, leaving the first vertex of the queue active. Then the algorithm could make a non-saturing push or could relabel the vertex. We refer to this sequence of operations as a vertex examination.\\
+
+We will partition the total number of vertex examinations into phases. The first phase consists of the vertex examinations of the vertices that becomes actives (the neighbors of the source) in the preprocess operation (Algorithm~\ref{preprocess}). After all thoses specifics vertices has been examinated, we enter in the second phase. The second phase consists of the vertex examinations of the vertices that are in the queue at this moment (i.e. when the vertices of the first phase has been all examinated). And so on.\\
+
+To bound the number of phases in the algorithm, we define the potential function $\phi = max\{h(i) : \text{i is active}\}$ where $h(i)$ is the height of the vertex $i$.
+
+During a phase, the algorithm can perfoms no relabel operation or at least one. In the first case, the excess of every vertex that was active at the beginning of the phase moves to vertices with smaller height labels. $\phi$ decrease by at least one unit. In the second case, when the algorithm perfoms at least one relabel operation during a phase, $\phi$ might increase by as much as the maximum increase in any height label. As we know that the maximum of relabel operation is $2*|V|^2$ (because each label can increases at most $2*|V|$ times), the total increase in $\phi$ over all phases is at most $2*|V|^2$.
+
+With these two cases, we can bound the total number of phases: $2*|V|^2 + |V|$. The FIFO preflow-push algorithm runs in $O(|V|^3)$.
+
+\subsection{Highest label heuristic}
+
+This algorithm always pushes flow from the active vertex with the highest height label. 
+
+\subsubsection{Complexity}
+
+It is fearly easy to develop an $O(|V|^3)$ bound for this algorithm. We define the function $h^{*} = max\{h(i): \text{i is active}\}$. First, the algorithm examine the active vertices with distance labels equal to $h^{*}$ and pushes flow to active vertices with distance labels equals to $h^{*}-1$ and these vertices, in turn, push flow to active vertices with distance labels equals to $h^{*}-2$, and so on. These operations stop when there is no more active vertices or the algorithm relabel a vertex. If the algorithm relabel a vertex, these operations are repeated. In the worst case, the algorithm make $|V| - 1$ vertex examinations and then relabel a vertex. As we know that the maximum of relabel operation is $2*|V|^2$, the highest label preflow-push algorithm runs in $O(|V|^3)$.\\
+
+To be able to choose an active vertex with the highest label quickly, we implemented a custom data structure based on the idea of Fran\c cois Aubry, PhD student at UCL. This data structure will be described in the next sub section.
+
+\subsubsection{The Tower}
+
+The data structure is divided in two parts: the tower and the next array. The tower, as shown on Figure~\ref{fig:tower}, is a array of linked lists of size $|V|*2$. The tower can be defined as follow: $tower(k) = \{i : i \text{ is active and } h(i) = k\} \text{ } \forall \text{ } 0 \le k < |V|*2$. When a vertex become active, he is added to the linked list at the indice of the array corresponding to his height. The next array is an integer array of size $|V|*2$ where all of his element are pointers of the next element in the data structure. For example, let's take the case of the Figure~\ref{fig:TheTower}, where there is no active vertices with heights between 3 and $2*|V|-1$ (all active vertices are shown in the figure). The first (top) element of the data structure is 9 and the second 6. In the next array, the value at the indice $h(9)$ must be equals to $h(6)$ and so on. Note that the minimum height of the active vertices must point to $-1$ because there is no following elements. A variable used to point at the top of the tower is used too. Here is the operations needed:
+
+\begin{description}
+	\item[getTop] Give the top element of the tower. It is used when the highest label preflow-push algorithm must examinates a vertex;
+	\item[add] When an vertex become active, the vertex is added to the tower;
+	\item[updateTop] Used when the top vertex is relabeled;
+	\item[removeTop] Used when the top vertex is no longer active (i.e. when there is a non-saturing push);
+	\item[isEmpty] Used to know when the tower is empty. When the tower is empty, the algorithm terminates.
+\end{description}
+
+We wish to clarify that we have not found any implementation of this heuristic anywhere.
+
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[scale=.4]{images/thetower.png}
+  \caption{The tower}
+  \label{fig:tower}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[scale=.4]{images/thenext.png}
+  \caption{The next array}
+  \label{fig:next}
+\end{subfigure}
+\caption{The data structure}
+\label{fig:TheTower}
+\end{figure}
+
+

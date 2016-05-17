@@ -1,25 +1,46 @@
 %!TEX root = ../main.tex
-In this chapter, we will explain how we implement the algorithms and the data structure. 
-
+In this chapter, we will explain our implementation choices and the tools we used to carry out our project. Our main goal was to release a maintanable open source library so that other developer could use it and contribute to it. Our choices were mainly guided by this goal.
 
 \section{Langage choice}
 
-Java 
-	- Rapide
-	- Easy
-	- Modulable
+\begin{wrapfigure}[4]{r}{3.5cm}
+	\vspace{-5mm}
+	\includegraphics[width =2cm]{images/Java_logo.png}
+	\captionof{figure}{Java Logo}
+\end{wrapfigure}
+
+bcp utilise
+rapide
+oriente object
 
 \section{Structure}
 
-- Schema UML
-	- Structure modulable
-	- Packagable
-	- Easy to prendre en main
-	- Comment ca fonctionne
+Schema UML\\
+Structure modulable\\
+Packagable\\
+Easy to prendre en main\\
+Comment ca fonctionne\\
 
-\section{Software used}
+\section{Tools}
 
-	- Git
-		- facilité participation
-		- Volonté opensource
-	- Trello
+\subsection{Version control system}
+
+\begin{wrapfigure}[4]{r}{3.5cm}
+	\vspace{-5mm}
+	\includegraphics[width =2cm]{images/Git-logo.png}
+	\captionof{figure}{Git Logo}
+\end{wrapfigure}
+
+Using a versioning tool appeared to us from the beginning as an evidence. Our main needs were to share the code we did between us and to version it. We decided to use \textbf{Git}\footnote{https://git-scm.com} because we already both master it and it is one of the most popular versioning tool. We used \textbf{Github}\footnote{https://github.com/} to host our application. With Github, it is fearly easy to make our project open source and knowing that this plateform is very popular amoung developers, our project can benefit from a certain visibility.
+
+\subsection{Management application}
+
+\begin{wrapfigure}[4]{r}{3.5cm}
+	\vspace{-5mm}
+	\includegraphics[width =2cm]{images/Trello_Logo.png}
+	\captionof{figure}{Trello Logo}
+\end{wrapfigure}
+
+
+Even if we were only two working on the project, we juged useful to have project management tool to assist us. This kind of tools permits us to separate the tasks to make, to write somewhere our ideas, to fix deadlines and to see the evolution of our project. We decided to use \textbf{Trello}\footnote{https://trello.com} because we were already used to it. Trello uses the kanban paradigm for managing projects. Our project were represented as a board, which contains columns corresponding to some states (backlog, nice to have, in progress, \dots). Each column contains lists of cards which were our tasks. In this way, we could follow the flow of a feature from idea to implementation.
+
