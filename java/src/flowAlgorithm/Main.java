@@ -7,6 +7,7 @@ import models.SparseMapGraph;
 import solver.EdmondsKarp;
 import solver.EdmondsKarpScaling;
 import solver.FIFOPushRelabel;
+import solver.HighestLabelPushRelabel;
 import solver.Solver;
 
 public class Main {
