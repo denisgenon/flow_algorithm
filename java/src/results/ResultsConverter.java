@@ -258,9 +258,9 @@ public class ResultsConverter {
 	}
 
 	public static void main(String [] args){
-		getResultsBySolver();
+		/*getResultsBySolver();
 		getResultsByInstance();
-		getMeanResultsByInstance();
+		getMeanResultsByInstance();*/
 		getAllResultsBySolver();
 	}
 }
