@@ -16,7 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			System.out.println("no instance file");
-		} 
+		}
 		else {
 			try {
 				if (args[0].equals("all")) {
@@ -35,7 +35,7 @@ public class Main {
 				}
 				else {
 					Graph g = new SparseMapGraph(args[0], true);
-					Solver s = new FIFOPushRelabel(g);
+					Solver s = new HighestLabelPushRelabel(g);
 					//Solver s = new EdmondsKarp(g);
 					s.getResults();
 					/*
