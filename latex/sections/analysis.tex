@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
-\section{Introduction}
-For the analysis of our algorithms and data structures, we decided to analyse the run time on two types of instances, one with a fixed number of vertices ($|V|=1000$) and a density of edges ranging from 5 to 100\% and an other one with a density of edges fixed (10\%) and a number of vertices varying from $|V|=1000$ to $|V|=5000$. Each algorithm has been tested with each data structure on directed and undirected graphs.
+For the analysis of our algorithms and data structures, we decided to analyze the run time on two types of instances, one with a fixed number of vertices ($|V|=1000$) and a density of edges ranging from 5 to 100\% and an other one with a density of edges fixed (10\%) and a number of vertices varying from $|V|=1000$ to $|V|=5000$. For all our instances, the maximum capacity of an edge is 10000.
+Each algorithm has been tested with each data structure.
 
 \section{Instances generation}
 To obtain the necessary instances, we implement instances generators which respects the characteristics of the network graphs (a connected graph where each vertex has at least one incoming and one outgoing edge). \\
@@ -19,19 +19,68 @@ We generate a network graph with $|V|=1000$ and an edge density of 10\%. We add 
 
 For our tests, we generate 10 instances of each type.
 
+\section{Best Push-Relabel heuristics}
+Blablabla HLPR vs FPR vs PR
+HLPR gagne?
+
 \section{Results}
+To obtain the run time of an algorithm with a defined data structure on a specific instance, we make the average of 10 execution. To be certain of the accuracy of our results, we execute 5 times the same tests in order to study the variance of the run time. The run time varied, on average, by 1\%. We therefore consider that our results are relevant.
 
-Je dis sur quelle machine on a travaillé, qu'on faisait une moyenne de 10 executions et que le résultat sont pertinants (3\% de différence). Et qu'une même instance peut être lue comme orientée ou non orientée. Et que la capa max est toujours 10000.
-\subsection{Directed graphs}
-\subsubsection{Density variation}
-Graphes + grosse grosse explication
-\subsubsection{Size variation}
-Graphes + grosse grosse explication
-\subsection{Undirected graphs}
-\subsubsection{Density variation}
+\subsection{Density variation}
+We tested on the 10 density variation instances, Edmonds-Karp, Ford-Fulkerson with scaling and Highest Label Push-Relabel with our 5 data structures. The entire results can be found in the appendix but here is the most interesting ones.
 
-\subsubsection{Size variation}
+\subsubsection{Edmonds-Karp}
+The Figure~\ref{fig:EK1} represents the run time of Edmonds-Karp with all data structures on the instance 1. As we can see, the data structures based on the sparse set are better than the other one. The hash map and tree map are the least efficient. These observations are the same for all instances. We can conclude that the most appropriate data structure for Edmonds-Karp is the Split Array.
+
+\begin{figure}[H]
+\includegraphics[scale=0.65]{images/EK1.png}
+\caption{Run time of Edmonds-Karp on the instance 1.}
+\label{fig:EK1}
+\end{figure}
+
+One of the most blatant observations on Edmonds-Karp is that it is very regular, what we can observe in the Figure~\ref{fig:EKmean}, which represents the run time on each instance, with its best data structure, the Split Array.
+
+\begin{figure}[H]
+\includegraphics[scale=0.65]{images/EKmean.png}
+\caption{Run time of Edmonds-Karp on all instances.}
+\label{fig:EKmean}
+\end{figure}
+
+\subsubsection{Ford-Fulkerson with scaling}
+The Figure~\ref{fig:FF2} and the Figure~\ref{fig:FF6} represent well the behaviour of Ford-Fulkerson with scaling. Sometimes regular, sometimes less, it remains stable. As we can see, the Linked List provides poor performance while the SparseMap seems to be the most appropriate data structure for Ford-Fulkerson with scaling.
+
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/FF2.png}
+\caption{Run time of Ford-Fulkerson scaling on the instance 2.}
+\label{fig:FF2}
+\includegraphics[scale=0.63]{images/FF6.png}
+\caption{Run time of Ford-Fulkerson scaling on the instance 6.}
+\label{fig:FF6}
+\end{figure}
+
+The Figure~\ref{fig:FFmean} represents the run time on each instance, with the SparseMap. Although less regular than Edmonds-Karp, Ford-Fulkerson with scaling remains stable with a run time ranging from 500 to 2500 ms to solve the maximum flow problem on complete graphs with $|V|=1000$.
+
+\begin{figure}[H]
+\includegraphics[scale=0.65]{images/FFmean.png}
+\caption{Run time of Ford-Fulkerson scaling on all instances.}
+\label{fig:EKmean}
+\end{figure}
+
+\subsubsection{Highest Label Push-Relabel}
+
+\subsubsection{Comparison}
+
+
+
+
+
+
+
+
+
+\subsection{Size variation}
 Graphes + grosse grosse explication
+
 \section{Analysis}
 
 J'explique quel algo est meilleur avec quel type de graphe et je tire des conclusions.
