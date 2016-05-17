@@ -2,14 +2,11 @@ package flowAlgorithm;
 import java.io.File;
 
 import interfaces.Graph;
-import models.HashMapGraph;
 import models.LinkedListGraph;
 import models.SparseMapGraph;
 import solver.EdmondsKarp;
 import solver.EdmondsKarpScaling;
 import solver.FIFOPushRelabel;
-import solver.HighestLabelPushRelabel;
-import solver.PushRelabel;
 import solver.Solver;
 
 public class Main {
