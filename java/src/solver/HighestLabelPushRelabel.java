@@ -3,10 +3,7 @@ package solver;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
-
 import interfaces.Graph;
-import models.SparseMapGraph;
 import object.Arc;
 import object.SparseMap;
 import object.TheTower;
