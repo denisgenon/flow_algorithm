@@ -81,6 +81,7 @@ public class HighestLabelPushRelabel implements Solver {
 		for (int i : g.getAdjacents(source)) {
 			pushFillingFlow(source, i);
 		}
+		activesVertices.compile();  //TODO ONLY WHEN INIT H
 	}
 	
 	/**
@@ -97,7 +98,7 @@ public class HighestLabelPushRelabel implements Solver {
 
 		dest.e += flow;
 		if(dest.e > 0) {
-			activesVertices.add(orig, dest);
+			activesVertices.addInit(dest); //TODO ONLY WHEN INIT H
 		}
 	}
 	

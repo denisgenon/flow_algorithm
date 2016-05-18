@@ -20,11 +20,26 @@ public class TheTower {
 		for(int i = 0; i < 2 * size; i++) {
 			tower[i] = new LinkedList<>();
 		}
-		index = 0;
+		index = -1;
 	}
 
 	public Vertex getTop() {
 		return tower[index].getFirst();
+	}
+	
+	public void addInit(Vertex v) {
+		tower[v.h].add(v);
+		isActive.set(v.id);
+	}
+	public void compile() {
+		int last_i = -1;
+		for (int i = tower.length-1; i >= 0; i--) {
+			if (index == -1 && !tower[i].isEmpty()) index = i;
+			if (!tower[i].isEmpty()) {
+				if (last_i != -1) next[last_i] = i;
+				last_i = i;
+			}
+		}
 	}
 
 	public void add(Vertex u, Vertex v) { // On push de u -> v: Il faut update la structure
@@ -36,7 +51,6 @@ public class TheTower {
 		tower[v.h].add(v);
 		isActive.set(v.id);
 		next[u.h] = v.h;
-		
 	}
 
 	public void updateTop(int new_h) {
