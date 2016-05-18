@@ -2,9 +2,9 @@ library('ggplot2')
 solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel","Highest Label Push-Relabel")
 
 for (solver in solvers){
-  f = paste(c("../java/results/resultsByInstance/instances", solver,".csv"), collapse="")
+  f = paste(c("../java/results/resultsByDensity/resultsByInstance/instances", solver,".csv"), collapse="")
   title = paste(c(solver, " Instances"), collapse="")
-  filename = paste(c("../graphiques/",title,".png"), collapse="")
+  filename = paste(c("../graphiques/resultsByDensity/",title,".png"), collapse="")
   results <- read.csv(file=f, head=TRUE, sep=",")
   attach(results)
   ggplot() + 

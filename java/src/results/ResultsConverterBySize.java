@@ -6,55 +6,55 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ResultsConverter {
+public class ResultsConverterBySize {
 
 	public static String[] solvers = {"Ford-Fulkerson Scaling","Edmonds-Karp","Push-Relabel","FIFO Push-Relabel","Highest Label Push-Relabel"};
 
 	public static void resultsToFile(String [][] results, String title, int inst) throws IOException{
-		File f = new File ("results/resultsBySolver/"+title+inst+".csv");
+		File f = new File ("results/resultsByDensity/resultsBySolver/"+title+inst+".csv");
 		FileWriter fw = new FileWriter(f);
 		fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
-		for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
-			fw.write(nbrInstance+", "+results[0][(nbrInstance/5)-1]+", "+results[1][(nbrInstance/5)-1]
-					+", "+results[2][(nbrInstance/5)-1]+", "+results[3][(nbrInstance/5)-1]+", "+results[4][(nbrInstance/5)-1]+"\n");
+		for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
+			fw.write(nbrInstance+", "+results[0][(nbrInstance/1000)-1]+", "+results[1][(nbrInstance/1000)-1]
+					+", "+results[2][(nbrInstance/1000)-1]+", "+results[3][(nbrInstance/1000)-1]+", "+results[4][(nbrInstance/1000)-1]+"\n");
 		}
 		fw.close();
 	}
-
+	
 	public static void getResultsBySolver(){
 		for(int inst=1; inst<=10; inst++){
-			String [][] rff = new String [5][20];
-			String [][] rek = new String [5][20];
-			String [][] rpr = new String [5][20];
-			String [][] rfpr = new String [5][20];
-			String [][] rhlpr = new String [5][20];
-			File f = new File("results/resultsOriented"+inst+".txt");
+			String [][] rff = new String [5][10];
+			String [][] rek = new String [5][10];
+			String [][] rpr = new String [5][10];
+			String [][] rfpr = new String [5][10];
+			String [][] rhlpr = new String [5][10];
+			File f = new File("results/resultsByDensity/resultsOriented"+inst+".txt");
 			BufferedReader br;
 			try {
 				br = new BufferedReader(new FileReader(f));
 
 				for(int index=0; index<5; index++){
-					for(int i=0; i<20; i++){
+					for(int i=0; i<10; i++){
 						rff[index][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=5; index<10; index++){
-					for(int i=0; i<20; i++){
+					for(int i=0; i<10; i++){
 						rek[index-5][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=10; index<15; index++){
-					for(int i=0; i<20; i++){
+					for(int i=0; i<10; i++){
 						rpr[index-10][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=15; index<20; index++){
-					for(int i=0; i<20; i++){
+					for(int i=0; i<10; i++){
 						rfpr[index-15][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=20; index<25; index++){
-					for(int i=0; i<20; i++){
+					for(int i=0; i<10; i++){
 						rhlpr[index-20][i]=br.readLine().split(" ")[3];
 					}
 				}
@@ -76,21 +76,21 @@ public class ResultsConverter {
 
 		for(int inst=1; inst<=10; inst++){
 
-			double [][] bests = new double[5][20];
+			double [][] bests = new double[5][10];
 			int s=0;
 			for(String title : solvers){
-				File f = new File ("results/resultsBySolver/"+title+inst+".csv");
+				File f = new File ("results/resultsByDensity/resultsBySolver/"+title+inst+".csv");
 				try {
 					BufferedReader br = new BufferedReader(new FileReader(f));
 					String line = br.readLine();
 					// We skip the first line with data structure names
 					line = br.readLine();
 
-					double [] ll = new double [20];
-					double [] hm = new double [20];
-					double [] sa = new double [20];
-					double [] tm = new double [20];
-					double [] sm = new double [20];
+					double [] ll = new double [10];
+					double [] hm = new double [10];
+					double [] sa = new double [10];
+					double [] tm = new double [10];
+					double [] sm = new double [10];
 					double llsum=0,hmsum=0, sasum=0, tmsum=0, smsum=0;
 
 					int i=0;
@@ -112,7 +112,7 @@ public class ResultsConverter {
 					}
 
 					double min=Math.min(Math.min(Math.min(Math.min(llsum, hmsum), sasum), tmsum), smsum);
-					double [] mins = new double[20];
+					double [] mins = new double[10];
 					if(min==llsum) mins=ll;
 					else if(min==hmsum) mins=hm;
 					else if(min==sasum) mins=sa;
@@ -126,14 +126,14 @@ public class ResultsConverter {
 					e.printStackTrace();
 				}
 			}
-			File f = new File ("results/resultsByInstance/instance"+inst+".csv");
+			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+inst+".csv");
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
 				fw.write("Instances, FordFulkerson, EdmondsKarp, PushRelabel, FIFOPushRelabel, HighestLabelPushRelabel\n");
-				for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
-					fw.write(nbrInstance+", "+bests[0][(nbrInstance/5)-1]+", "+bests[1][(nbrInstance/5)-1]
-							+", "+bests[2][(nbrInstance/5)-1]+", "+bests[3][(nbrInstance/5)-1]+", "+bests[4][(nbrInstance/5)-1]+"\n");
+				for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
+					fw.write(nbrInstance+", "+bests[0][(nbrInstance/1000)-1]+", "+bests[1][(nbrInstance/1000)-1]
+							+", "+bests[2][(nbrInstance/1000)-1]+", "+bests[3][(nbrInstance/1000)-1]+", "+bests[4][(nbrInstance/1000)-1]+"\n");
 				}
 				fw.close();
 			} catch (IOException e) {
@@ -144,14 +144,14 @@ public class ResultsConverter {
 
 	public static void getMeanResultsByInstance(){
 
-		double [] ff = new double [20];
-		double [] ek = new double [20];
-		double [] pr = new double [20];
-		double [] fpr = new double [20];
-		double [] hlpr = new double [20];
+		double [] ff = new double [10];
+		double [] ek = new double [10];
+		double [] pr = new double [10];
+		double [] fpr = new double [10];
+		double [] hlpr = new double [10];
 
 		for(int i=1; i<=10; i++){
-			File f = new File ("results/resultsByInstance/instance"+i+".csv");
+			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+i+".csv");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 				String line = br.readLine();
@@ -174,7 +174,7 @@ public class ResultsConverter {
 			}
 		}
 
-		for(int index=0; index<20; index++){
+		for(int index=0; index<10; index++){
 			ff[index]/=10;
 			ek[index]/=10;
 			pr[index]/=10;
@@ -182,14 +182,14 @@ public class ResultsConverter {
 			hlpr[index]/=10;
 		}
 		
-		File f = new File ("results/resultsByInstance/Meaninstances.csv");
+		File f = new File ("results/resultsByDensity/resultsByInstance/Meaninstances.csv");
 		FileWriter fw;
 		try {
 			fw = new FileWriter(f);
 			fw.write("Instances, FordFulkerson, EdmondsKarp, PushRelabel, FIFOPushRelabel, HighestLabelPushRelabel\n");
-			for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
-				fw.write(nbrInstance+", "+ff[(nbrInstance/5)-1]+", "+ek[(nbrInstance/5)-1]
-						+", "+pr[(nbrInstance/5)-1]+", "+fpr[(nbrInstance/5)-1]+", "+hlpr[(nbrInstance/5)-1]+"\n");
+			for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
+				fw.write(nbrInstance+", "+ff[(nbrInstance/1000)-1]+", "+ek[(nbrInstance/1000)-1]
+						+", "+pr[(nbrInstance/1000)-1]+", "+fpr[(nbrInstance/1000)-1]+", "+hlpr[(nbrInstance/1000)-1]+"\n");
 			}
 			fw.close();
 		} catch (IOException e) {
@@ -199,14 +199,14 @@ public class ResultsConverter {
 	}
 
 	public static void getAllResultsBySolver(){
-		double [][] ff = new double [10][20];
-		double [][] ek = new double [10][20];
-		double [][] pr = new double [10][20];
-		double [][] fpr = new double [10][20];
-		double [][] hlpr = new double [10][20];
+		double [][] ff = new double [10][10];
+		double [][] ek = new double [10][10];
+		double [][] pr = new double [10][10];
+		double [][] fpr = new double [10][10];
+		double [][] hlpr = new double [10][10];
 
 		for(int i=1; i<=10; i++){
-			File f = new File ("results/resultsByInstance/instance"+i+".csv");
+			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+i+".csv");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 				String line = br.readLine();
@@ -230,23 +230,23 @@ public class ResultsConverter {
 		}
 		
 		for(int i=0; i<5; i++){
-			double[][] data = new double[10][20];
+			double[][] data = new double[10][10];
 			if(i==0) data=ff;
 			else if(i==1) data=ek;
 			else if(i==2) data=pr;
 			else if(i==3) data=fpr;
 			else if(i==4) data=hlpr;
 
-			File f = new File ("results/resultsByInstance/instances"+solvers[i]+".csv");
+			File f = new File ("results/resultsByDensity/resultsByInstance/instances"+solvers[i]+".csv");
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
 				fw.write("Instances, inst1, inst2, inst3, inst4, inst5, inst6, inst7, inst8, inst9, inst10\n");
-				for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
-					fw.write(nbrInstance+", "+data[0][(nbrInstance/5)-1]+", "+data[1][(nbrInstance/5)-1]
-							+", "+data[2][(nbrInstance/5)-1]+", "+data[3][(nbrInstance/5)-1]+", "+data[4][(nbrInstance/5)-1]
-							+", "+data[5][(nbrInstance/5)-1]+", "+data[6][(nbrInstance/5)-1]+", "+data[7][(nbrInstance/5)-1]
-							+", "+data[8][(nbrInstance/5)-1]+", "+data[9][(nbrInstance/5)-1]+"\n");
+				for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
+					fw.write(nbrInstance+", "+data[0][(nbrInstance/1000)-1]+", "+data[1][(nbrInstance/1000)-1]
+							+", "+data[2][(nbrInstance/1000)-1]+", "+data[3][(nbrInstance/1000)-1]+", "+data[4][(nbrInstance/1000)-1]
+							+", "+data[5][(nbrInstance/1000)-1]+", "+data[6][(nbrInstance/1000)-1]+", "+data[7][(nbrInstance/1000)-1]
+							+", "+data[8][(nbrInstance/1000)-1]+", "+data[9][(nbrInstance/1000)-1]+"\n");
 				}
 				fw.close();
 			} catch (IOException e) {
