@@ -20,28 +20,41 @@ We generate a network graph with $|V|=1000$ and an edge density of 10\%. We add 
 For our tests, we generate 10 instances of each type.
 
 \section{Best Push-Relabel heuristics}
-Blablabla HLPR vs FPR vs PR
-HLPR gagne?
+We have 3 variants of the Push-Relabel algorithm with different complexities so we compare their run time to select the one with the best performance. We did the comparison for our 2 type of instances.
+
+\subsection{Density variation instances}
+The Figure~\ref{fig:PRs} represents the average run time of the 3 variants of Push-Relabel on all instances. As we can see, the generic Push-Relabel offers the best results.
+
+%TODO on essaye d'expliquer pourquoi ou tout ce qui est explication, on le fait dans la partie analyse?
+
+\begin{figure}[H]
+\includegraphics[scale=0.65]{images/meanPRs.png}
+\caption{Average run time on all instances for three variants of Push-Relabel.}
+\label{fig:PRs}
+\end{figure}
+
+\subsection{Size variation instances}
+Pas encore fait mais suspense, qui va gagner? HLPR, FPR ou le redoutable PR?
 
 \section{Results}
 To obtain the run time of an algorithm with a defined data structure on a specific instance, we make the average of 10 execution. To be certain of the accuracy of our results, we execute 5 times the same tests in order to study the variance of the run time. The run time varied, on average, by 1\%. We therefore consider that our results are relevant.
 
-\subsection{Density variation}
-We tested on the 10 density variation instances, Edmonds-Karp, Ford-Fulkerson with scaling and Highest Label Push-Relabel with our 5 data structures. The entire results can be found in the appendix but here is the most interesting ones.
+\subsection{Density variation instances}
+We tested on the 10 density variation instances, Edmonds-Karp, Ford-Fulkerson with scaling and Push-Relabel with our 5 data structures. The entire results can be found in the appendix but here is the most interesting ones.
 
 \subsubsection{Edmonds-Karp}
 The Figure~\ref{fig:EK1} represents the run time of Edmonds-Karp with all data structures on the instance 1. As we can see, the data structures based on the sparse set are better than the other one. The hash map and tree map are the least efficient. These observations are the same for all instances. We can conclude that the most appropriate data structure for Edmonds-Karp is the Split Array.
 
 \begin{figure}[H]
-\includegraphics[scale=0.65]{images/EK1.png}
+\includegraphics[scale=0.63]{images/EK1.png}
 \caption{Run time of Edmonds-Karp on the instance 1.}
 \label{fig:EK1}
 \end{figure}
 
-One of the most blatant observations on Edmonds-Karp is that it is very regular, what we can observe in the Figure~\ref{fig:EKmean}, which represents the run time on each instance, with its best data structure, the Split Array.
+One of the most blatant observations on Edmonds-Karp is that it is very regular, what we can observe in the Figure~\ref{fig:EKmean}, which represents the run time on each instance, with its best data structure, the Split Array. Indeed, Edmonds-Karp solve the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 750 to 1000 ms.
 
 \begin{figure}[H]
-\includegraphics[scale=0.65]{images/EKmean.png}
+\includegraphics[scale=0.63]{images/EKmean.png}
 \caption{Run time of Edmonds-Karp on all instances.}
 \label{fig:EKmean}
 \end{figure}
@@ -63,22 +76,56 @@ The Figure~\ref{fig:FFmean} represents the run time on each instance, with the S
 \begin{figure}[H]
 \includegraphics[scale=0.65]{images/FFmean.png}
 \caption{Run time of Ford-Fulkerson scaling on all instances.}
-\label{fig:EKmean}
+\label{fig:FFmean}
 \end{figure}
 
-\subsubsection{Highest Label Push-Relabel}
+\subsubsection{Push-Relabel}
+When we look at the results of the Push-Relabel, an observation is quite obvious : it is not regular at all. As shown in Figure~\ref{fig:PR6} and Figure~\ref{fig:PR8}, the run time on one instance can vary from less than 100 ms to more than 15000 ms.
+
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/PR6.png}
+\caption{Run time of Push-Relabel on the instance 6.}
+\label{fig:PR6}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/PR8.png}
+\caption{Run time of Push-Relabel on the instance 8.}
+\label{fig:PR8}
+\end{figure}
+
+It may nevertheless have a stable run time but once very high and once extremely low. That is what we can observe in Figure~\ref{fig:PR10} and Figure~\ref{fig:PR7}.
+
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/PR10.png}
+\caption{Run time of Push-Relabel on the instance 10.}
+\label{fig:PR10}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/PR7.png}
+\caption{Run time of Push-Relabel on the instance 7.}
+\label{fig:PR7}
+\end{figure}
+
+In terms of data structures, we notice that the HashMap and the TreeMap offer very poor performances compared to data structures based on the SparseSet. The most adapted data structure being the Split Array.
+
+\begin{figure}[H]
+\includegraphics[scale=0.63]{images/PRmean.png}
+\caption{Run time of Push-Relabel on all instances.}
+\label{fig:PRmean}
+\end{figure}
+
+When displaying the run time of each instance with its best data structure, we obtain a very disparate graph, as we can see in Figure~\ref{fig:PRmean}. Indeed, the Push-Relabel solve the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 100 ms to 5500 ms.
 
 \subsubsection{Comparison}
+The Figure~\ref{fig:MeanInstances} represents, for each algorithm, the average run time on all instances with its best data structure. The performances are close but Edmonds-Karp with the Split Array is the most appropriate algorithm to solve the maximum flow problem with graphs having a high-density of edges.
 
+\begin{figure}[H]
+\includegraphics[scale=0.65]{images/MeanInstances.png}
+\caption{Average run time of the three algorithms on all instances.}
+\label{fig:MeanInstances}
+\end{figure}
 
-
-
-
-
-
-
-
-\subsection{Size variation}
+\subsection{Size variation instances}
 Graphes + grosse grosse explication
 
 \section{Analysis}
