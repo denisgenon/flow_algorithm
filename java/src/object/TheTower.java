@@ -32,10 +32,11 @@ public class TheTower {
 		if(tower[v.h].isEmpty()) {
 			next[v.h] = next[u.h];
 		}
+		if (index < v.h || isEmpty()) index = v.h;
 		tower[v.h].add(v);
 		isActive.set(v.id);
 		next[u.h] = v.h;
-		if (index < v.h) index = v.h;
+		
 	}
 
 	public void updateTop(int new_h) {

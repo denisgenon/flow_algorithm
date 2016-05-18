@@ -3,11 +3,10 @@ import java.io.File;
 
 import interfaces.Graph;
 import models.LinkedListGraph;
-import models.SparseMapGraph;
+import models.SplitArrayGraph;
 import solver.EdmondsKarp;
 import solver.EdmondsKarpScaling;
-import solver.FIFOPushRelabel;
-import solver.HighestLabelPushRelabel;
+import solver.PushRelabel;
 import solver.Solver;
 
 public class Main {
@@ -32,8 +31,8 @@ public class Main {
 					}
 				}
 				else {
-					Graph g = new SparseMapGraph(args[0], true);
-					Solver s = new HighestLabelPushRelabel(g);
+					Graph g = new SplitArrayGraph(args[0], true);
+					Solver s = new PushRelabel(g);
 					//Solver s = new EdmondsKarp(g);
 					s.getResults();
 					/*

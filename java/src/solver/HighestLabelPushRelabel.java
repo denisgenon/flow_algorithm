@@ -3,6 +3,8 @@ package solver;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
 import interfaces.Graph;
 import models.SparseMapGraph;
 import object.Arc;
@@ -74,6 +76,7 @@ public class HighestLabelPushRelabel implements Solver {
 				}
 			}
 		}
+
 		
 		g.getVertex(source).h = g.getV();
 		g.getVertex(sink).h = 0;
@@ -139,12 +142,10 @@ public class HighestLabelPushRelabel implements Solver {
 		if(origin.e <= 0) {
 			activesVertices.removeTop();
 		}
-		
 		destination.e += flowValue;
 		if(destination.e > 0 && destination.id != (g.getV() - 1) && destination.id != 0) {
 			activesVertices.add(origin, destination);
 		}
-		
 		// We update the capacity in the residual graph v -> u
 		capacity = g.getCapacity(destination.id, origin.id);
 		if(capacity == -1) {
