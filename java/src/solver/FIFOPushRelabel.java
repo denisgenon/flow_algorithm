@@ -45,33 +45,6 @@ public class FIFOPushRelabel implements Solver {
 	 * Push a flow on all the neighbors edges of the source
 	 */
 	public void preFlow() {
-		SparseMap[] invertedGraph = new SparseMap[g.getV()];
-		for (int i = 0; i < invertedGraph.length; i++) {
-			invertedGraph[i] = new SparseMap();
-		}
-		
-		for (int i = 0; i < g.getV(); i++) {
-			for (int j : g.getAdjacents(i)) {
-				invertedGraph[j].add(new Arc(1, i));
-			}
-		}
-		
-		int[] parents = new int[g.getV()];
-		Arrays.fill(parents, -1);
-		LinkedList<Integer> queue = new LinkedList<Integer>();
-		queue.add(sink);
-		g.getVertex(sink).h = 0;
-		while (!queue.isEmpty()) {
-			int u = queue.removeFirst();
-			for(Arc v : invertedGraph[u].adjacents) {
-				if (g.getVertex(v.idDestination).h == 0) {
-					parents[v.idDestination] = u;
-					g.getVertex(v.idDestination).h = g.getVertex(parents[v.idDestination]).h + 1;
-					queue.add(v.idDestination);
-				}
-			}
-		}
-		
 		g.getVertex(source).h = g.getV();
 		g.getVertex(sink).h = 0;
 		
