@@ -11,7 +11,7 @@ public class ResultsConverterBySize {
 	public static String[] solvers = {"Ford-Fulkerson Scaling","Edmonds-Karp","Push-Relabel","FIFO Push-Relabel","Highest Label Push-Relabel"};
 
 	public static void resultsToFile(String [][] results, String title, int inst) throws IOException{
-		File f = new File ("results/resultsByDensity/resultsBySolver/"+title+inst+".csv");
+		File f = new File ("results/resultsBySize/resultsBySolver/"+title+inst+".csv");
 		FileWriter fw = new FileWriter(f);
 		fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
 		for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
@@ -23,49 +23,49 @@ public class ResultsConverterBySize {
 	
 	public static void getResultsBySolver(){
 		for(int inst=1; inst<=10; inst++){
-			String [][] rff = new String [5][10];
-			String [][] rek = new String [5][10];
-			String [][] rpr = new String [5][10];
-			String [][] rfpr = new String [5][10];
-			String [][] rhlpr = new String [5][10];
-			File f = new File("results/resultsByDensity/resultsOriented"+inst+".txt");
+			String [][] rff = new String [5][9];
+			String [][] rek = new String [5][9];
+			String [][] rpr = new String [5][9];
+			String [][] rfpr = new String [5][9];
+			String [][] rhlpr = new String [5][9];
+			File f = new File("results/resultsBySize/resultsOriented"+inst+".txt");
 			BufferedReader br;
 			try {
 				br = new BufferedReader(new FileReader(f));
 
 				for(int index=0; index<5; index++){
-					for(int i=0; i<10; i++){
+					for(int i=0; i<9; i++){
 						rff[index][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=5; index<10; index++){
-					for(int i=0; i<10; i++){
+					for(int i=0; i<9; i++){
 						rek[index-5][i]=br.readLine().split(" ")[3];
 					}
 				}
-				for(int index=10; index<15; index++){
-					for(int i=0; i<10; i++){
+				/*for(int index=10; index<15; index++){
+					for(int i=0; i<9; i++){
 						rpr[index-10][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=15; index<20; index++){
-					for(int i=0; i<10; i++){
+					for(int i=0; i<9; i++){
 						rfpr[index-15][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=20; index<25; index++){
-					for(int i=0; i<10; i++){
+					for(int i=0; i<9; i++){
 						rhlpr[index-20][i]=br.readLine().split(" ")[3];
 					}
-				}
+				}*/
 
 				br.close();
 
 				resultsToFile(rff, solvers[0], inst);
 				resultsToFile(rek, solvers[1], inst);
-				resultsToFile(rpr, solvers[2], inst);
-				resultsToFile(rfpr, solvers[3], inst);
-				resultsToFile(rhlpr, solvers[4], inst);
+				//resultsToFile(rpr, solvers[2], inst);
+				//resultsToFile(rfpr, solvers[3], inst);
+				//resultsToFile(rhlpr, solvers[4], inst);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -76,21 +76,21 @@ public class ResultsConverterBySize {
 
 		for(int inst=1; inst<=10; inst++){
 
-			double [][] bests = new double[5][10];
+			double [][] bests = new double[5][9];
 			int s=0;
 			for(String title : solvers){
-				File f = new File ("results/resultsByDensity/resultsBySolver/"+title+inst+".csv");
+				File f = new File ("results/resultsBySize/resultsBySolver/"+title+inst+".csv");
 				try {
 					BufferedReader br = new BufferedReader(new FileReader(f));
 					String line = br.readLine();
 					// We skip the first line with data structure names
 					line = br.readLine();
 
-					double [] ll = new double [10];
-					double [] hm = new double [10];
-					double [] sa = new double [10];
-					double [] tm = new double [10];
-					double [] sm = new double [10];
+					double [] ll = new double [9];
+					double [] hm = new double [9];
+					double [] sa = new double [9];
+					double [] tm = new double [9];
+					double [] sm = new double [9];
 					double llsum=0,hmsum=0, sasum=0, tmsum=0, smsum=0;
 
 					int i=0;
@@ -112,7 +112,7 @@ public class ResultsConverterBySize {
 					}
 
 					double min=Math.min(Math.min(Math.min(Math.min(llsum, hmsum), sasum), tmsum), smsum);
-					double [] mins = new double[10];
+					double [] mins = new double[9];
 					if(min==llsum) mins=ll;
 					else if(min==hmsum) mins=hm;
 					else if(min==sasum) mins=sa;
@@ -126,7 +126,7 @@ public class ResultsConverterBySize {
 					e.printStackTrace();
 				}
 			}
-			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+inst+".csv");
+			File f = new File ("results/resultsBySize/resultsByInstance/instance"+inst+".csv");
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
@@ -144,14 +144,14 @@ public class ResultsConverterBySize {
 
 	public static void getMeanResultsByInstance(){
 
-		double [] ff = new double [10];
-		double [] ek = new double [10];
-		double [] pr = new double [10];
-		double [] fpr = new double [10];
-		double [] hlpr = new double [10];
+		double [] ff = new double [9];
+		double [] ek = new double [9];
+		double [] pr = new double [9];
+		double [] fpr = new double [9];
+		double [] hlpr = new double [9];
 
 		for(int i=1; i<=10; i++){
-			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+i+".csv");
+			File f = new File ("results/resultsBySize/resultsByInstance/instance"+i+".csv");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 				String line = br.readLine();
@@ -182,7 +182,7 @@ public class ResultsConverterBySize {
 			hlpr[index]/=10;
 		}
 		
-		File f = new File ("results/resultsByDensity/resultsByInstance/Meaninstances.csv");
+		File f = new File ("results/resultsBySize/resultsByInstance/Meaninstances.csv");
 		FileWriter fw;
 		try {
 			fw = new FileWriter(f);
@@ -199,14 +199,14 @@ public class ResultsConverterBySize {
 	}
 
 	public static void getAllResultsBySolver(){
-		double [][] ff = new double [10][10];
-		double [][] ek = new double [10][10];
-		double [][] pr = new double [10][10];
-		double [][] fpr = new double [10][10];
-		double [][] hlpr = new double [10][10];
+		double [][] ff = new double [10][9];
+		double [][] ek = new double [10][9];
+		double [][] pr = new double [10][9];
+		double [][] fpr = new double [10][9];
+		double [][] hlpr = new double [10][9];
 
 		for(int i=1; i<=10; i++){
-			File f = new File ("results/resultsByDensity/resultsByInstance/instance"+i+".csv");
+			File f = new File ("results/resultsBySize/resultsByInstance/instance"+i+".csv");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(f));
 				String line = br.readLine();
@@ -230,14 +230,14 @@ public class ResultsConverterBySize {
 		}
 		
 		for(int i=0; i<5; i++){
-			double[][] data = new double[10][10];
+			double[][] data = new double[10][9];
 			if(i==0) data=ff;
 			else if(i==1) data=ek;
 			else if(i==2) data=pr;
 			else if(i==3) data=fpr;
 			else if(i==4) data=hlpr;
 
-			File f = new File ("results/resultsByDensity/resultsByInstance/instances"+solvers[i]+".csv");
+			File f = new File ("results/resultsBySize/resultsByInstance/instances"+solvers[i]+".csv");
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
@@ -258,8 +258,8 @@ public class ResultsConverterBySize {
 
 	public static void main(String [] args){
 		getResultsBySolver();
-		getResultsByInstance();
+		/*getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();
+		getAllResultsBySolver();*/
 	}
 }

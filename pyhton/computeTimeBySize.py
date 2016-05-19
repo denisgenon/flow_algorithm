@@ -7,11 +7,11 @@ if(var=="yes"):
 		print('Tests for '+str(x)+' launch')
 		od = os.getcwd()
 		os.chdir(od+'\..\\java\\results\\resultsBySize')
-		results = open('resultsOriented'+str(x)+'.txt', 'w')	
+		results = open('resultsOrientedPR'+str(x)+'.txt', 'w')	
 		os.chdir(od+'\..\\java\\bin')
 
 		instances = ["1000","1500","2000","2500","3000","3500","4000","4500","5000"]
-		solvers = ["FF","EK"]#["FF","EK","PR","FPR","HLPR"]
+		solvers = ["PR","FPR","HLPR"]#["FF","EK","PR","FPR","HLPR"]
 		graphs = ["LL","HM","SA","TM","SM"]
 		for solver in solvers:
 			print('-----'+solver+'-----')
