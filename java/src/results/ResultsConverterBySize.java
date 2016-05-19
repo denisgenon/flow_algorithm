@@ -11,6 +11,15 @@ public class ResultsConverterBySize {
 	public static String[] solvers = {"Ford-Fulkerson Scaling","Edmonds-Karp","Push-Relabel","FIFO Push-Relabel","Highest Label Push-Relabel"};
 
 	public static void resultsToFile(String [][] results, String title, int inst) throws IOException{
+		
+		for(int i=0; i<results.length; i++){
+			for(int j=0; j<results[0].length; j++){
+				if(results[i][j]==null){
+					results[i][j]="0";
+				}
+			}
+		}
+		
 		File f = new File ("results/resultsBySize/resultsBySolver/"+title+inst+".csv");
 		FileWriter fw = new FileWriter(f);
 		fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
@@ -28,12 +37,12 @@ public class ResultsConverterBySize {
 			String [][] rpr = new String [5][9];
 			String [][] rfpr = new String [5][9];
 			String [][] rhlpr = new String [5][9];
-			File f = new File("results/resultsBySize/resultsOriented"+inst+".txt");
+			File f = new File("results/resultsBySize/resultsOrientedPRavecIni"+inst+".txt");
 			BufferedReader br;
 			try {
 				br = new BufferedReader(new FileReader(f));
 
-				for(int index=0; index<5; index++){
+				/*for(int index=0; index<5; index++){
 					for(int i=0; i<9; i++){
 						rff[index][i]=br.readLine().split(" ")[3];
 					}
@@ -42,8 +51,8 @@ public class ResultsConverterBySize {
 					for(int i=0; i<9; i++){
 						rek[index-5][i]=br.readLine().split(" ")[3];
 					}
-				}
-				/*for(int index=10; index<15; index++){
+				}*/
+				for(int index=10; index<15; index++){
 					for(int i=0; i<9; i++){
 						rpr[index-10][i]=br.readLine().split(" ")[3];
 					}
@@ -57,15 +66,15 @@ public class ResultsConverterBySize {
 					for(int i=0; i<9; i++){
 						rhlpr[index-20][i]=br.readLine().split(" ")[3];
 					}
-				}*/
+				}
 
 				br.close();
 
-				resultsToFile(rff, solvers[0], inst);
-				resultsToFile(rek, solvers[1], inst);
-				//resultsToFile(rpr, solvers[2], inst);
-				//resultsToFile(rfpr, solvers[3], inst);
-				//resultsToFile(rhlpr, solvers[4], inst);
+				//resultsToFile(rff, solvers[0], inst);
+				//resultsToFile(rek, solvers[1], inst);
+				resultsToFile(rpr, solvers[2], inst);
+				resultsToFile(rfpr, solvers[3], inst);
+				resultsToFile(rhlpr, solvers[4], inst);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -257,9 +266,9 @@ public class ResultsConverterBySize {
 	}
 
 	public static void main(String [] args){
-		getResultsBySolver();
-		/*getResultsByInstance();
-		getMeanResultsByInstance();
+		//getResultsBySolver();
+		//getResultsByInstance();
+		/*getMeanResultsByInstance();
 		getAllResultsBySolver();*/
 	}
 }
