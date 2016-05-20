@@ -8,24 +8,16 @@ import java.io.IOException;
 
 public class ResultsConverterBySize {
 
-	public static String[] solvers = {"Ford-Fulkerson Scaling","Edmonds-Karp","Push-Relabel","FIFO Push-Relabel","Highest Label Push-Relabel"};
+	public static String[] solvers = {"Ford-Fulkerson Scaling","Edmonds-Karp","Highest Label Push-Relabel"};
 
 	public static void resultsToFile(String [][] results, String title, int inst) throws IOException{
-		
-		for(int i=0; i<results.length; i++){
-			for(int j=0; j<results[0].length; j++){
-				if(results[i][j]==null){
-					results[i][j]="0";
-				}
-			}
-		}
 		
 		File f = new File ("results/resultsBySize/resultsBySolver/"+title+inst+".csv");
 		FileWriter fw = new FileWriter(f);
 		fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
-		for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
-			fw.write(nbrInstance+", "+results[0][(nbrInstance/1000)-1]+", "+results[1][(nbrInstance/1000)-1]
-					+", "+results[2][(nbrInstance/1000)-1]+", "+results[3][(nbrInstance/1000)-1]+", "+results[4][(nbrInstance/1000)-1]+"\n");
+		for(int i=0; i<=8; i++){
+			fw.write(((i*500)+1000)+", "+results[0][i]+", "+results[1][i]
+					+", "+results[2][i]+", "+results[3][i]+", "+results[4][i]+"\n");
 		}
 		fw.close();
 	}
@@ -34,15 +26,13 @@ public class ResultsConverterBySize {
 		for(int inst=1; inst<=10; inst++){
 			String [][] rff = new String [5][9];
 			String [][] rek = new String [5][9];
-			String [][] rpr = new String [5][9];
-			String [][] rfpr = new String [5][9];
 			String [][] rhlpr = new String [5][9];
-			File f = new File("results/resultsBySize/resultsOrientedPRavecIni"+inst+".txt");
+			File f = new File("results/resultsBySize/resultsOriented"+inst+".txt");
 			BufferedReader br;
 			try {
 				br = new BufferedReader(new FileReader(f));
 
-				/*for(int index=0; index<5; index++){
+				for(int index=0; index<5; index++){
 					for(int i=0; i<9; i++){
 						rff[index][i]=br.readLine().split(" ")[3];
 					}
@@ -50,16 +40,6 @@ public class ResultsConverterBySize {
 				for(int index=5; index<10; index++){
 					for(int i=0; i<9; i++){
 						rek[index-5][i]=br.readLine().split(" ")[3];
-					}
-				}*/
-				for(int index=10; index<15; index++){
-					for(int i=0; i<9; i++){
-						rpr[index-10][i]=br.readLine().split(" ")[3];
-					}
-				}
-				for(int index=15; index<20; index++){
-					for(int i=0; i<9; i++){
-						rfpr[index-15][i]=br.readLine().split(" ")[3];
 					}
 				}
 				for(int index=20; index<25; index++){
@@ -69,12 +49,10 @@ public class ResultsConverterBySize {
 				}
 
 				br.close();
-
-				//resultsToFile(rff, solvers[0], inst);
-				//resultsToFile(rek, solvers[1], inst);
-				resultsToFile(rpr, solvers[2], inst);
-				resultsToFile(rfpr, solvers[3], inst);
-				resultsToFile(rhlpr, solvers[4], inst);
+				
+				resultsToFile(rff, solvers[0], inst);
+				resultsToFile(rek, solvers[1], inst);
+				resultsToFile(rhlpr, solvers[2], inst);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -85,7 +63,7 @@ public class ResultsConverterBySize {
 
 		for(int inst=1; inst<=10; inst++){
 
-			double [][] bests = new double[5][9];
+			double [][] bests = new double[3][9];
 			int s=0;
 			for(String title : solvers){
 				File f = new File ("results/resultsBySize/resultsBySolver/"+title+inst+".csv");
@@ -139,10 +117,10 @@ public class ResultsConverterBySize {
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
-				fw.write("Instances, FordFulkerson, EdmondsKarp, PushRelabel, FIFOPushRelabel, HighestLabelPushRelabel\n");
-				for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
-					fw.write(nbrInstance+", "+bests[0][(nbrInstance/1000)-1]+", "+bests[1][(nbrInstance/1000)-1]
-							+", "+bests[2][(nbrInstance/1000)-1]+", "+bests[3][(nbrInstance/1000)-1]+", "+bests[4][(nbrInstance/1000)-1]+"\n");
+				fw.write("Instances, FordFulkerson, EdmondsKarp, HighestLabelPushRelabel\n");
+				for(int i=0; i<=8; i++){
+					fw.write(((i*500)+1000)+", "+bests[0][i]+", "+bests[1][i]
+							+", "+bests[2][i]+"\n");
 				}
 				fw.close();
 			} catch (IOException e) {
@@ -155,8 +133,6 @@ public class ResultsConverterBySize {
 
 		double [] ff = new double [9];
 		double [] ek = new double [9];
-		double [] pr = new double [9];
-		double [] fpr = new double [9];
 		double [] hlpr = new double [9];
 
 		for(int i=1; i<=10; i++){
@@ -171,9 +147,7 @@ public class ResultsConverterBySize {
 					String [] split = line.split(", ");
 					ff[index]+=Double.parseDouble(split[1]);
 					ek[index]+=Double.parseDouble(split[2]);
-					pr[index]+=Double.parseDouble(split[3]);
-					fpr[index]+=Double.parseDouble(split[4]);
-					hlpr[index]+=Double.parseDouble(split[5]);
+					hlpr[index]+=Double.parseDouble(split[3]);
 					line = br.readLine();
 					index++;
 				}
@@ -183,22 +157,20 @@ public class ResultsConverterBySize {
 			}
 		}
 
-		for(int index=0; index<10; index++){
-			ff[index]/=10;
-			ek[index]/=10;
-			pr[index]/=10;
-			fpr[index]/=10;
-			hlpr[index]/=10;
+		for(int index=0; index<9; index++){
+			ff[index]/=10.0;
+			ek[index]/=10.0;
+			hlpr[index]/=10.0;
 		}
 		
 		File f = new File ("results/resultsBySize/resultsByInstance/Meaninstances.csv");
 		FileWriter fw;
 		try {
 			fw = new FileWriter(f);
-			fw.write("Instances, FordFulkerson, EdmondsKarp, PushRelabel, FIFOPushRelabel, HighestLabelPushRelabel\n");
-			for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
-				fw.write(nbrInstance+", "+ff[(nbrInstance/1000)-1]+", "+ek[(nbrInstance/1000)-1]
-						+", "+pr[(nbrInstance/1000)-1]+", "+fpr[(nbrInstance/1000)-1]+", "+hlpr[(nbrInstance/1000)-1]+"\n");
+			fw.write("Instances, FordFulkerson, EdmondsKarp, HighestLabelPushRelabel\n");
+			for(int i=0; i<=8; i++){
+				fw.write(((i*500)+1000)+", "+ff[i]+", "+ek[i]
+						+", "+hlpr[i]+"\n");
 			}
 			fw.close();
 		} catch (IOException e) {
@@ -210,8 +182,6 @@ public class ResultsConverterBySize {
 	public static void getAllResultsBySolver(){
 		double [][] ff = new double [10][9];
 		double [][] ek = new double [10][9];
-		double [][] pr = new double [10][9];
-		double [][] fpr = new double [10][9];
 		double [][] hlpr = new double [10][9];
 
 		for(int i=1; i<=10; i++){
@@ -226,9 +196,7 @@ public class ResultsConverterBySize {
 					String [] split = line.split(", ");
 					ff[i-1][index]+=Double.parseDouble(split[1]);
 					ek[i-1][index]+=Double.parseDouble(split[2]);
-					pr[i-1][index]+=Double.parseDouble(split[3]);
-					fpr[i-1][index]+=Double.parseDouble(split[4]);
-					hlpr[i-1][index]+=Double.parseDouble(split[5]);
+					hlpr[i-1][index]+=Double.parseDouble(split[3]);
 					line = br.readLine();
 					index++;
 				}
@@ -238,24 +206,22 @@ public class ResultsConverterBySize {
 			}
 		}
 		
-		for(int i=0; i<5; i++){
+		for(int i=0; i<3; i++){
 			double[][] data = new double[10][9];
 			if(i==0) data=ff;
 			else if(i==1) data=ek;
-			else if(i==2) data=pr;
-			else if(i==3) data=fpr;
-			else if(i==4) data=hlpr;
+			else if(i==2) data=hlpr;
 
 			File f = new File ("results/resultsBySize/resultsByInstance/instances"+solvers[i]+".csv");
 			FileWriter fw;
 			try {
 				fw = new FileWriter(f);
 				fw.write("Instances, inst1, inst2, inst3, inst4, inst5, inst6, inst7, inst8, inst9, inst10\n");
-				for(int nbrInstance=1000; nbrInstance<=5000; nbrInstance+=500){
-					fw.write(nbrInstance+", "+data[0][(nbrInstance/1000)-1]+", "+data[1][(nbrInstance/1000)-1]
-							+", "+data[2][(nbrInstance/1000)-1]+", "+data[3][(nbrInstance/1000)-1]+", "+data[4][(nbrInstance/1000)-1]
-							+", "+data[5][(nbrInstance/1000)-1]+", "+data[6][(nbrInstance/1000)-1]+", "+data[7][(nbrInstance/1000)-1]
-							+", "+data[8][(nbrInstance/1000)-1]+", "+data[9][(nbrInstance/1000)-1]+"\n");
+				for(int i2=0; i2<=8; i2++){
+					fw.write(((i2*500)+1000)+", "+data[0][i2]+", "+data[1][i2]
+							+", "+data[2][i2]+", "+data[3][i2]+", "+data[4][i2]
+							+", "+data[5][i2]+", "+data[6][i2]+", "+data[7][i2]
+							+", "+data[8][i2]+", "+data[9][i2]+"\n");
 				}
 				fw.close();
 			} catch (IOException e) {
@@ -266,9 +232,9 @@ public class ResultsConverterBySize {
 	}
 
 	public static void main(String [] args){
-		//getResultsBySolver();
-		//getResultsByInstance();
-		/*getMeanResultsByInstance();
-		getAllResultsBySolver();*/
+		getResultsBySolver();
+		getResultsByInstance();
+		getMeanResultsByInstance();
+		getAllResultsBySolver();
 	}
 }

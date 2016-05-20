@@ -7,24 +7,24 @@ if(var=="yes"):
 		print('Tests for '+str(x)+' launch')
 		od = os.getcwd()
 		os.chdir(od+'\..\\java\\results\\resultsBySize')
-		results = open('resultsOrientedPRavecIni'+str(x)+'.txt', 'w')	
+		results = open('resultsOrientedHLPR'+str(x)+'.txt', 'w')	
 		os.chdir(od+'\..\\java\\bin')
 
 		instances = ["1000","1500","2000","2500","3000","3500","4000","4500","5000"]
-		solvers = ["PR","FPR","HLPR"]#["FF","EK","PR","FPR","HLPR"]
-		graphs = ["SM"]#["LL","HM","SA","TM","SM"]
+		solvers = ["HLPR"]#["FF","EK","PR","FPR","HLPR"]
+		graphs = ["LL","HM","SA","TM","SM"]
 		for solver in solvers:
 			print('-----'+solver+'-----')
 			for graph in graphs:
 				print('---'+graph+'---')
 				for instance in instances:
 					print('--'+instance+'--')
-					#i=0
+					i=0
 					b=0
-					#while i<10:
-					b+=int(os.popen('java -cp . flowAlgorithm.BatchMain '+solver+' '+graph+' ..\instances\instancesSize'+str(x)+'\instancesize'+instance+'.txt '+'true').read())
-						#i+=1
-					#b/=10
+					while i<10:
+						b+=int(os.popen('java -cp . flowAlgorithm.BatchMain '+solver+' '+graph+' ..\instances\instancesSize'+str(x)+'\instancesize'+instance+'.txt '+'true').read())
+						i+=1
+					b/=10
 					results.write(solver+' '+graph+' '+instance+' '+str(b)+'\n')
 
 		print('Tests for '+str(x)+' done')

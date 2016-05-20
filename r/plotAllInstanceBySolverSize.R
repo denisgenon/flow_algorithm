@@ -1,5 +1,5 @@
 library('ggplot2')
-solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel","Highest Label Push-Relabel")
+solvers=c("Edmonds-Karp","Ford-Fulkerson Scaling","Highest Label Push-Relabel")
 
 for (solver in solvers){
   f = paste(c("../java/results/resultsBySize/resultsByInstance/instances", solver,".csv"), collapse="")
