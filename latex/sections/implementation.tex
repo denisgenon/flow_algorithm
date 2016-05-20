@@ -1,5 +1,5 @@
 %!TEX root = ../main.tex
-In this chapter, we will explain our implementation choices and the tools we used to carry out our project. Our main goal was to release a maintanable open source library so that other developers could use it and contribute to it. Our choices were mainly guided by this goal.
+In this chapter, we will explain our implementation choices and the tools we used to carry out our project. Our main goal was to release a maintainable open source library so that other developers could use it and contribute to it. Our choices were mainly guided by this goal.
 
 \section{Langage choice}
 
@@ -9,12 +9,12 @@ In this chapter, we will explain our implementation choices and the tools we use
 	\captionof{figure}{Java Logo}
 \end{wrapfigure}
 
-In order to implement the different flow algorithms presented, we had to choose a programming language. We decided to develop the different algorithms with the language \textbf{Java}\footnote{https://community.oracle.com/community/java}. Java is a programming language created in 1995 by Sun Microsystems. Java is designed to run acress multiple operating systems, including Linux, Mac OS X and Windows. Java is known to be flexible, scalable and maintainable. Java is an object-oriented programming language, which permits the developement of modulable applications via systems like encapsulation, composition, inheritance, and delegation. We choose Java because of the followings reasons:
+In order to implement the different flow algorithms presented, we had to choose a programming language. We decided to develop the different algorithms with the language \textbf{Java}\footnote{https://community.oracle.com/community/java}. Java is a programming language created in 1995 by Sun Microsystems. Java is designed to run acress multiple operating systems, including Linux, Mac OS X and Windows. Java is known to be flexible, scalable and maintainable. Java is an object-oriented programming language, which permits the development of modulable applications via systems like encapsulation, composition, inheritance, and delegation. We choose Java because of the followings reasons:
 \begin{itemize}
 	\item Java is very popular. This is a key point because we want that the librairies we developped were accessible to as many. Another consequence of this is that Java is well documented.
-	\item Java is modulable. The OO Java paradigm is useful to develop this project were different algorithms and different data structures must be implemented. Concepts like heritance, interfaces are very useful to achieve this.
+	\item Java is modulable. The OO Java paradigm is useful to develop this project were different algorithms and different data structures must be implemented. Concepts like inheritance, interfaces are very useful to achieve this.
 	\item Java is fast. Many optimizations have improved the performance of the JVM over time such as the Just-in-time compiling. Some of our instance are very big, so we need a language able to solve them quickly.
-	\item We are accustomed to using java. A good knowledge of the language is requiered to make correct implementations.
+	\item We are accustomed to using java. A good knowledge of the language is required to make correct implementations.
 \end{itemize}
 
 
@@ -30,12 +30,12 @@ This package contains all the network representation we implemented: \textit{Spl
 	\item[\texttt{getV() \& getE()}] return respectively the number of vertices and the number of edges;
 	\item[\texttt{getVertex(id)}] return the vertex with the corresponding id;
 	\item[\texttt{getVertices()}] return the set of vertices;
-	\item[\texttt{getAdjacents(id)}] return the neighbors of the vertex \textit{id};
+	\item[\texttt{getAdjacents(id)}] return the neighbours of the vertex \textit{id};
 	\item[\texttt{removeEdge(id1, id2)}] remove the edge between \textit{id1} and \textit{id2};
 	\item[\texttt{addEdge(id1, id2, c)}] add an edge from \textit{id1} to \textit{id2} with the capacity \textit{c};
-	\item[\texttt{getCapacity(id1, id2)}] return the capacity of the edge bewteen \textit{id1} and \textit{id2};
-	\item[\texttt{setCapacity(id1, id2, c)}] set the capacity of the edge bewteen \textit{id1} and \textit{id2} at \textit{c};
-	\item[\texttt{getAdjacentsSize(id)}] return the number of neighbors of the vertex \textit{id};
+	\item[\texttt{getCapacity(id1, id2)}] return the capacity of the edge between \textit{id1} and \textit{id2};
+	\item[\texttt{setCapacity(id1, id2, c)}] set the capacity of the edge between \textit{id1} and \textit{id2} at \textit{c};
+	\item[\texttt{getAdjacentsSize(id)}] return the number of neighbours of the vertex \textit{id};
 	\item[\texttt{getMaxCapacity()}] return the biggest capacity in the network: used to initalize the scaling phase.
 \end{description}
 
@@ -49,7 +49,7 @@ We defined the abstract class \textit{SimpleGraph} which contains all the common
 \end{figure}
 
 \subsection{Package: Solvers}
- This package contains all the solvers we implemented. As we said in the Chapter 2, there is two family of algorithm to solve the maximum flow problem: the augmenting path algorithms and the preflow-push algorithms. The differents algorithms in the augmenting path have a lot in common. For example, the difference between the Ford-Fulkerson algorithm and the Edmonds-Karp algorithm is how the algorithm find an augmenting path.  As we can see in the Figure~\ref{img:solver}, we used the strengh of inheritance to avoid duplicate code. On the other part, the preflow-push algorithm have a lot of differencies in their implementations, we decided split them in three classes.
+ This package contains all the solvers we implemented. As we said in the Chapter 2, there is two family of algorithm to solve the maximum flow problem: the augmenting path algorithms and the preflow-push algorithms. The different algorithms in the augmenting path have a lot in common. For example, the difference between the Ford-Fulkerson algorithm and the Edmonds-Karp algorithm is how the algorithm find an augmenting path.  As we can see in the Figure~\ref{img:solver}, we used the strength of inheritance to avoid duplicate code. On the other part, the preflow-push algorithm have a lot of differences in their implementations, we decided split them in three classes.
 
 
 \begin{figure}
@@ -63,7 +63,7 @@ The solvers have a constructor overloading, which permits to define any vertex a
 
 \subsection{Package: Objects}
 
-This package contains several data strucutres: 
+This package contains several data structures: 
 \begin{description}
 	\item[\texttt{Vertex.java}] used to represent a vertex;
 	\item[\texttt{Arc.java}] used to represent an arc;
@@ -107,7 +107,7 @@ pr.getResults();
 	\captionof{figure}{Git Logo}
 \end{wrapfigure}
 
-Using a versioning tool appeared to us from the beginning as an evidence. Our main needs were to share the code we did between us and to version it. We decided to use \textbf{Git}\footnote{https://git-scm.com} because we already both master it and it is one of the most popular versioning tool. We used \textbf{Github}\footnote{https://github.com} to host our application. With Github, it is fearly easy to make our project open source and knowing that this plateform is very popular amoung developers, our project can benefit from a certain visibility. Our repository can be found at the following url: \url{https://github.com/denisgenon/flow_algorithm}.
+Using a versioning tool appeared to us from the beginning as an evidence. Our main needs were to share the code we did between us and to version it. We decided to use \textbf{Git}\footnote{https://git-scm.com} because we already both master it and it is one of the most popular versioning tool. We used \textbf{Github}\footnote{https://github.com} to host our application. With Github, it is fearly easy to make our project open source and knowing that this platform is very popular among developers, our project can benefit from a certain visibility. Our repository can be found at the following url: \url{https://github.com/denisgenon/flow_algorithm}.
 
 \subsection{Management application}
 
@@ -118,5 +118,5 @@ Using a versioning tool appeared to us from the beginning as an evidence. Our ma
 \end{wrapfigure}
 
 
-Even if we were only two working on the project, we juged useful to have project management tool to assist us. This kind of tools permits us to separate the tasks to make, to write somewhere our ideas, to fix deadlines and to see the evolution of our project. We decided to use \textbf{Trello}\footnote{https://trello.com} because we were already used to it. Trello uses the kanban paradigm for managing projects. Our project were represented as a board, which contains columns corresponding to some states (backlog, nice to have, in progress, \dots). Each column contains lists of cards which were our tasks. In this way, we could follow the flow of a feature from idea to implementation.
+Even if we were only two working on the project, we judged useful to have project management tool to assist us. This kind of tools permits us to separate the tasks to make, to write somewhere our ideas, to fix deadlines and to see the evolution of our project. We decided to use \textbf{Trello}\footnote{https://trello.com} because we were already used to it. Trello uses the kanban paradigm for managing projects. Our project were represented as a board, which contains columns corresponding to some states (backlog, nice to have, in progress, \dots). Each column contains lists of cards which were our tasks. In this way, we could follow the flow of a feature from idea to implementation.
 
