@@ -20,12 +20,13 @@ In order to implement the different flow algorithms presented, we had to choose 
 
 \section{Structure}
 
-Our project is divided in two core packages: \textit{models} and \textit{solvers}. The first one, is contains all the representations of the network we used. The second contains all the different algorithms we implemented.
+Our project is divided in two core packages: \textit{models} and \textit{solvers}. The first one, is contains all the representations of the network we used. The second contains all the different algorithms we implemented. There is two others packages: \textit{objects} which contains implementation of some data structures and \textit{results} which contains instance generators and results analyzers.
 
-\subsection{Models}
+\subsection{Package: Models}
 
 This package contains all the network representation we implemented: \textit{SplitArrayGraph}, \textit{SparseMapGraph}, \textit{TreeMapGraph}, \textit{LinkedListGrah} and \textit{HashMapGraph}. As we can see in the Figure~\ref{img:models}, all these class implements the interface \textit{Graph} which define the behaviour of the object that represent the network. Here is the method which must be implemented when creating a network representation in our project:
 \begin{description}
+	\item[\texttt{parse(file\_path)}] parse the file given in the constructor argument. The parse method must take into account if the graph is directed or not;
 	\item[\texttt{getV() \& getE()}] return respectively the number of vertices and the number of edges;
 	\item[\texttt{getVertex(id)}] return the vertex with the corresponding id;
 	\item[\texttt{getVertices()}] return the set of vertices;
@@ -35,10 +36,10 @@ This package contains all the network representation we implemented: \textit{Spl
 	\item[\texttt{getCapacity(id1, id2)}] return the capacity of the edge bewteen \textit{id1} and \textit{id2};
 	\item[\texttt{setCapacity(id1, id2, c)}] set the capacity of the edge bewteen \textit{id1} and \textit{id2} at \textit{c};
 	\item[\texttt{getAdjacentsSize(id)}] return the number of neighbors of the vertex \textit{id};
-	\item[\texttt{getMaxCapacity()}] WTF ?
+	\item[\texttt{getMaxCapacity()}] return the biggest capacity in the network: used to initalize the scaling phase.
 \end{description}
 
-We defined the abstract class \textit{SimpleGraph} which contains all the common code between all the network representations we implemented.
+We defined the abstract class \textit{SimpleGraph} which contains all the common code between all the network representations we implemented. 
 
 \begin{figure}
 \centering
@@ -47,7 +48,7 @@ We defined the abstract class \textit{SimpleGraph} which contains all the common
 \label{img:models}
 \end{figure}
 
-\subsection{Solvers}
+\subsection{Package: Solvers}
  This package contains all the solvers we implemented. As we said in the Chapter 2, there is two family of algorithm to solve the maximum flow problem: the augmenting path algorithms and the preflow-push algorithms. The differents algorithms in the augmenting path have a lot in common. For example, the difference between the Ford-Fulkerson algorithm and the Edmonds-Karp algorithm is how the algorithm find an augmenting path.  As we can see in the Figure~\ref{img:solver}, we used the strengh of inheritance to avoid duplicate code. On the other part, the preflow-push algorithm have a lot of differencies in their implementations, we decided split them in three classes.
 
 
@@ -57,6 +58,28 @@ We defined the abstract class \textit{SimpleGraph} which contains all the common
 \caption{UML diagram of the package solver.}
 \label{img:solver}
 \end{figure}
+
+The solvers have a constructor overloading, which permits to define any vertex as the \textit{source} and the \textit{sink}.
+
+\subsection{Package: Objects}
+
+This package contains several data strucutres: 
+\begin{description}
+	\item[\texttt{Vertex.java}] used to represent a vertex;
+	\item[\texttt{Arc.java}] used to represent an arc;
+	\item[\texttt{Edge.java}] used to represent an edge. The difference between an arc and an edge is that the arc does not have the information about the origin vertex;
+	\item[\texttt{SimpleLinkedList.java}] implementation of a linked list;
+	\item[\texttt{Node.java}] represent a node in a linked list;
+	\item[\texttt{SplitArray.java}] implementation of the split array;
+	\item[\texttt{SparseMap.java}] implementation of the sparse map;
+	\item[\texttt{TheTower.java}] data structure used to select the highest label in the highest label preflow-push algorithm.
+\end{description}
+
+\subsection{Package: Results}
+
+This small package contains four classes. The first are the instances generators: \textit{InstanceGeneratorDensity.java} and \textit{InstanceGeneratorSize.java}. The first class generate an instance with different densities and the second with different sizes. The two last classes are \textit{ResultsConverterByDensity.java} and \textit{ResultsConverterBySize.java}. They are used to analyze our results.
+
+\subsection{Conclusion}
 
 
 The main advantage of our structure is how easy is to add different data structures or solvers. All you need is to implement the interfaces and add your own class in the correct package. Then, the solvers can be call with different data structures with a few line of codes as we can see in the Figure~\ref{simple_code}. Another advantage is that our code can be used as a library, without even looking at the code of it.
