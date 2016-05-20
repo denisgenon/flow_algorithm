@@ -1,11 +1,6 @@
 package solver;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-
 import interfaces.Graph;
-import object.Arc;
-import object.SparseMap;
 import object.TheTower;
 import object.Vertex;
 

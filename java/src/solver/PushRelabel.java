@@ -1,12 +1,8 @@
 package solver;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 import interfaces.Graph;
-import object.Arc;
-import object.SparseMap;
 import object.Vertex;
 
 public class PushRelabel implements Solver {
@@ -45,7 +41,6 @@ public class PushRelabel implements Solver {
 	 * Push a flow on all the neighbors edges of the source
 	 */
 	public void preFlow() {
-				
 		g.getVertex(source).h = g.getV();
 		g.getVertex(sink).h = 0;
 		
@@ -69,7 +64,6 @@ public class PushRelabel implements Solver {
 		if(dest.e > 0) {
 			activesVertices.add(dest);
 		}
-
 	}
 
 
