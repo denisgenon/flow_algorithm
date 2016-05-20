@@ -2,7 +2,7 @@
 #install.packages("ggplot2")
 library('ggplot2')
 instances=c(1,2,3,4,5,6,7,8,9,10)
-solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel","Highest Label Push-Relabel")
+solvers=c("Edmonds-Karp","Ford-Fulkerson Scaling","Highest Label Push-Relabel")
 
 for (instance in instances){
   for (solver in solvers){
