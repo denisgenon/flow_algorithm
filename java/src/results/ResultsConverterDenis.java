@@ -92,7 +92,7 @@ public class ResultsConverterDenis {
 	}
 
 	public static void getInstancesSize(){
-		for(int i=1; i<=10; i++){
+		for(int i=1; i<=2; i++){
 
 			String [] pr = new String [9];
 			String [] pri = new String [9];
@@ -247,7 +247,7 @@ public class ResultsConverterDenis {
 		double [] hlpri = new double [9];
 
 
-		for(int i=1; i<=10; i++){
+		for(int i=1; i<=2; i++){
 			File f = new File ("results/resultsDenis/size"+i+".csv");
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(f));
@@ -273,12 +273,12 @@ public class ResultsConverterDenis {
 		}
 
 		for(int index=0; index<9; index++){
-			pr[index]/=10.0;
-			pri[index]/=10.0;
-			fpr[index]/=10.0;
-			fpri[index]/=10.0;
-			hlpr[index]/=10.0;
-			hlpri[index]/=10.0;
+			pr[index]/=2.0;
+			pri[index]/=2.0;
+			fpr[index]/=2.0;
+			fpri[index]/=2.0;
+			hlpr[index]/=2.0;
+			hlpri[index]/=2.0;
 		}
 		
 		File f = new File ("results/resultsDenis/sizeMean.csv");

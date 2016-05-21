@@ -5,6 +5,9 @@ for(type in types){
   if(type=="matching"){
     instances=c(1,2,3,4,5,"mean")
   }
+  else if(type=="size"){
+    instances=c(1,2,"mean")
+  }
   else {
     instances=c(1,2,3,4,5,6,7,8,9,10,"mean")
   }

@@ -187,11 +187,11 @@ The Figure~\ref{fig:ffmatching} show that Ford-Fulkerson with scaling has a cons
 \end{figure}
 \subsection{Push-Relabel}
 \subsubsection{Density variation instances}
-When we look at the results of the Push-Relabel, an observation is quite obvious : it is not regular at all. As shown in Figure~\ref{fig:PR6}, the run time on one density variation instance can vary from less than 100 ms to more than 5000 ms.
+When we look at the results of the Generic Push-Relabel, an observation is quite obvious : it is not regular at all. As shown in Figure~\ref{fig:PR6}, the run time on one density variation instance can vary from less than 100 ms to more than 5000 ms.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/pri68.png}
-\caption{Run time of Push-Relabel on the density variation instance 6 and 8 with the $split array$.}
+\caption{Run time of Generic Push-Relabel on the density variation instance 6 and 8 with the $split array$.}
 \label{fig:PR6}
 \end{center}
 \end{figure}
@@ -199,22 +199,22 @@ It may nevertheless have a stable run time but once very high and once extremely
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/pri10.png}
-\caption{Run time of Push-Relabel on the density variation instance 10 with the $split array$.}
+\caption{Run time of Generic Push-Relabel on the density variation instance 10 with the $split array$.}
 \label{fig:PR10}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/pri7.png}
-\caption{Run time of Push-Relabel on the density variation instance 7 with the $split array$.}
+\caption{Run time of Generic Push-Relabel on the density variation instance 7 with the $split array$.}
 \label{fig:PR7}
 \end{center}
 \end{figure}
-When displaying the run time of each density variation instance with its best data structure, we obtain a very disparate graph, as we can see in Figure~\ref{fig:PRmean}. Indeed, the Push-Relabel solve the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 100 ms to 5500 ms.
+When displaying the run time of each density variation instance with its best data structure, we obtain a very disparate graph, as we can see in Figure~\ref{fig:PRmean}. Indeed, the Generic Push-Relabel solve the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 100 ms to 5500 ms.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/PRmean.png}
-\caption{Run time of Push-Relabel on all density variation instances with the $split array$.}
+\caption{Run time of Generic Push-Relabel on all density variation instances with the $split array$.}
 \label{fig:PRmean}
 \end{center}
 \end{figure}
