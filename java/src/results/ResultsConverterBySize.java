@@ -58,6 +58,61 @@ public class ResultsConverterBySize {
 			}
 		}
 	}
+	
+	public static void getMeanResultsBySolver(){
+		for(String solver : solvers){
+			try {
+				double [] llmean = new double [9];
+				double [] hmmean = new double [9];
+				double [] samean = new double [9];
+				double [] tmmean = new double [9];
+				double [] smmean = new double [9];
+
+				for(int inst=1; inst<=10; inst++){
+					File f = new File ("results/resultsBySize/resultsBySolver/"+solver+inst+".csv");
+
+					BufferedReader br = new BufferedReader(new FileReader(f));
+					String line = br.readLine();
+					// We skip the first line with data structure names
+					line = br.readLine();
+
+					int i=0;
+					while(line!=null){
+						String [] split = line.split(", ");
+						llmean[i]+=Double.parseDouble(split[1]);
+						hmmean[i]+=Double.parseDouble(split[2]);
+						samean[i]+=Double.parseDouble(split[3]);
+						tmmean[i]+=Double.parseDouble(split[4]);
+						smmean[i]+=Double.parseDouble(split[5]);
+						line = br.readLine();
+						i++;
+					}
+
+					br.close();
+
+				}
+
+				for(int index=0; index<llmean.length; index++){
+					llmean[index]/=10;
+					hmmean[index]/=10;
+					samean[index]/=10;
+					tmmean[index]/=10;
+					smmean[index]/=10;
+				}
+
+				File f = new File ("results/resultsBySize/resultsBySolver/"+solver+"mean.csv");
+				FileWriter fw = new FileWriter(f);
+				fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
+				for(int i=0; i<=8; i++){
+					fw.write(((i*500)+1000)+", "+llmean[i]+", "+hmmean[i]
+							+", "+samean[i]+", "+tmmean[i]+", "+smmean[i]+"\n");
+				}
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void getResultsByInstance(){
 
@@ -232,9 +287,10 @@ public class ResultsConverterBySize {
 	}
 
 	public static void main(String [] args){
-		getResultsBySolver();
+		/*getResultsBySolver();
 		getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();
+		getAllResultsBySolver();*/
+		getMeanResultsBySolver();
 	}
 }

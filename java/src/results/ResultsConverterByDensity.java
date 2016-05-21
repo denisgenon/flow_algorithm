@@ -72,6 +72,61 @@ public class ResultsConverterByDensity {
 		}
 	}
 
+	public static void getMeanResultsBySolver(){
+		for(String solver : solvers){
+			try {
+				double [] llmean = new double [20];
+				double [] hmmean = new double [20];
+				double [] samean = new double [20];
+				double [] tmmean = new double [20];
+				double [] smmean = new double [20];
+
+				for(int inst=1; inst<=10; inst++){
+					File f = new File ("results/resultsByDensity/resultsBySolver/"+solver+inst+".csv");
+
+					BufferedReader br = new BufferedReader(new FileReader(f));
+					String line = br.readLine();
+					// We skip the first line with data structure names
+					line = br.readLine();
+
+					int i=0;
+					while(line!=null){
+						String [] split = line.split(", ");
+						llmean[i]+=Double.parseDouble(split[1]);
+						hmmean[i]+=Double.parseDouble(split[2]);
+						samean[i]+=Double.parseDouble(split[3]);
+						tmmean[i]+=Double.parseDouble(split[4]);
+						smmean[i]+=Double.parseDouble(split[5]);
+						line = br.readLine();
+						i++;
+					}
+
+					br.close();
+
+				}
+
+				for(int index=0; index<llmean.length; index++){
+					llmean[index]/=10;
+					hmmean[index]/=10;
+					samean[index]/=10;
+					tmmean[index]/=10;
+					smmean[index]/=10;
+				}
+
+				File f = new File ("results/resultsByDensity/resultsBySolver/"+solver+"mean.csv");
+				FileWriter fw = new FileWriter(f);
+				fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
+				for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
+					fw.write(nbrInstance+", "+llmean[(nbrInstance/5)-1]+", "+hmmean[(nbrInstance/5)-1]
+							+", "+samean[(nbrInstance/5)-1]+", "+tmmean[(nbrInstance/5)-1]+", "+smmean[(nbrInstance/5)-1]+"\n");
+				}
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static void getResultsByInstance(){
 
 		for(int inst=1; inst<=10; inst++){
@@ -120,6 +175,8 @@ public class ResultsConverterByDensity {
 					else if(min==smsum) mins=sm;
 
 					bests[s]=mins;
+
+
 					s++;
 					br.close();
 				} catch (IOException e) {
@@ -140,6 +197,7 @@ public class ResultsConverterByDensity {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	public static void getMeanResultsByInstance(){
@@ -181,7 +239,7 @@ public class ResultsConverterByDensity {
 			fpr[index]/=10;
 			hlpr[index]/=10;
 		}
-		
+
 		File f = new File ("results/resultsByDensity/resultsByInstance/Meaninstances.csv");
 		FileWriter fw;
 		try {
@@ -195,7 +253,7 @@ public class ResultsConverterByDensity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public static void getAllResultsBySolver(){
@@ -228,7 +286,7 @@ public class ResultsConverterByDensity {
 				e.printStackTrace();
 			}
 		}
-		
+
 		for(int i=0; i<5; i++){
 			double[][] data = new double[10][20];
 			if(i==0) data=ff;
@@ -245,21 +303,22 @@ public class ResultsConverterByDensity {
 				for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
 					fw.write(nbrInstance+", "+data[0][(nbrInstance/5)-1]+", "+data[1][(nbrInstance/5)-1]
 							+", "+data[2][(nbrInstance/5)-1]+", "+data[3][(nbrInstance/5)-1]+", "+data[4][(nbrInstance/5)-1]
-							+", "+data[5][(nbrInstance/5)-1]+", "+data[6][(nbrInstance/5)-1]+", "+data[7][(nbrInstance/5)-1]
-							+", "+data[8][(nbrInstance/5)-1]+", "+data[9][(nbrInstance/5)-1]+"\n");
+									+", "+data[5][(nbrInstance/5)-1]+", "+data[6][(nbrInstance/5)-1]+", "+data[7][(nbrInstance/5)-1]
+											+", "+data[8][(nbrInstance/5)-1]+", "+data[9][(nbrInstance/5)-1]+"\n");
 				}
 				fw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 
 	public static void main(String [] args){
-		getResultsBySolver();
+		/*getResultsBySolver();
 		getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();
+		getAllResultsBySolver();*/
+		
+		getMeanResultsBySolver();
 	}
 }

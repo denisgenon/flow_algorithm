@@ -71,6 +71,61 @@ public class ResultsConverterByMatching {
 			}
 		}
 	}
+	
+	public static void getMeanResultsBySolver(){
+		for(String solver : solvers){
+			try {
+				double [] llmean = new double [20];
+				double [] hmmean = new double [20];
+				double [] samean = new double [20];
+				double [] tmmean = new double [20];
+				double [] smmean = new double [20];
+
+				for(int inst=1; inst<=5; inst++){
+					File f = new File ("results/resultsByMatching/resultsBySolver/"+solver+inst+".csv");
+
+					BufferedReader br = new BufferedReader(new FileReader(f));
+					String line = br.readLine();
+					// We skip the first line with data structure names
+					line = br.readLine();
+
+					int i=0;
+					while(line!=null){
+						String [] split = line.split(", ");
+						llmean[i]+=Double.parseDouble(split[1]);
+						hmmean[i]+=Double.parseDouble(split[2]);
+						samean[i]+=Double.parseDouble(split[3]);
+						tmmean[i]+=Double.parseDouble(split[4]);
+						smmean[i]+=Double.parseDouble(split[5]);
+						line = br.readLine();
+						i++;
+					}
+
+					br.close();
+
+				}
+
+				for(int index=0; index<llmean.length; index++){
+					llmean[index]/=5;
+					hmmean[index]/=5;
+					samean[index]/=5;
+					tmmean[index]/=5;
+					smmean[index]/=5;
+				}
+
+				File f = new File ("results/resultsByMatching/resultsBySolver/"+solver+"mean.csv");
+				FileWriter fw = new FileWriter(f);
+				fw.write("Instances, LinkedList, HashMap, SplitArray, TreeMap, SparseMap\n");
+				for(int nbrInstance=5; nbrInstance<=100; nbrInstance+=5){
+					fw.write(nbrInstance+", "+llmean[(nbrInstance/5)-1]+", "+hmmean[(nbrInstance/5)-1]
+							+", "+samean[(nbrInstance/5)-1]+", "+tmmean[(nbrInstance/5)-1]+", "+smmean[(nbrInstance/5)-1]+"\n");
+				}
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void getResultsByInstance(){
 
@@ -256,9 +311,10 @@ public class ResultsConverterByMatching {
 	}
 
 	public static void main(String [] args){
-		getResultsBySolver();
+		/*getResultsBySolver();
 		getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();
+		getAllResultsBySolver();*/
+		getMeanResultsBySolver();
 	}
 }

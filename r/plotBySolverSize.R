@@ -1,7 +1,7 @@
 # Uncomment the following line to install ggplot2, install only one time the package!
 #install.packages("ggplot2")
 library('ggplot2')
-instances=c(1,2,3,4,5,6,7,8,9,10)
+instances=c(1,2,3,4,5,6,7,8,9,10,"mean")
 solvers=c("Edmonds-Karp","Ford-Fulkerson Scaling","Highest Label Push-Relabel")
 
 for (instance in instances){
