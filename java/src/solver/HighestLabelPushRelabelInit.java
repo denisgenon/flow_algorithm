@@ -1,54 +1,87 @@
 package solver;
 
-import java.util.LinkedHashSet;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import interfaces.Graph;
+import object.Arc;
+import object.SparseMap;
+import object.TheTower;
 import object.Vertex;
 
-public class FIFOPushRelabel implements Solver {
+public class HighestLabelPushRelabelInit implements Solver {
 	public Graph g;
 	public int source;
 	public int sink;
-	public LinkedHashSet<Vertex> activesVertices = new LinkedHashSet<Vertex>();
+	public TheTower activesVertices;
 	public long timeStart;
-
+	
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
 	 */
-	public FIFOPushRelabel(Graph g) {
+	public HighestLabelPushRelabelInit(Graph g) {
 		this(g, 0, g.getV() - 1);
 	}
-
+	
 	/**
 	 * Compute the push relabeling algorithm on the graph
 	 * @param g, the representation of the instance
 	 * @param source, the source node
 	 * @param sink, the sink node
 	 */
-	public FIFOPushRelabel(Graph g, int source, int sink) {
+	public HighestLabelPushRelabelInit(Graph g, int source, int sink) {
 		this.g = g;
 		this.source = source;
 		this.sink = sink;
+		activesVertices = new TheTower(g.getV());
 		timeStart=System.currentTimeMillis();
 		preFlow();
-		while(!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
-			// We take the first active node added (FIFO order)
-			pushrelabelFlow(activesVertices.iterator().next());
+		while (!activesVertices.isEmpty()) { // While there is active vertex (vertex with excedent)
+			// We take the highest active node
+			pushrelabelFlow(activesVertices.getTop());
 		}
 	} 
+	
 	/**
 	 * Push a flow on all the neighbors edges of the source
 	 */
-	public void preFlow() {
+	public void preFlow() {	
+		SparseMap[] invertedGraph = new SparseMap[g.getV()];
+		for (int i = 0; i < invertedGraph.length; i++) {
+			invertedGraph[i] = new SparseMap();
+		}
+
+		for (int i = 0; i < g.getV(); i++) {
+			for (int j : g.getAdjacents(i)) {
+				invertedGraph[j].add(new Arc(1, i));
+			}
+		}
+
+		int[] parents = new int[g.getV()];
+		Arrays.fill(parents, -1);
+		LinkedList<Integer> queue = new LinkedList<Integer>();
+		queue.add(sink);
+		g.getVertex(sink).h = 0;
+		while (!queue.isEmpty()) {
+			int u = queue.removeFirst();
+			for(Arc v : invertedGraph[u].adjacents) {
+				if (g.getVertex(v.idDestination).h == 0) {
+					parents[v.idDestination] = u;
+					g.getVertex(v.idDestination).h = g.getVertex(parents[v.idDestination]).h + 1;
+					queue.add(v.idDestination);
+				}
+			}
+		}
 		g.getVertex(source).h = g.getV();
 		g.getVertex(sink).h = 0;
 		
 		for (int i : g.getAdjacents(source)) {
 			pushFillingFlow(source, i);
 		}
+		activesVertices.compile();  //TODO ONLY WHEN INIT H
 	}
-
+	
 	/**
 	 * We push the biggest flow we can on the edge origin->desti
 	 * @param origin
@@ -59,11 +92,12 @@ public class FIFOPushRelabel implements Solver {
 		g.addEdge(destination, origin, flow);
 		
 		Vertex dest = g.getVertex(destination);
+		Vertex orig = g.getVertex(origin);
 
 		dest.e += flow;
 		if(dest.e > 0) {
-			activesVertices.add(dest);
-		}	
+			activesVertices.addInit(dest); //TODO ONLY WHEN INIT H
+		}
 	}
 	
 	/**
@@ -80,8 +114,10 @@ public class FIFOPushRelabel implements Solver {
 				return;
 			}
 		}
-		u.h = minimalDistance + 1; // Relabel the distance
+		activesVertices.updateTop(minimalDistance + 1);
 	}
+
+	
 	/**
 	 * We push a flow on the residual graph and we update our graph representation
 	 * @param origin
@@ -91,7 +127,7 @@ public class FIFOPushRelabel implements Solver {
 	public void pushFlow(Vertex origin, Vertex destination, int flowValue) {
 		// We update the capacity in the residual graph u -> v
 		int capacity = g.getCapacity(origin.id, destination.id);
-		if (capacity <= flowValue) { // If the edge is full, we remove it - saturing push
+		if (capacity <= flowValue) { // If the edge is full, we remove it
 			g.removeEdge(origin.id, destination.id);
 		}
 		else {
@@ -100,13 +136,12 @@ public class FIFOPushRelabel implements Solver {
 		// We update the excedent on the origin and on the desitnation
 		origin.e -= flowValue;
 		if(origin.e <= 0) {
-			activesVertices.remove(origin);
+			activesVertices.removeTop();
 		}
 		destination.e += flowValue;
 		if(destination.e > 0 && destination.id != (g.getV() - 1) && destination.id != 0) {
-			activesVertices.add(destination);
+			activesVertices.add(origin, destination);
 		}
-
 		// We update the capacity in the residual graph v -> u
 		capacity = g.getCapacity(destination.id, origin.id);
 		if(capacity == -1) {
@@ -116,7 +151,7 @@ public class FIFOPushRelabel implements Solver {
 			g.setCapacity(destination.id, origin.id, capacity + flowValue);
 		}
 	}
-
+	
 	public void getTime() {
 		System.out.println((System.currentTimeMillis()-timeStart));
 	}

@@ -55,5 +55,4 @@ public class EdmondsKarpScaling extends AugmentingPathScaling {
 		}
 		return parentsCapacity[sink];
 	}
-
 }
