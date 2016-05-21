@@ -40,6 +40,9 @@ public class BatchMain {
 		else if(args[0].equals("PR")) s = new PushRelabel(g);
 		else if(args[0].equals("FPR")) s = new FIFOPushRelabel(g);
 		else if(args[0].equals("HLPR")) s = new HighestLabelPushRelabel(g);
+		else if(args[0].equals("PRI")) s = new PushRelabelInit(g);
+		else if(args[0].equals("FPRI")) s = new FIFOPushRelabelInit(g);
+		else if(args[0].equals("HLPRI")) s = new HighestLabelPushRelabelInit(g);
 		else s = null;
 
 		s.getTime();
