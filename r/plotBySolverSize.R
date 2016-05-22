@@ -20,7 +20,6 @@ for (instance in instances){
       xlab('Number of vertices') +
       ylab('Time (ms)') +
       labs(color="Data structure") +
-      ggtitle(title)
     ggsave(file=filename, width=10, height=5)
   }
 }

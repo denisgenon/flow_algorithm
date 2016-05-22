@@ -21,7 +21,6 @@ for (solver in solvers){
     xlab('Number of vertices') +
     ylab('Time (ms)') +
     labs(color="Instances") +
-    ggtitle(title)
   ggsave(file=filename, width=10, height=5)
 }
 

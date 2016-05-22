@@ -6,7 +6,7 @@ for(type in types){
     instances=c(1,2,3,4,5,"mean")
   }
   else if(type=="size"){
-    instances=c(1,2,"mean")
+    instances=c(1,2,3,4,5,6,7,8,9,10,"mean")
   }
   else {
     instances=c(1,2,3,4,5,6,7,8,9,10,"mean")
@@ -23,11 +23,10 @@ for(type in types){
       geom_line(data = results, aes(x = Instances, y = FIFOPushRelabel, color = 'FIFO Push-Relabel')) +
       geom_line(data = results, aes(x = Instances, y = FIFOPushRelabelInit, color = 'FIFO Push-Relabel with init')) +
       geom_line(data = results, aes(x = Instances, y = HighestLabelPushRelabel, color = 'Highest Label Push-Relabel')) +
-      geom_line(data = results, aes(x = Instances, y = HighestLabelPushRelabelInit, color = 'Highest Label Push-Relabel with ini')) +
+      geom_line(data = results, aes(x = Instances, y = HighestLabelPushRelabelInit, color = 'Highest Label Push-Relabel with init')) +
       xlab('Density of edges') +
       ylab('Relative time') +
       labs(color="Algorithm") +
-      ggtitle(title)
     ggsave(file=filename, width=10, height=5)
   }
 }

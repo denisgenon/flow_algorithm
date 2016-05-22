@@ -175,6 +175,11 @@ public class ResultsConverterByMatching {
 					else if(min==smsum) mins=sm;
 
 					bests[s]=mins;
+					
+					if(title=="Edmonds-Karp") bests[s]=sa;
+					if(title=="Ford-Fulkerson Scaling") bests[s]=sm;
+					if(title=="Highest Label Push-Relabel") bests[s]=sa;
+					
 					s++;
 					br.close();
 				} catch (IOException e) {
@@ -311,10 +316,10 @@ public class ResultsConverterByMatching {
 	}
 
 	public static void main(String [] args){
-		/*getResultsBySolver();
+		getResultsBySolver();
 		getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();*/
+		getAllResultsBySolver();
 		getMeanResultsBySolver();
 	}
 }

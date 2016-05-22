@@ -2,7 +2,7 @@
 #install.packages("ggplot2")
 library('ggplot2')
 instances=c(1,2,3,4,5,"mean")
-solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel","Highest Label Push-Relabel")
+solvers=c("Edmonds-Karp","Ford-Fulkerson Scaling","Highest Label Push-Relabel")
 
 for (instance in instances){
   for (solver in solvers){
@@ -20,7 +20,6 @@ for (instance in instances){
       xlab('Density of edges') +
       ylab('Time (ms)') +
       labs(color="Data structure") +
-      ggtitle(title)
     ggsave(file=filename, width=10, height=5)
   }
 }

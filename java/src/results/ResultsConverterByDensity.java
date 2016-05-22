@@ -175,6 +175,10 @@ public class ResultsConverterByDensity {
 					else if(min==smsum) mins=sm;
 
 					bests[s]=mins;
+					
+					if(title=="Edmonds-Karp") bests[s]=sa;
+					if(title=="Ford-Fulkerson Scaling") bests[s]=sm;
+					if(title=="FIFO Push-Relabel") bests[s]=sa;
 
 
 					s++;
@@ -314,10 +318,10 @@ public class ResultsConverterByDensity {
 	}
 
 	public static void main(String [] args){
-		/*getResultsBySolver();
+		getResultsBySolver();
 		getResultsByInstance();
 		getMeanResultsByInstance();
-		getAllResultsBySolver();*/
+		getAllResultsBySolver();
 		
 		getMeanResultsBySolver();
 	}
