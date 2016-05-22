@@ -100,12 +100,26 @@ pr.getResults();
 
 %% How we launch script to get results
 
+\begin{figure}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.4\linewidth]{images/pythonlogo.png}
+  \caption{Python Logo}
+  \label{fig:python}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.4\linewidth]{images/rlogo.jpg}
+  \caption{R Logo}
+  \label{fig:r}
+\end{subfigure}
+\label{fig:logos}
+\end{figure}
 
 
-%% 
-
-%% How we make the graph R ggplot: google ?
-
+In order to gather the different run times of all the algorithm we implemented on all the instances we generated, we decided to automate the launch of the different algorithms. We decided to make a script in \textbf{Python}\footnote{https://www.python.org} because it was the easiest way to do it. The Python script launch the different algorithms with the different data structes on all the instance, and store the computations time collected on a text file. A Java program is then used to classify the run times by solver and by instance and store these results in a csv file.
+When we have the run times in the right form, we use the library \textbf{ggplot2}\footnote{http://ggplot2.org} of the \textbf{R}\footnote{https://www.r-project.org} language to plot the different graphs. We choosed this library because the graphs rendered are very customizable and  very nice.
 
 \section{Tools}
 
