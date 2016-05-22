@@ -1,5 +1,5 @@
 library('ggplot2')
-solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling","Push-Relabel","Highest Label Push-Relabel")
+solvers=c("Edmonds-Karp","FIFO Push-Relabel","Ford-Fulkerson Scaling")
 
 for (solver in solvers){
   f = paste(c("../java/results/resultsByDensity/resultsByInstance/instances", solver,".csv"), collapse="")
@@ -21,7 +21,6 @@ for (solver in solvers){
     xlab('Density of edges') +
     ylab('Time (ms)') +
     labs(color="Instances") +
-    ggtitle(title)
   ggsave(file=filename, width=10, height=5)
 }
 
