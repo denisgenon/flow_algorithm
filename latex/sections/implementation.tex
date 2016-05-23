@@ -9,7 +9,7 @@ In this chapter, we will explain our implementation choices and the tools we use
 	\captionof{figure}{Java Logo}
 \end{wrapfigure}
 
-In order to implement the different flow algorithms presented, we had to choose a programming language. We decided to develop the different algorithms with the language \textbf{Java}\footnote{https://community.oracle.com/community/java}. Java is a programming language created in 1995 by Sun Microsystems. Java is designed to run acress multiple operating systems, including Linux, Mac OS X and Windows. Java is known to be flexible, scalable and maintainable. Java is an object-oriented programming language, which permits the development of modulable applications via systems like encapsulation, composition, inheritance, and delegation. We choose Java because of the followings reasons:
+In order to implement the different flow algorithms presented, we had to choose a programming language. We decided to develop the different algorithms with \textbf{Java}\footnote{https://community.oracle.com/community/java}. Java is a programming language created in 1995 by Sun Microsystems. Java is designed to run acress multiple operating systems, including Linux, Mac OS X and Windows. Java is known to be flexible, scalable and maintainable. Java is an object-oriented programming language, which permits the development of modulable applications via systems like encapsulation, composition, inheritance, and delegation. We choose Java because of the followings reasons:
 \begin{itemize}
 	\item Java is very popular. This is a key point because we want that the librairies we developped were accessible to as many. Another consequence of this is that Java is well documented.
 	\item Java is modulable. The OO Java paradigm is useful to develop this project were different algorithms and different data structures must be implemented. Concepts like inheritance, interfaces are very useful to achieve this.
@@ -27,7 +27,7 @@ Our project is divided in two core packages: \textit{models} and \textit{solvers
 This package contains all the network representation we implemented: \textit{SplitArrayGraph}, \textit{SparseMapGraph}, \textit{TreeMapGraph}, \textit{LinkedListGrah} and \textit{HashMapGraph}. As we can see in the Figure~\ref{img:models}, all these class implements the interface \textit{Graph} which define the behaviour of the object that represent the network. Here is the method which must be implemented when creating a network representation in our project:
 \begin{description}
 	\item[\texttt{parse(file\_path)}] parse the file given in the constructor argument. The parse method must take into account if the graph is directed or not;
-	\item[\texttt{getV() \& getE()}] return respectively the number of vertices and the number of edges;
+	\item[\texttt{getV(), getE()}] return respectively the number of vertices and the number of edges;
 	\item[\texttt{getVertex(id)}] return the vertex with the corresponding id;
 	\item[\texttt{getVertices()}] return the set of vertices;
 	\item[\texttt{getAdjacents(id)}] return the neighbours of the vertex \textit{id};

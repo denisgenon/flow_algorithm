@@ -51,12 +51,12 @@ To analyze the effects of the height label initialization, we decided to compute
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.13]{images/meanrelabels.png}
-\caption{The mean number of relabels in density variation instances.}
+\caption{The average number of relabels in density variation instances. All the algorithms have the same count of relabeling operation.}
 \label{fig:mean_relabel}
 \end{center}
 \end{figure}
 
-As we can see in the Figure~\ref{fig:mean_relabel} we can observe what we said in the Section~\ref{sec:hauteurs} in term of relabels. The number of relabels is not affected by the fact we initialize or not the height label in the preflow phase of the algorithm. The reason of this is explained in the Section~\ref{sec:hauteurs}.
+We can observe in Figure~\ref{fig:mean_relabel} what we said in Section~\ref{sec:hauteurs} in terms of relabels. The number of relabels is not affected by the fact we initialize or not the height label in the preflow phase of the algorithm. The reason of this is explained in Section~\ref{sec:hauteurs}.
 
 \subsubsection{Saturing push}
 \begin{figure}[H]
@@ -67,7 +67,7 @@ As we can see in the Figure~\ref{fig:mean_relabel} we can observe what we said i
 \end{center}
 \end{figure}
 
-We can observe in Figure~\ref{fig:mean_sat} that for each heuristic, the initialization is slightly beneficial in term of the number of saturing pushes. The highest label heuristic perfoms more saturing push than the FIFO heuritic, and the generic algorithm performs less saturing push than the two others.
+We can observe in Figure~\ref{fig:mean_sat} that for each heuristic, the initialization is slightly beneficial in term of the number of saturing pushes. The highest label heuristic perfoms more saturing pushes than the FIFO heuritic, and the generic algorithm performs less saturing pushes than the two others.
 
 
 \subsubsection{Non-saturing push}
@@ -80,7 +80,9 @@ We can observe in Figure~\ref{fig:mean_sat} that for each heuristic, the initial
 \end{center}
 \end{figure}
 
-As for the saturing push, the number of non-saturing push slightly decrease when we do an initialization of the height labels. The highest label heuristic decreases the number of non-saturing push in regards to the generic algorithm. The FIFO heuristic tend to augment this number of push.
+As for the saturing push, the number of non-saturing pushes slightly decreases when we do an initialization of the height labels. The highest label heuristic decreases the number of non-saturing pushes compared to the generic algorithm. The FIFO heuristic tends to augment this number of pushes.
+
+%%TODO remarque francois
 
 
 \subsection{Best Push-Relabel}
@@ -97,6 +99,9 @@ In this section, we will compare the run time of each algorithm on different kin
 \end{figure}
 
 We can see here that the \textit{FIFOPushRelabel} is the fastest. For each heuristic, it is interesting to see that the initialization phase does not make the resolution of the problem faster. 
+
+%%TODO why?
+
 \subsubsection{Size variation instances}
 \begin{figure}[H]
 \begin{center}
@@ -106,7 +111,7 @@ We can see here that the \textit{FIFOPushRelabel} is the fastest. For each heuri
 \end{center}
 \end{figure}
 
-When changing the size of the network, we can see that the highest label heuristic perform the best. The initialization of the algorithm does not seem to change a lot the computation time of each heuristic. In this case, it's the highest label heuristic faster.
+When changing the size of the network, we can see that the highest label heuristic performs the best. The initialization of the algorithm does not seem to change a lot the computation time of each heuristic. In this case, the highest label is heuristic faster.
 %TODO Analyse?
 
 
@@ -119,7 +124,9 @@ When changing the size of the network, we can see that the highest label heurist
 \end{center}
 \end{figure}
 
-Here, we can observe that the initialization phase make each heuristic slower. It is because the problem here is simpler and very quick to resolve, thus, the initialization phase take a more important place in the result. The spike on the graph is caused by the data structure used, the \textit{sparsemap}. Here, the high label heuristic is the best as well.
+Here, we can observe that the initialization phase makes each heuristic slower. It is because the problem here is simpler and very quick to solve, thus, the initialization phase takes a more important place in the result. The spike on the graph is caused by the data structures used, the \textit{sparsemap}. Here, the high label heuristic is the best as well.
+
+%%TODO remarque
 
 
 \section{Data structures}
