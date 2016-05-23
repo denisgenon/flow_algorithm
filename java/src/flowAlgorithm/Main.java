@@ -8,6 +8,7 @@ import interfaces.Graph;
 import models.SparseMapGraph;
 import solver.FIFOPushRelabel;
 import solver.FIFOPushRelabelInit;
+import solver.FordFulkersonScaling;
 import solver.HighestLabelPushRelabel;
 import solver.HighestLabelPushRelabelInit;
 import solver.PushRelabel;
@@ -238,7 +239,7 @@ public class Main {
 					}
 				 */
 				else {
-
+					/*
 					System.out.println("Generic Init");
 					Graph g = new SparseMapGraph(args[0], true);
 					Solver s = new PushRelabelInit(g);
@@ -268,8 +269,7 @@ public class Main {
 					Graph g5 = new SparseMapGraph(args[0], true);
 					Solver s5 = new HighestLabelPushRelabel(g5);
 					s5.getResults();
-
-					/*
+					
 					System.out.println("GENERIC");
 					System.out.println("HM");
 					Graph g = new HashMapGraph(args[0], true);
@@ -334,8 +334,19 @@ public class Main {
 					System.out.println("TM");
 					Graph ggg4 = new TreeMapGraph(args[0], true);
 					Solver sss4 = new HighestLabelPushRelabel(ggg4);
-					sss4.getResults();
-					 */
+					sss4.getResults();*/
+					
+					/*
+					String instance = "instances/instancesUniquePrct1/instanceuniqueprct100.txt";
+					try {
+					    Thread.sleep(10000);                 //1000 milliseconds is one second.
+					} catch(InterruptedException ex) {
+					    Thread.currentThread().interrupt();
+					}
+					
+					Graph g = new HashMapGraph(instance, true);
+					Solver s = new FordFulkersonScaling(g);
+					s.getResults(); */
 
 				}
 
