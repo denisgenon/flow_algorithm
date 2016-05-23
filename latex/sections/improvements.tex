@@ -39,6 +39,7 @@ During a phase, the algorithm can performs no relabel operation or at least one.
 With these two cases, we can bound the total number of phases: $2*|V|^2 + |V|$. The FIFO preflow-push algorithm runs in $O(|V|^3)$.
 
 \subsection{Highest label heuristic}
+\label{sec:hlh}
 
 This algorithm always pushes flow from the active vertex with the highest height label. 
 
@@ -101,5 +102,34 @@ We wish to clarify that we have not found any implementation of this heuristic a
 
 \section{No initialization of height in Preflow-push algorithms}
 \label{sec:hauteurs}
+
+%% Décrire la phase de préflow
+In the Preflow-push algorithm, there is an initialization phase, called \textit{preprocess}, used to compute the height label of the vertices and perfoms a saturing push on all the edges leave the source. The computation of the height labels can be performed in $O(|V|)$ with a simple breath first search from the sink (see Algorithm~\ref{algo:bfsinit}). This computation perfoms $|V|$ relabeling. But what append if we do not compute the height labels before (i.e. all the height label will be equals to zero) ? In fact, the number of relabeling will be the same. If we do not compute the height labels before, any active vertices will be relabeled before to be able to make a first push because the active vertex will be at height zero and his neighbors too. From that, to case can arise: first, the push is non-saturing. It means that the vertex is no longer active, and the new active vertex need to be relabeled in order to be able to make a push from it. So there is no more relabeling operations than if we compute the height labels in the preprocess. In the second case, the push is saturing: the vertex is still active. In this case, this vertex can push directly into an other neighbor because is height label has already been set at one unit higher than his neighbors. In these two cases, there is not unnecessary relabeling operation. In term of relabeling, there is no gain to compute the height labels in the preprocess. \\
+
+\begin{algorithm}
+$parents$ $\gets$ fill($-1$)\;
+Queue $q\gets$ new Queue\;
+$q$.Enqueue(sink)\;
+$sink.h$ = 0\;
+\While{q is not empty}{
+  $u \gets q$.Dequeue()\;
+  \For{every vertex v adjacent of u}{
+    \If{v.h equals to 0}{
+      parents[$v$] $\gets u$ \;
+      $v.h \gets parents[v].h + 1$ \;
+      $q$.Enqueue($v$)\;
+    }
+  }
+}
+
+\caption{The computation of the height labels.}
+\label{algo:bfsinit}
+\end{algorithm}
+
+However, not making this computation could prevent the highest label heuristic (Section~\ref{sec:hlh}) to perfoms at his best. We will analyze this in the experimental analysis (Chapter~\ref{analysis}).
+
+
+
+
 
 
