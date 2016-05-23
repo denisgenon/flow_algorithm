@@ -210,6 +210,7 @@ This round trip between the vertex 1 and the vertex 8 is called the ping-pong ef
 
 \subsubsection{Pratical case}
 
+\begin{table}
 \newcolumntype{C}{>{\centering\arraybackslash} m{6cm} }
 \newcolumntype{D}{>{\centering\arraybackslash} m{2cm} }
 \begin{tabular}{|D|C|C|}
@@ -234,4 +235,13 @@ This round trip between the vertex 1 and the vertex 8 is called the ping-pong ef
    \includegraphics[scale=0.4]{images/badpr/badpr4.png} \\ 
    \hline
 \end{tabular}
+\caption{Two similar cases with different resolutions.}
+\label{tabl:case}
+\end{table}
+
+In this section, we will present you a simple case (Table~\ref{tabl:case}) where the Preflow-push algorithm perfom very differently between two similar cases. The only difference, as shown in the state 1, is that the capacity of the upper edges of the graph differ by one. In the easy case, the flow is push from $s$ to $t$, then $s$ to $1$, then $1$ to $2$ and so on. When the vertex $3$ become active (with a excedent of 9) he push 4 units of flow to the sink (state 2). The vertex $3$ is still active and will push his flow to $2$ after being relabeled. The vertex $2$ will do the same to the vertex $1$. We are in the state 3 and no more vertices are actives, thus the algorithm terminates. \\
+In the second case, the three firsts states are the same except for the capacity of the upper edges. This cause an excedent of one unit in the vertex $1$. This active vertex prevent the algorithm to terminate. The algorithm then push this excedent to the vertex $2$ after relabeling the vertex $1$. The vertex $2$ will do the same to the vertex $3$. We are now in state 3 and this ping pong effect will occur till the height label of the vertex $1$ is bigger by one than the height label of the source. When this is the case, the vertex $1$ push the excedent to the source and no more vertices are actives: the algorithm terminates. \\
+
+This simple case demonstrate how the Preflow-push algorithm perfom differently on graphs with small differences.
+
 
