@@ -145,7 +145,20 @@ To compute the complexity of the generic preflow-push algorithm we need to disti
 \end{itemize}
 We have $O(|V|^2)$ relabel operation, $O(|V|*|E|)$ saturing push and $O(|V|^2*|E|)$ non-saturing push. Thus, the generic preflow algorithm runs in $O(|V|^2) + O(|V|*|E|) + O(|V|^2*|E|) = O(|V|^2 *|E|)$. 
 
-\subsection{Drawbacks}
+\section{Difficult cases}
+
+\subsection{In Edmonds-Karp algorithm}
+
+In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algorithm perfom worse than the Preflow-push algorithm.  The Edmonds-Karp algorithm will find $n+1$ augmenting paths ($s$-$t$, $s$-1-$t$, $s$-1-2-$t$, \dots, $s$-1-\dots-$n$-$t$). It will perfom slower than the Preflow-push algorithm because he will push $n$ times on the edge $(s, 1)$, $n-1$ times on the edge $(1, 2)$, \dots The Preflow-push will be faster, because he will only push once on each edges.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{images/badedmondskarp1.png}
+\caption{Difficult case for the Edmonds-Karp algorithm. $\tau$ is equal to $(\sum\limits_{i=1}^{n+1} i) - 1$.}
+\label{img:badedmondskarp}
+\end{figure}
+
+\subsection{In Preflow-push algorithms}
 
 \subsubsection{The ping-pong effect}
 
@@ -193,3 +206,32 @@ This round trip between the vertex 1 and the vertex 8 is called the ping-pong ef
 \caption{Node 8 is active again}
 \label{img:pingpong5}
 \end{figure}
+
+
+\subsubsection{Pratical case}
+
+\newcolumntype{C}{>{\centering\arraybackslash} m{6cm} }
+\newcolumntype{D}{>{\centering\arraybackslash} m{2cm} }
+\begin{tabular}{|D|C|C|}
+   \hline
+   State & 
+   Easy case & 
+   Difficult case \\ \hline
+   State 1 &
+   \includegraphics[scale=0.4]{images/badpr/goodpr0.png} & 
+   \includegraphics[scale=0.4]{images/badpr/badpr0.png} \\
+   State 2 &
+   \includegraphics[scale=0.4]{images/badpr/goodpr1.png} & 
+   \includegraphics[scale=0.4]{images/badpr/badpr1.png} \\
+   State 3 &
+   \includegraphics[scale=0.4]{images/badpr/goodpr2.png} & 
+   \includegraphics[scale=0.4]{images/badpr/badpr2.png} \\
+   State 4 &
+   Solved & 
+   \includegraphics[scale=0.4]{images/badpr/badpr3.png} \\
+   State 5 &
+   Solved & 
+   \includegraphics[scale=0.4]{images/badpr/badpr4.png} \\ 
+   \hline
+\end{tabular}
+
