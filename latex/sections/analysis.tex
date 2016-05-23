@@ -202,6 +202,23 @@ On the 3 type of instances, we notice that the $hashmap$ and the $treemap$ offer
 
 The most adapted data structure for Push-Relabel algorithms is the $split array$.
 
+\subsubsection{Profiler}
+We have profiled our code with all data structure on a complete density instance graph with Highest Label Push-Relabel. The Figure \ref{fig:pradja} represents the number of invocation and the total run time of the function $getAdjacents$, which is the function that take the most time. Those results highlight the good performances of the $split array$ and the $sparse map$. The total time of the function $parse$, which parse the text file to the data structure, allows us to understand why the $split array$ is better than the $sparse map$. Indeed, the function $parse$ of the $sparse map$ take 1143 ms while the $split array$ take 404 ms. 
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
+     \hline	
+   getAdjacents & $21.940$ & $21.940$ & $17.555$ & $18.980$ & $19.513$ \\
+   total time (ms) & $208$ & $311$ & $120$ & $80$ & $30$ \\
+   \hline
+\end{tabular}
+\label{fig:pradja} 
+\caption{The number of invocation of the function $getAdjacents$ and its total time with Highest Label Push Relabel.}
+\end{figure}
+
 \subsection{Edmonds-Karp}
 The Figure \ref{fig:ekmeandensity}, \ref{fig:ekmeansize} and \ref{fig:ekmeanmatching} represents the average run time of all data structures with Edmonds-Karp. They were computed on, respectively, the density variation, the size variation and the matching instances.
 \begin{figure}[H]
@@ -228,6 +245,40 @@ The Figure \ref{fig:ekmeandensity}, \ref{fig:ekmeansize} and \ref{fig:ekmeanmatc
 As for the Push-Relabel, the structures based on maps are the least efficient while the structures based on the $sparse set$ provide better performances than the others. Nevertheless, the difference between the $split array$ and the $sparse map$ is more pronounced. 
 
 We can conclude that the most appropriate data structure for Edmonds-Karp is the $split array$.
+
+\subsubsection{Profiler}
+After profiled our code on a complete density variation graph, several observations can be made. First, we explain the poor performances of the $hashmap$ and the $treemap$ thanks to the Figure \ref{fig:ekadja} which represents the number of invocations of the function $getAdjacents$.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
+     \hline	
+   getAdjacents & $217.142$ & $426.317$ & $31.465$ & $56.844$ & $184.623$ \\
+   total time (ms) & $1.933$ & $322$ & $163$ & $1.092$ & $7.711$ \\
+   \hline
+\end{tabular}
+\label{fig:ekadja} 
+\caption{The number of invocation of the function $getAdjacents$ and its total time with Edmonds-Karp.}
+\end{figure}
+
+The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its function $getCapacity$ is very slow. That is what we can see in the Figure \ref{fig:ekcapa} which represents the number of invocation and the total time of the function $getCapacity$.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+     & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
+     \hline	
+   getCapacity & $220.029$ & $279.480$ & $783.293$ \\
+   total time (ms) & $271$ & $90$ & $32$ \\
+   \hline
+\end{tabular}
+\label{fig:ekcapa}
+\caption{The number of invocation of the function $getCapacity$ and its total time with Edmonds-Karp.}
+\end{figure}
+
 \subsection{Ford-Fulkerson with scaling}
 The Figure \ref{fig:ffmeandensity}, \ref{fig:ffmeansize} and \ref{fig:ffmeanmatching} represents the average run time of all data structures with Ford-Fulkerson with scaling. They were computed on, respectively, the density variation, the size variation and the matching instances.
 \begin{figure}[H]
@@ -256,6 +307,26 @@ The Figure \ref{fig:ffmeandensity}, \ref{fig:ffmeansize} and \ref{fig:ffmeanmatc
 Those figures highlight the poor performance of the $linked list$ while the $hash map$ seems to be most appropriated for Ford-Fulkerson with scaling than for the other algorithms. We nevertheless note that the map based structures explode with a high density of edges for the matching problem instances. The structure based on the $sparse set$ offer, as always, good performances. 
 
 The $sparse map$ is the most adapted data structure for Ford-Fulkerson with scaling.
+
+\subsubsection{Profiler}
+When we look to the Figure \ref{fig:ffcapa}, which represents the total time of the function $getCapacity$ and its number of invocations, we understand why the $linkedlist$ is so slow with Ford-Fulkerson with scaling. This figure explains also why the $split array$ and the $treemap$ are not well adapted to this algorithm, its function $getCapacity$ is too slow.
+
+The $hashmap$ has a very fast function $getCapacity$ but its function $getAdjacents$ take too much time compared to the $sparsemap$ (1146 ms for the $hashmap$ and 31 ms for the $sparsemap$). This is why the $sparse map$ is the most adapted data structure for Ford-Fulkerson with scaling.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+	\hline
+     & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
+     \hline	
+   getCapacity & $58.718.016$ & $58.493.923$ & $6.319.627$ & $7.515.168$ & $7.604.521$ \\
+   total time (ms) & $1$ & $2.020$ & $7.489$ & $1.411$ & $209$ \\
+   \hline
+\end{tabular}
+\label{fig:ffcapa} 
+\caption{The number of invocation of the function $getCapacity$ and its total time with Ford-Fulkerson with scaling.}
+\end{figure}
+
 \section{Behaviors}
 \subsection{Edmonds-Karp}
 \subsubsection{Density variation instances}

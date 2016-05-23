@@ -10,6 +10,7 @@ import models.TreeMapGraph;
 import solver.EdmondsKarp;
 import solver.EdmondsKarpScaling;
 import solver.FIFOPushRelabel;
+import solver.FordFulkersonScaling;
 import solver.HighestLabelPushRelabel;
 import solver.PushRelabel;
 import solver.Solver;
@@ -36,7 +37,18 @@ public class Main {
 					}
 				}
 				else {
-					System.out.println("GENERIC");
+					String instance = "instances/instancesUniquePrct1/instanceuniqueprct100.txt";
+					try {
+					    Thread.sleep(10000);                 //1000 milliseconds is one second.
+					} catch(InterruptedException ex) {
+					    Thread.currentThread().interrupt();
+					}
+					
+					Graph g = new HashMapGraph(instance, true);
+					Solver s = new FordFulkersonScaling(g);
+					s.getResults();
+					
+					/*System.out.println("GENERIC");
 					System.out.println("HM");
 					Graph g = new HashMapGraph(args[0], true);
 					Solver s = new PushRelabel(g);
@@ -100,7 +112,7 @@ public class Main {
 					System.out.println("TM");
 					Graph ggg4 = new TreeMapGraph(args[0], true);
 					Solver sss4 = new HighestLabelPushRelabel(ggg4);
-					sss4.getResults();
+					sss4.getResults();*/
 					
 				}
 
