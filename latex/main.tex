@@ -10,7 +10,7 @@
 %% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[USenglish]{babel} %francais, polish, spanish, ...
 \usepackage[T1]{fontenc}
-\usepackage[ansinew]{inputenc}
+\usepackage[utf8x]{inputenc} %%TODO ansinew
 
 \usepackage{lmodern} %Type1-font for non-english texts and characters
 
@@ -21,6 +21,7 @@
 
 
 %% Packages for Graphics & Figures %%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{graphic} %%For loading graphic files
 \usepackage{graphicx} %%For loading graphic files
 \usepackage{caption}
 \usepackage{subcaption} %%Subfigures inside a figure
@@ -60,13 +61,13 @@
 %\setlength{\parskip}{2.0ex plus0.5ex minus0.5ex}
 												
 %%%% COMMANDS %%%%
-\renewcommand\title{Study and Analysis of Networks Flows}
-\newcommand\name{\textsc{Denis Genon \& Victor Velghe}}
-\newcommand\options{Artificial Intelligence}
-\newcommand\supervisor{ \textsc{Yves Deville}}
-\newcommand\readerone{ \textsc{Fran\c cois Aubry}}
-\newcommand\readertwo{ \textsc{Jean-Charles Delvenne}}
-\newcommand\years{2015-2016}
+%\renewcommand\title{Study and Analysis of Networks Flows}
+%\newcommand\name{\textsc{Denis Genon \& Victor Velghe}}
+%\newcommand\options{Artificial Intelligence}
+%\newcommand\supervisor{ \textsc{Yves Deville}}
+%\newcommand\readerone{ \textsc{Fran\c cois Aubry}}
+%\newcommand\readertwo{ \textsc{Jean-Charles Delvenne}}
+%\newcommand\years{2015-2016}
 
 %% Math Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsmath}
@@ -183,6 +184,16 @@
 
 %\input{FileName} %You need a file 'FileName.tex' for this.
 %\input{AnnCVRP}
+
+\newpage
+\thispagestyle{empty}   % To suppress header and footer on the back of the cover page
+
+\newgeometry{top=1.25cm,bottom=1.25cm,left=1.25cm,right=1.25cm}
+\vspace*{17.75cm}
+\noindent \footnotesize \color{UCLblue} \fontfamily{phv} \selectfont Rue Archim\`{e}de, 1 bte L6.11.01, 1348 Louvain-la-Neuve ~ ~ \color{EPLblue} \textbf{www.uclouvain.be/epl} \\
+\vspace*{6pt}
+\color{EPLblue}{\rule{18.5cm}{8.25cm}}
+
 
 \end{document}
 

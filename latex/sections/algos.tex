@@ -57,20 +57,20 @@ On the other hand, Edmonds-Karp uses a breadth-first search, looking for the sho
 
 
 \subsection{Complexities}
-The max flow problem, being a problem of complexity class P, can be solved in polynomial time. When the capacities are integers, the remaining time of Ford-Fulkerson is bounded by $O(|E|*|V|*U)$ and Edmonds-Karp by $O(|V|*|E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $U$ is the maximum capacity of the graph.
+The max flow problem, being a problem of complexity class P, can be solved in polynomial time. When the capacities are integers, the remaining time of Ford-Fulkerson is bounded by $O(|E|\cdot |V|\cdot U)$ and Edmonds-Karp by $O(|V|\cdot |E|^2)$, where $|E|$ is the number of edges in the graph, $|V|$ is the number of vertices and $U$ is the maximum capacity of the graph.
 
 \begin{description}
-\item[Ford-Fulkerson]{Each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1. So the time complexity is $O(|E|*|f|)$, $|f|$ being the value of the maximal flow. 
+\item[Ford-Fulkerson]{Each augmenting path can be found in $O(|E|)$ thanks to the depth-first search algorithm and in the worst case, the flow will increase by 1. So the time complexity is $O(|E|\cdot |f|)$, $|f|$ being the value of the maximal flow. 
 
-This complexity is expressed in terms of the final result, we can reformulate it. Indeed, the maximal flow cannot be greater than $|V|*U$. The time complexity of Ford-Fulkerson is then $O(|E|*|V|*U)$.
+This complexity is expressed in terms of the final result, we can reformulate it. Indeed, the maximal flow cannot be greater than $|V|\cdot U$. The time complexity of Ford-Fulkerson is then $O(|E|\cdot |V|\cdot U)$.
 
-Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|*|V|*U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$.}
+Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|\cdot |V|\cdot U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$.}
 
 \item[Edmonds-Karp]{The breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. We also know that there is a maximum of $|E|$ path of the same length. So we conclude that the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. 
 
-We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|*|E|$ iterations.
+We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|\cdot |E|$ iterations.
 
-We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|*|E|^2)$. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
+We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|\cdot |E|^2)$. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
 \end{description}
 
 
@@ -137,13 +137,13 @@ We call a vertex with positive excess as an \textbf{active vertex}. The fact tha
 
 To compute the complexity of the generic preflow-push algorithm we need to distinguish three kinds of operations: relabels, saturing pushes, non-saturing pushes.
 \begin{itemize}
-\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2*|V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2*|V| - 1) * (|V| - 2) \approx |V|^2$.
+\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2\cdot |V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2\cdot |V| - 1) \cdot (|V| - 2) \approx |V|^2$.
 
-\item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2*|V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|*|E|)$.
+\item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2\cdot |V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|\cdot |E|)$.
 
-\item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2*|V| - 1)*(|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2*|V|-1)*(2*|V|*|E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2*|V|-1)*(|V|-2) + (2*|V|-1)*(2*|V|*|E|) = O(|V|^2*|E|)$ non-saturing push to have $\phi = 0$.
+\item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2\cdot |V| - 1)\cdot (|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2\cdot |V|-1)\cdot (|V|-2) + (2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|) = O(|V|^2\cdot |E|)$ non-saturing push to have $\phi = 0$.
 \end{itemize}
-We have $O(|V|^2)$ relabel operation, $O(|V|*|E|)$ saturing push and $O(|V|^2*|E|)$ non-saturing push. Thus, the generic preflow algorithm runs in $O(|V|^2) + O(|V|*|E|) + O(|V|^2*|E|) = O(|V|^2 *|E|)$. 
+We have $O(|V|^2)$ relabel operation, $O(|V|\cdot |E|)$ saturing push and $O(|V|^2\cdot |E|)$ non-saturing push. Thus, the generic preflow algorithm runs in $O(|V|^2) + O(|V|\cdot |E|) + O(|V|^2\cdot |E|) = O(|V|^2 \cdot |E|)$. 
 
 \section{Difficult cases}
 
@@ -239,7 +239,7 @@ This round trip between the vertex 1 and the vertex 8 is called the ping-pong ef
 \label{tabl:case}
 \end{table}
 
-In this section, we will present you a simple case (Table~\ref{tabl:case}) where the Preflow-push algorithm perfom very differently between two similar cases. The only difference, as shown in the state 1, is that the capacity of the upper edges of the graph differ by one. In the easy case, the flow is push from $s$ to $t$, then $s$ to $1$, then $1$ to $2$ and so on. When the vertex $3$ become active (with a excedent of 9) he push 4 units of flow to the sink (state 2). The vertex $3$ is still active and will push his flow to $2$ after being relabeled. The vertex $2$ will do the same to the vertex $1$. We are in the state 3 and no more vertices are actives, thus the algorithm terminates. \\
+In this section, we will present you a simple case (Table~\ref{tabl:case}) where the Preflow-push algorithm perfom very differently between two similar cases. The only difference, as shown in the state 1, is that the capacity of the upper edges of the graph differ by one. In the easy case, the flow is push from $s$ to $t$, then $s$ to $1$, then $1$ to $2$ and so on. When the vertex $3$ become active (with a excedent of 9) it push 4 units of flow to the sink (state 2). The vertex $3$ is still active and will push his flow to $2$ after being relabeled. The vertex $2$ will do the same to the vertex $1$. We are in the state 3 and no more vertices are actives, thus the algorithm terminates. \\
 In the second case, the three firsts states are the same except for the capacity of the upper edges. This cause an excedent of one unit in the vertex $1$. This active vertex prevent the algorithm to terminate. The algorithm then push this excedent to the vertex $2$ after relabeling the vertex $1$. The vertex $2$ will do the same to the vertex $3$. We are now in state 3 and this ping pong effect will occur till the height label of the vertex $1$ is bigger by one than the height label of the source. When this is the case, the vertex $1$ push the excedent to the source and no more vertices are actives: the algorithm terminates. \\
 
 This simple case demonstrate how the Preflow-push algorithm perfom differently on graphs with small differences.
