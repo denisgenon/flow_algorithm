@@ -222,8 +222,8 @@ We have profiled our code with all data structure on a complete density instance
    total time (ms) & $208$ & $311$ & $120$ & $80$ & $30$ \\
    \hline
 \end{tabular}
-\label{fig:pradja} 
 \caption{The number of invocation of the function $getAdjacents$ and its total time with Highest Label Push Relabel.}
+\label{fig:pradja} 
 \end{figure}
 
 \subsection{Edmonds-Karp}
@@ -263,11 +263,11 @@ After profiled our code on a complete density variation graph, several observati
      & \textbf{Hash map} & \textbf{Tree map} & \textbf{Simple linked list} & \textbf{Split array} & \textbf{Sparse map}\\
      \hline	
    getAdjacents & $217.142$ & $426.317$ & $31.465$ & $56.844$ & $184.623$ \\
-   total time (ms) & $1.933$ & $322$ & $163$ & $1.092$ & $7.711$ \\
+   total time (ms) & $1.933$ & $7.714$ & $322$ & $163$ & $1.092$ \\
    \hline
 \end{tabular}
-\label{fig:ekadja} 
 \caption{The number of invocation of the function $getAdjacents$ and its total time with Edmonds-Karp.}
+\label{fig:ekadja} 
 \end{figure}
 
 The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its function $getCapacity$ is very slow. That is what we can see in the Figure \ref{fig:ekcapa} which represents the number of invocation and the total time of the function $getCapacity$.
@@ -282,8 +282,8 @@ The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its
    total time (ms) & $271$ & $90$ & $32$ \\
    \hline
 \end{tabular}
-\label{fig:ekcapa}
 \caption{The number of invocation of the function $getCapacity$ and its total time with Edmonds-Karp.}
+\label{fig:ekcapa}
 \end{figure}
 
 \subsection{Ford-Fulkerson with scaling}
@@ -330,8 +330,8 @@ The $hashmap$ has a very fast function $getCapacity$ but its function $getAdjace
    total time (ms) & $1$ & $2.020$ & $7.489$ & $1.411$ & $209$ \\
    \hline
 \end{tabular}
-\label{fig:ffcapa} 
 \caption{The number of invocation of the function $getCapacity$ and its total time with Ford-Fulkerson with scaling.}
+\label{fig:ffcapa} 
 \end{figure}
 
 \section{Behaviors}
@@ -452,6 +452,8 @@ The Figure~\ref{fig:MeanInstances} represents, for each algorithm, the average r
 
 The complexity of FIFO Push-Relabel ($O(|V|^3)$) depend less on the number of edges than the complexity of Edmonds-Karp ($O(|V|*|E|^2)$) or Ford-Fulkerson with scaling ($O(|E|^2* log(U))$). It should thus have the best performances but unfortunately, due to its irregularity, its average run time is high.
 
+We believe that these results are due to two things. First, the worst case graph for Edmonds-Karp (a graph where each edge is used in each augmenting path of a different length), which defined its O complexity, is not possible to obtain with the generation of a density variation instance. Its complexity is a loose bound on this kind of graphs. Secondly, we saw that the Push-Relabel has a drawback, the ping pong effect. We think that the density variation instances, due to their random aspect, are favorable to the appearance of structure which allow the ping pong effect.
+
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/meandensity.png}
@@ -474,6 +476,8 @@ It can be explained by their complexity. Indeed, the preflow algorithms are more
 
 \subsection{Matching problem instances}
 The Figure~\ref{fig:meanmatchingproblem} represents, for each algorithm, the average run time on all matching problem instances with its best data structure. We notice that the run time of Highest Label Push-Relabel remains constant during the addition of edges while the run time of Edmonds-Karp increases. It is a logical behaviour in view of the complexities.
+
+When we analyze the structure of this type of graphs, we notice the Edmonds-Karp is not adapted. Indeed, it will look for a huge number of augmenting path due to the backward edges from $R2$ to $R1$ created after a push on edge from $R1$ to $R2$. While Highest Label Push-Relabel visits once each vertex, not taking into account the number of edges.
 
 Highest Label Push-Relabel is undoubtedly the most appropriated algorithm to solve this type of instance. 
 
