@@ -1,46 +1,74 @@
 %!TEX root = ../main.tex
 %%%% COVER %%%%
+\definecolor{UCLblue}{cmyk}{1.00,0.68,0.00,0.54}
+\definecolor{EPLblue}{cmyk}{0.70,0.30,0.00,0.00}
+\renewcommand\title{Study and Analysis of Network Flows}	% Titre du TFE
+\newcommand\subtitle{Augmenting Path and Preflow-push algorithms}
+\newcommand\nameone{Denis \textsc{Genon}}	% Nom de l'étudiant
+\newcommand\nametwo{Victor \textsc{Velghe}}	% Nom du 2nd étudiant éventuel
+\newcommand\speciality{Sciences Informatiques}		% Spécialité (mentioner l'une des options suivantes):
+										% ingénieur civil biomédical
+										% ingénieur civil en chimie et science des matériaux
+										% ingénieur civil des constructions
+										% sciences informatiques
+										% ingénieur civil en informatique
+										% ingénieur civil électricien
+										% ingénieur civil électromécanicien
+										% ingénieur civil en mathématiques appliquées
+										% ingénieur civil mécanicien
+										% ingénieur civil physicien
+\newcommand\options{Artificial Intelligence}	% À mentioner si demandé par la commission de programme
+\newcommand\supervisor{Yves \textsc{Deville}}	% Nom du promoteur
+%%\newcommand\cosupervisor{Prénom \textsc{Nom}}	% Nom du co-promoteur éventuel
+\newcommand\readerone{Fran\c cois \textsc{Aubry}}		% Nom du 1er lecteur
+\newcommand\readertwo{Jean-Charles \textsc{Delvenne}}		% Nom du 2nd lecteur
+%%\newcommand\readerthree{Prénom \textsc{Nom}}	% Nom du 3e lecteur éventuel
+\newcommand\years{2015-2016}	% Année académique
 
-\thispagestyle{empty}
-\noindent\begin{minipage}{.25\textwidth}
-\noindent\includegraphics[width=3.6cm]{images/ucl.png}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-\begin{center}
-UNIVERSITE CATHOLIQUE DE LOUVAIN
-\\~\\~
-ECOLE POLYTECHNIQUE DE LOUVAIN
-\\~\\~\\~\\~\\~
-\end{center}
-\end{minipage}
-\begin{minipage}{.25\textwidth}
-\hfill\includegraphics[width=3.6cm]{images/epl.png}
-\\~\\~\\~\\~
-\end{minipage}
-\vspace{4.5cm}
-\begin{center}
-\bfseries{\Huge{\title}}
-\end{center}
-\vspace{4.5cm}
-\begin{minipage}{.5\textwidth}
-\begin{tabular}{ll}
-Supervisor: & \supervisor
-\\ Readers: & \readerone 
-\\          & \readertwo 
-\end{tabular} 
-\\~\\~
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-\begin{tabular}{l}
-Thesis submitted for the Master's degree
-\\ in computer science and engineering
-\\ options: \options
-\\ by \name
-\end{tabular}
-\end{minipage}
-\vfill
-\begin{center}
-Louvain-la-Neuve
-\\ Academic year \years
-\end{center}
+% Création de la page de titre
+\makeatletter
+\renewcommand{\maketitle}
+	{\begin{titlepage}
+	\newgeometry{top=1.25cm,bottom=1.25cm,left=1.25cm,right=1.25cm}
+	\begin{center}
+		\includegraphics[scale=1]{images/EPL_TFEbanner.jpg}
+	\end{center}
+	\vspace*{9pt}
+	\begin{flushright}
+	    \color{UCLblue} \fontfamily{phv} \selectfont
+	    {\huge \title} \\
+	    \vspace*{12pt}
+	    {\Large \subtitle} \\
+	    \vspace*{12pt}
+		\large Dissertation presented by \\
+		\textbf{\nameone}
+		\textbf{, \nametwo}
+		\\
+		\vspace*{12pt} 
+		for obtaining the Master's degree in \\
+		\textbf{\speciality} \\
+%		\textit{Option(s): \options}	% Uncomment if necessary
+		\vspace*{12pt}
+		Supervisor\\
+		\textbf{\supervisor} 
+%		\textbf{, \cosupervisor}		% Uncomment if necessary
+		\\
+		\vspace*{12pt}
+		Readers \\
+		\textbf{\readerone, \readertwo}
+%		\textbf{, \readerthree}	% Uncomment if necessary
+		\\
+		\vspace*{12pt}
+		Academic year \years \\
+	\end{flushright}
+	\vspace*{9pt}
+	\color{EPLblue}{\rule{18.5cm}{8.25cm}}
+  \end{titlepage}}
+\makeatother
+
+
+\maketitle					% To create front cover page
+\thispagestyle{empty}		% To suppress header and footer on the back of the cover page
+
+
 %%%% END COVER %%%%
