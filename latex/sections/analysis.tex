@@ -75,7 +75,7 @@ We generate 10 instances of this type.
  }
 
  \For{$prct \gets 5$ \KwTo $100$ \textbf{by} $5$}{
- \While{$\frac{|Edges|-(V-1)}{\frac{V\cdot(V-1)}{2})-(V-1)}\cdot 100 < prct$}{$e \gets$ random edge in $AllEdges$\;
+ \While{$\frac{|Edges|-(V-1)}{\frac{V\cdot(V-1)}{2}-(V-1)}\cdot 100 < prct$}{$e \gets$ random edge in $AllEdges$\;
  add $e$ to $Edges$\;
  remove $e$ and reverse $e$ from $AllEdges$\;
  }
