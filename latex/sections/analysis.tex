@@ -35,14 +35,14 @@ For the density variation instances, we first create a minimal connected graph. 
 
 For each vertex not present in $DoubleConnected$, we take a random vertex from $Connected$, add the edge between them in $Edges$ and remove this edge and its opposite from $AllEdges$. For this step, to avoid adding an edge (or its opposite) which is already present in the graph, we check if the new edge and its opposite are not present in $Edges$. We thus have a connected graph where each vertex has one incoming edge and at least one outgoing edge.
 
-We then add the necessary number of edges to obtain the desired density. We take a random edge from $AllEdges$, add it to $Edges$ and remove it and its opposite from $AllEdges$. A first graph is generated when we have a density of 5\%. We add it edges to obtain a density of 10\% and generate a second graph. And so on up to 100\%. At the end, a density variation instance is composed by twenty graphs where each graph generated before an other one is a sub-graph of the latter.
+We then add the necessary number of edges to obtain the desired density. We take a random edge from $AllEdges$, add it to $Edges$ and remove it and its opposite from $AllEdges$. A first graph is generated when we have a density of 5\%. We add it edges to obtain a density of 10\% and generate a second graph. And so on up to 100\%. At the end, a density variation instance is composed by twenty graphs where each graph generated before an other one is a sub-graph of the latter. With $|V|=1000$, a complete graph has $\frac{(|V|-1)(|V|)}{2} = 499500$ edges.
 
-With $|V|=1000$, a complete graph has $\frac{(|V|-1)(|V|)}{2} = 499500$ edges.
+The Algorithm \ref{algo:densitygenerator} represents the density variation instance generator.
 
 We generate 10 instances of this type.
 
 
-\begin{algorithm}[H]
+\begin{algorithm}
  $Connected$ : set of connected vertices \\
  $DoubleConnected$ : set of vertex having at least one incoming and one outgoing edge \\
  $Edges$ : set of edges on the graph \\
@@ -82,6 +82,7 @@ We generate 10 instances of this type.
  generate graph with $Edges$\;
  }
  \caption{Density variation instance generator}
+ \label{algo:densitygenerator}
 \end{algorithm}
 
 \subsection{Size variation instances}
@@ -110,7 +111,7 @@ To analyze the effects of the height label initialization, we decided to compute
 \subsubsection{Relabelling}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.13]{images/meanrelabels.png}
+\includegraphics[scale=0.15]{images/meanrelabels.png}
 \caption{The average number of relabels in density variation instances. All the algorithms have the same count of relabeling operation.}
 \label{fig:mean_relabel}
 \end{center}
@@ -121,7 +122,7 @@ We can observe in Figure~\ref{fig:mean_relabel} what we said in Section~\ref{sec
 \subsubsection{Saturing push}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.13]{images/meansaturingpushes.png}
+\includegraphics[scale=0.125]{images/meansaturingpushes.png}
 \caption{The mean number of saturing pushes in density variation instances.}
 \label{fig:mean_sat}
 \end{center}
@@ -134,7 +135,7 @@ We can observe in Figure~\ref{fig:mean_sat} that for each heuristic, the initial
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.13]{images/meannonsaturingpushes.png}
+\includegraphics[scale=0.125]{images/meannonsaturingpushes.png}
 \caption{The mean number of non-saturing pushes in density variation instances.}
 \label{fig:mean_non_sat}
 \end{center}
@@ -152,7 +153,7 @@ In this section, we will compare the run time of each algorithm on different kin
 \subsubsection{Density variation instances}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meandensitypr.png}
+\includegraphics[scale=0.65]{images/meandensitypr.png}
 \caption{The execution time of the different push relabels by density.}
 \label{fig:mean_density_pr}
 \end{center}
@@ -164,7 +165,7 @@ We can see here that the \textit{FIFOPushRelabel} is the fastest. For each heuri
 \subsubsection{Size variation instances}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meansizepr.png}
+\includegraphics[scale=0.54]{images/meansizepr.png}
 \caption{The execution time of the different push relabels by size.}
 \label{fig:mean_size_pr}
 \end{center}
@@ -177,7 +178,7 @@ When changing the size of the network, we can see that the highest label heurist
 \subsubsection{Matching problem instances}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meanmatchingpr.png}
+\includegraphics[scale=0.54]{images/meanmatchingpr.png}
 \caption{The execution time of the different push relabels on the matching problem instances.}
 \label{fig:mean_matching_pr}
 \end{center}
@@ -202,21 +203,21 @@ In this section, we would like to determine which data structure is the most ada
 The Figure \ref{fig:prmeandensity}, \ref{fig:prmeansize} and \ref{fig:prmeanmatching} represents the average run time of all data structures with Highest Label Push-Relabel. They were computed on, respectively, the density variation, the size variation and the matching problem instances.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/prmeandensity.png}
+\includegraphics[scale=0.63]{images/results/prmeandensity.png}
 \caption{Average run time of all data structures with Highest Label Push-Relabel on density variation instances.}
 \label{fig:prmeandensity}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/prmeansize.png}
+\includegraphics[scale=0.6]{images/results/prmeansize.png}
 \caption{Average run time of all data structures with Highest Label Push-Relabel on size variation instances.}
 \label{fig:prmeansize}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/prmeanmatching.png}
+\includegraphics[scale=0.6]{images/results/prmeanmatching.png}
 \caption{Average run time of all data structures with Highest Label Push-Relabel on matching problem instances.}
 \label{fig:prmeanmatching}
 \end{center}
@@ -224,7 +225,7 @@ The Figure \ref{fig:prmeandensity}, \ref{fig:prmeansize} and \ref{fig:prmeanmatc
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/prmeanmatching2.png}
+\includegraphics[scale=0.55]{images/results/prmeanmatching2.png}
 \caption{Average run time of all data structures without the $hashmap$ and the $treemap$ with Highest Label Push-Relabel on matching problem instances.}
 \label{fig:prmeanmatching2}
 \end{center}
@@ -254,14 +255,14 @@ We have profiled our code with all data structure on a complete density instance
 The Figure~\ref{fig:ekmeandensity}, \ref{fig:ekmeansize} and \ref{fig:ekmeanmatching} represents the average run time of all data structures with Edmonds-Karp. They were computed on, respectively, the density variation, the size variation and the matching problem instances.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/ekmeandensity.png}
+\includegraphics[scale=0.54]{images/results/ekmeandensity.png}
 \caption{Average run time of all data structures with Edmonds-Karp on density variation instances.}
 \label{fig:ekmeandensity}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/ekmeansize.png}
+\includegraphics[scale=0.54]{images/results/ekmeansize.png}
 \caption{Average run time of all data structures with Edmonds-Karp on size variation instances.}
 \label{fig:ekmeansize}
 \end{center}
@@ -274,13 +275,10 @@ The Figure~\ref{fig:ekmeandensity}, \ref{fig:ekmeansize} and \ref{fig:ekmeanmatc
 \end{center}
 \end{figure}
 As for the Push-Relabel, the structures based on maps are the least efficient while the structures based on the $sparse set$ provide better performances than the others. Nevertheless, the difference between the $split array$ and the $sparse map$ is more pronounced. 
-
 We can conclude that the most appropriate data structure for Edmonds-Karp is the $split array$.
-
 \subsubsection{Profiler}
 After profiled our code on a complete density variation graph, several observations can be made. First, we explain the poor performances of the $hashmap$ and the $treemap$ thanks to the Figure~\ref{fig:ekadja} which represents the number of invocations of the function $getAdjacents$.
-
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
 	\hline
@@ -293,10 +291,8 @@ After profiled our code on a complete density variation graph, several observati
 \caption{The number of invocation of the function $getAdjacents$ and its total time with Edmonds-Karp.}
 \label{fig:ekadja} 
 \end{figure}
-
 The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its function $getCapacity$ is very slow. That is what we can see in the Figure~\ref{fig:ekcapa} which represents the number of invocation and the total time of the function $getCapacity$.
-
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
 	\hline
@@ -309,7 +305,6 @@ The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its
 \caption{The number of invocation of the function $getCapacity$ and its total time with Edmonds-Karp.}
 \label{fig:ekcapa}
 \end{figure}
-
 \subsection{Ford-Fulkerson with scaling}
 The Figure~\ref{fig:ffmeandensity}, \ref{fig:ffmeansize} and \ref{fig:ffmeanmatching} represents the average run time of all data structures with Ford-Fulkerson with scaling. They were computed on, respectively, the density variation, the size variation and the matching problem instances.
 \begin{figure}[H]
@@ -328,7 +323,7 @@ The Figure~\ref{fig:ffmeandensity}, \ref{fig:ffmeansize} and \ref{fig:ffmeanmatc
 \end{figure}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/ffmeanmatching.png}
+\includegraphics[scale=0.55]{images/results/ffmeanmatching.png}
 \caption{Average run time of all data structures with Ford-Fulkerson with scaling on matching problem instances.}
 \label{fig:ffmeanmatching}
 \end{center}
@@ -368,14 +363,12 @@ The $hashmap$ has a very fast function $getCapacity$ but its function $getAdjace
 
 
 \section{Behaviors}
-
-
 \subsection{Edmonds-Karp}
 \subsubsection{Density variation instances}
 One of the most blatant observations on Edmonds-Karp is that it is very regular, what we can observe in the Figure~\ref{fig:EKmean}, which represents the run time on each density variation instance, with its best data structure, the $split array$. Indeed, Edmonds-Karp solves the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 750 to 1000 ms.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/EKmean.png}
+\includegraphics[scale=0.6]{images/results/EKmean.png}
 \caption{Run time of Edmonds-Karp on all density variation instances with the $split array$.}
 \label{fig:EKmean}
 \end{center}
@@ -384,7 +377,7 @@ One of the most blatant observations on Edmonds-Karp is that it is very regular,
 The Figure~\ref{fig:EKmeansize} represents the run time of Edmonds-Karp on all size variation instances with the $split array$. Edmonds-Karp is regular with a run time ranging from 750 to 1000 ms to solve the maximum flow problem on graphs with $|V|=5000$ and a density of edges equal to 10\% ($|E|=1249750$).
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/EKmeansize2.png}
+\includegraphics[scale=0.55]{images/results/EKmeansize2.png}
 \caption{Run time of Edmonds-Karp on all size variation instances with the $split array$.}
 \label{fig:EKmeansize}
 \end{center}
@@ -393,7 +386,7 @@ The Figure~\ref{fig:EKmeansize} represents the run time of Edmonds-Karp on all s
 As usual, Edmonds-Karp remains very regular. We can see that on the Figure~\ref{fig:ekmatching} which represents the run time of Edmonds-Karp on all matching problem instances. It takes an average of 460ms to solve a matching problem instance with a maximum density of edges.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/ekmatching.png}
+\includegraphics[scale=0.55]{images/results/ekmatching.png}
 \caption{Run time of Edmonds-Karp on all matching problem instances with the $split array$.}
 \label{fig:ekmatching}
 \end{center}
@@ -437,7 +430,7 @@ The Figure~\ref{fig:ffmatching} show that Ford-Fulkerson with scaling has a cons
 When we look at the results of the FIFO Push-Relabel, an observation is quite obvious : it is not regular at all. As shown in Figure~\ref{fig:PR6}, the run time on one density variation instance can vary from less than 100 ms to more than 5000 ms.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/pri68.png}
+\includegraphics[scale=0.45]{images/results/pri68.png}
 \caption{Run time of FIFO Push-Relabel on the density variation instance 6 and 8 with the $split array$.}
 \label{fig:PR6}
 \end{center}
@@ -445,14 +438,14 @@ When we look at the results of the FIFO Push-Relabel, an observation is quite ob
 It may nevertheless have a stable run time but once very high and once extremely low. That is what we can observe in Figure~\ref{fig:PR10} and Figure~\ref{fig:PR7}.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/pri10.png}
+\includegraphics[scale=0.45]{images/results/pri10.png}
 \caption{Run time of FIFO Push-Relabel on the density variation instance 10 with the $split array$.}
 \label{fig:PR10}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/pri7.png}
+\includegraphics[scale=0.45]{images/results/pri7.png}
 \caption{Run time of FIFO Push-Relabel on the density variation instance 7 with the $split array$.}
 \label{fig:PR7}
 \end{center}
@@ -460,7 +453,7 @@ It may nevertheless have a stable run time but once very high and once extremely
 When displaying the run time of each density variation instance with its best data structure, we obtain a very disparate graph, as we can see in Figure~\ref{fig:PRmean}. Indeed, the FIFO Push-Relabel solve the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 100 ms to 6700 ms.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/PRmean.png}
+\includegraphics[scale=0.45]{images/results/PRmean.png}
 \caption{Run time of FIFO Push-Relabel on all density variation instances with the $split array$.}
 \label{fig:PRmean}
 \end{center}
@@ -471,7 +464,7 @@ As for Ford-Fulkerson with scaling with this type on instances, we note that the
 Contrary to the results obtained on the density variation instances, the Highest Label Push-Relabel is regular but it offers catastrophic performances. Indeed, it has a run time ranging from 85000 to 125000 ms to solve the maximum flow problem on graphs with $|V|=5000$ and a density of edges equal to 10\%. It is 1000 times slower than Edmonds-Karp.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/HLPRmean.png}
+\includegraphics[scale=0.44]{images/results/HLPRmean.png}
 \caption{Run time of Highest Label Push-Relabel on all size variation instances with the $split array$.}
 \label{fig:HLPRmean}
 \end{center}
@@ -480,7 +473,7 @@ Contrary to the results obtained on the density variation instances, the Highest
 The Highest Label Push-Relabel excels in this type of instances. Indeed, it has a regular run time ranging from 20 to 30 ms to solve a matching problem instance with a maximum density of edges.
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/results/prmatching.png}
+\includegraphics[scale=0.44]{images/results/prmatching.png}
 \caption{Run time of Highest Label Push-Relabel on all matching problem instances with the $split array$.}
 \label{fig:prmatching}
 \end{center}
@@ -499,15 +492,15 @@ The Highest Label Push-Relabel excels in this type of instances. Indeed, it has 
 
 
 \subsection{Density variation instances}
-The Figure~\ref{fig:MeanInstances} represents, for each algorithm, the average run time on all density variation instances with its best data structure. As we can see, Edmonds-Karp seems to be the most appropriated algorithm to solve the maximum flow problem with graphs having a high-density of edges.
+The Figure~\ref{fig:MeanInstances} represents, for each algorithm, the average run time on all density variation instances with its best data structure. As we can see, Edmonds-Karp seems to be the most appropriated algorithm to solve the maximum flow problem with graphs having a high-density of edges. \\
 
-The complexity of FIFO Push-Relabel ($O(|V|^3)$) depend less on the number of edges than the complexity of Edmonds-Karp ($O(|V|\cdot |E|^2)$) or Ford-Fulkerson with scaling ($O(|E|^2 \cdot log(U))$). It should thus have the best performances but unfortunately, due to its irregularity, its average run time is high.
+The complexity of FIFO Push-Relabel ($O(|V|^3)$) depend less on the number of edges than the complexity of Edmonds-Karp ($O(|V|\cdot |E|^2)$) or Ford-Fulkerson with scaling ($O(|E|^2 \cdot log(U))$). It should thus have the best performances but unfortunately, due to its irregularity, its average run time is high. \\
 
 We believe that these results are due to two things. First, the worst case graph for Edmonds-Karp (a graph where each edge is used in each augmenting path of a different length), which defined its O complexity, is not possible to obtain with the generation of a density variation instance. Its complexity is a loose bound on this kind of graphs. Secondly, we saw that the Push-Relabel has a drawback, the ping pong effect. We think that the density variation instances, due to their random aspect, are favorable to the appearance of structure which allow the ping pong effect.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meandensity.png}
+\includegraphics[scale=0.6]{images/meandensity.png}
 \caption{Average run time of the three algorithms on all density variation instances.}
 \label{fig:MeanInstances}
 \end{center}
@@ -523,7 +516,7 @@ It can be explained by their complexity. Indeed, the preflow algorithms ($O(|V|^
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meansize.png}
+\includegraphics[scale=0.6]{images/meansize.png}
 \caption{Average run time of the three algorithms on all size variation instances.}
 \label{fig:MeanInstancesize}
 \end{center}
@@ -541,7 +534,7 @@ Highest Label Push-Relabel is undoubtedly the most appropriated algorithm to sol
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.5]{images/meanmatching.png}
+\includegraphics[scale=0.6]{images/meanmatching.png}
 \caption{Average run time of the three algorithms on all matching problem instances.}
 \label{fig:meanmatchingproblem}
 \end{center}
