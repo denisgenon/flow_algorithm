@@ -113,9 +113,11 @@
 \input{sections/thanks}
 \cleardoublepage
 %% Table of contents %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newgeometry{hmargin=2.5cm,top=2.5cm,bottom=2.3cm}
 \tableofcontents %Table of contents
-\cleardoublepage %The first chapter should start on an odd page.
+\restoregeometry
 
+\cleardoublepage %The first chapter should start on an odd page.
 \pagestyle{plain} %Now display headings: headings / fancy / ...
 
 

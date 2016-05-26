@@ -14,10 +14,10 @@ Here is a graph with its \textit{residual network} after sending 4 units of flow
 \includegraphics[scale=0.4]{images/graph-residual.png}
 \end{figure}
 \newpage
-The residual network is essential to be able to backtrack. For instance, after sending 4 units of flow through the path A-B-E-F in the graph $G1$, we obtain the graph $G2$. On this graph, it is not possible to find a new path from the source A to the sink F. But on its residual graph $G3$, we can send 2 units of flow through A-C-E-B-D-F to obtain the maximal flow represented in the graph $G4$.
+The residual network is essential to be able to backtrack. For instance, after sending 4 units of flow through the path A-B-E-F in the graph $G1$, we obtain the graph $G2$. On this graph, it is not possible to find a new path from the source A to the sink F. But on its residual graph $G3$, we can send 2 units of flow through A-C-E-B-D-F to obtain the maximal flow represented in the graph $G4$.\\
 
 
-\begin{figure}[h!]
+\begin{figure}[h]
    \begin{minipage}[b]{0.40\linewidth}
       \centering \includegraphics[scale=0.4]{images/graph1a.png}
       \caption{Graph $G1$.}
@@ -36,6 +36,7 @@ The residual network is essential to be able to backtrack. For instance, after s
    \end{minipage}
 \end{figure}
 
+
 The pseudo-code of the augmenting path algorithm is given here :
 
 \begin{algorithm}[h]
@@ -45,6 +46,7 @@ The pseudo-code of the augmenting path algorithm is given here :
   $\delta$ = min\{$c_{ij} : (i,j) \in P$\}\;
   augment $\delta$ units of flow along P and update $G_f$\;
  }
+ \caption{Augmenting path algorithm.}
 \end{algorithm}
 
 \newpage
@@ -143,7 +145,7 @@ To compute the complexity of the generic preflow-push algorithm we need to disti
 
 \item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2\cdot |V| - 1)\cdot (|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2\cdot |V|-1)\cdot (|V|-2) + (2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|) = O(|V|^2\cdot |E|)$ non-saturing push to have $\phi = 0$.
 \end{itemize}
-We have $O(|V|^2)$ relabel operation, $O(|V|\cdot |E|)$ saturing push and $O(|V|^2\cdot |E|)$ non-saturing push. Thus, the generic preflow algorithm runs in $O(|V|^2) + O(|V|\cdot |E|) + O(|V|^2\cdot |E|) = O(|V|^2 \cdot |E|)$. 
+We have $O(|V|^2)$ relabel operation, $O(|V|\cdot |E|)$ saturing push and $O(|V|^2\cdot |E|)$ non-saturing push. Thus, the generic preflow-push algorithm runs in $O(|V|^2) + O(|V|\cdot |E|) + O(|V|^2\cdot |E|) = O(|V|^2 \cdot |E|)$. 
 
 \section{Difficult cases}
 
@@ -162,27 +164,27 @@ In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algor
 
 \subsubsection{The ping-pong effect}
 
-To describe the ping-pong effect, we will execute the preflow push algorithm on the network in Figure \ref{img:pingpong1}.
+To describe the ping-pong effect, we will execute the preflow-push algorithm on the network in Figure \ref{img:pingpong1}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{images/pingpong1.png}
+\includegraphics[scale=0.35]{images/pingpong1.png}
 \caption{The initial graph. c is an integer greater than 4.}
 \label{img:pingpong1}
 \end{figure}
 
 After the preprocess, we push a flow along the path 8-7-6-5-4-3-2-1-t. To be able to do this push, the vertices must be relabeled. We obtain the residual network given in the figure \ref{img:pingpong2} with the corresponding labels for each vertices. The vertex 1 is active. The algorithm relabels it with the height 3. Then, the flow is pushed along the path from the vertex 1 to the vertex 8, and relabel the height labels of the visited vertices. After thoses push and relabel operations, we obtain the residual network described in the figure \ref{img:pingpong3}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
-\includegraphics[scale=0.4]{images/pingpong2.png}
+\includegraphics[scale=0.35]{images/pingpong2.png}
 \caption{The residual network after some iterations. The only active node is node 1.}
 \label{img:pingpong2}
 \end{figure}
 
 The algorithm will now select the vertex 8, relabels it to the height label 5 and push the excess flow from 8 to 7. The vertex 7 is selected, his height label modified to 6 and the excess flow is pushed from 7 to 6. The algorithm repeats those operations for each vertices along the path 6-5-4-3-2-1. We obtain now the residual network described in the figue \ref{img:pingpong4}.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{images/pingpong3.png}
 \caption{The only active node is node 8.}
@@ -190,17 +192,17 @@ The algorithm will now select the vertex 8, relabels it to the height label 5 an
 \end{figure}
 
 We obtain a residual network that look like the residual network in the figure \ref{img:pingpong2}. The only differences are the height label of the bottom vertices. The algorithm will relabel and push the vertices along the path 1-2-3-4-5-6-7-8. We have now the residual network described in the figure \ref{img:pingpong5}.
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{images/pingpong4.png}
 \caption{Node 1 is active again.}
 \label{img:pingpong4}
 \end{figure}
 
-This round trip between the vertex 1 and the vertex 8 is called the ping-pong effect and is the main drawback of the preflow push algorithms. This flow exchange terminates when the height label of the vertex 8 become greater than the height label of the source.
+This round trip between the vertex 1 and the vertex 8 is called the ping-pong effect and is the main drawback of the preflow-push algorithms. This flow exchange terminates when the height label of the vertex 8 become greater than the height label of the source.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{images/pingpong5.png}
 \caption{Node 8 is active again}

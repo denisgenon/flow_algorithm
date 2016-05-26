@@ -519,7 +519,7 @@ We believe that these results are due to two things. First, the worst case graph
 \subsection{Size variation instances}
 The Figure~\ref{fig:MeanInstancesize} represents, for each algorithm, the average run time on all size variation instances with its best data structure. In this figure, it is clear that the augmenting path algorithms offer incomparable performances with Highest Label Push-Relabel. Edmonds-Karp is the best algorithm to solve the maximum flow problem on graphs with low density of edges and a large number of vertices.
 
-It can be explained by their complexity. Indeed, the preflow algorithms ($O(|V|^2 \cdot \sqrt{|E|}$ for the Highest Label heuristic) are more dependant on the number of vertices than the augmenting path algorithms ($O(|V| \cdot |E|^2)$ for Edmonds-Karp).
+It can be explained by their complexity. Indeed, the preflow-push algorithms ($O(|V|^2 \cdot \sqrt{|E|}$ for the Highest Label heuristic) are more dependant on the number of vertices than the augmenting path algorithms ($O(|V| \cdot |E|^2)$ for Edmonds-Karp).
 
 \begin{figure}[H]
 \begin{center}

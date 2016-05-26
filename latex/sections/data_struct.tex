@@ -32,6 +32,12 @@ The \textit{load factor} is the number of records divided by the number of bucke
 In our case, the key is the id of the nearby vertex and the value is the capacity of the edge.
 
 \subsection{Tree Map}
+
+\begin{wrapfigure}[5]{r}{4.5cm}
+	\vspace{-8mm}
+	\includegraphics[width =4cm]{images/Red-Blacktree.png}
+	\captionof{figure}{A Red-Black tree.}
+\end{wrapfigure}
 A tree map, implemented by a Red-Black tree in Java, is a self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each vertex, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a vertex :
 
 \begin{itemize}
@@ -43,11 +49,6 @@ A tree map, implemented by a Red-Black tree in Java, is a self-balancing binary 
 
 These constraints implies an important property of the Red-Black trees : the longest possible path from a root to a leaf can be only twice as long as the smallest possible. We thus have an almost balanced tree.
 
-\begin{center}
-\includegraphics[scale=0.4]{images/Red-Blacktree.png}
-\captionof{figure}{A Red-Black tree.}
-\end{center}
-
 \subsection{Simple Linked List}
 A simple linked list is one of the simplest data structure. Each node consists of two fields, an object and a reference to the next node. It is unordered given that the put operation is systematically made on the head of the list.
 
@@ -55,7 +56,8 @@ A simple linked list is one of the simplest data structure. Each node consists o
 \includegraphics[scale=0.5]{images/SimpleLinkedList.png}
 \caption{A simple linked list.}
 \end{figure}
-\newpage
+
+
 \subsection{Home-made structures}
 We have implemented two home-made structures based on the sparse set. 
 A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
@@ -69,7 +71,11 @@ Here is an example of sparse set :
 \end{figure}
 We cannot use this structure like that because the neighbourhood of a vertex doesn't form a suite of index. For example, if a vertex had three neighbours 8, 72 and 13, we can't directly know which vertex is contained in which index.
 So we implemented a first data structure, the split array, which is a simplified version of the sparse set without \textit{map}. We also implemented an other structure, the sparse map, which is a sparse set with a hash map instead of an array for \textit{map}, permitting to associate a vertex with its position in \textit{dom}.
-\newpage
+
+
+
+
+
 \subsubsection{Split array}
 A split array is composed only by the \textit{dom} array which contains all possible neighbouring vertices. The array is divided into two parts, one with the current neighbour vertices and the other one with the vertices which are not, or no more, neighbours. An integer value \textit{split} indicates the position of the array's separation.
 \begin{figure}[H]
@@ -84,10 +90,12 @@ To remove a vertex, it is the reverse operation. We need to go through the left 
 A sparse map is a sparse set with a hash map instead of an array for \textit{map}. The hash map associate each vertex with its position in \textit{dom}.
 
 To add or remove a vertex, it is the same as for the split array but we don't need to go through \textit{dom} because we can obtain the position of a vertex in \textit{dom} thanks to the hash map, saving valuable time. In compensation, we need to update the hash map so it remains consistent. We simply need to swap the values of the two vertices which were exchanged in \textit{dom}.
+
 \newpage
+
 \subsection{Complexities}
 
-We use 5 functions on our data structures ;
+We use 5 functions on our data structures :
 \begin{description}
 \item[entrySet] which is used to obtain the set of neighbours
 \item[get/set] which, respectively, returns or modifies a capacity
