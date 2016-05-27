@@ -44,8 +44,8 @@ public abstract class AugmentingPath implements Solver {
 			System.out.println("|V| : "+g.getV());
 			System.out.println("|E| : "+g.getE());
 			//System.out.println("Max flot : " + g.getFlowValue(1));
-			System.out.println("Max flot : " + this.flow);
-			System.out.println("Temps d'execution : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
+			System.out.println("Max flow : " + this.flow);
+			System.out.println("Run time : "+(System.currentTimeMillis()-timeStart)+" ms"+"\n");
 		}
 		else{
 			System.out.println("|V| : "+g.getV());

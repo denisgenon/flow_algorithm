@@ -45,6 +45,11 @@ public class BatchMain {
 		else if(args[0].equals("HLPRI")) s = new HighestLabelPushRelabelInit(g);
 		else s = null;
 
-		s.getTime();
+		if(args.length==5 && args[4].equals("r")){
+			s.getResults();
+		}
+		else {
+			s.getTime();
+		}
 	}
 }
