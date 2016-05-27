@@ -82,7 +82,7 @@ The \textbf{value of a flow} is defined by $\left\vert{f}\right\vert = \sum\limi
 $\left\vert{f}\right\vert$ can be equivalently stated as the amount of flow leaving $s$ or entering $t$.
 
 \subsection{Residual network} 
-To resolve the maximum flow problem, it is convenient to use another representation of the capacitated network. To be able to find the maximum flow, several algorithms update the current flow in an incremental process. Then, it will be useful to have a representation of the graph which gives the amount of remaining flow which can be added to the current flow through an edge. This representation is called \textit{residual network}.
+To resolve the maximum flow problem, it is convenient to use another representation of the capacitated network. To be able to find the maximum flow, several algorithms update the current flow in an incremental process. Then, it will be useful to have a representation of the graph which gives the amount of remaining flow which can be added to the current flow through an edge. This representation is called \textit{residual network} \cite{networkflows}.
 \begin{definition}
 \label{rcapacity}
 Given a flow \textit{f} in a graph \textit{G}, the \textbf{residual capacity} $c_f (i,j)$ is defined as $c_f (i,j) = c_{ij} - f_{ij}$.
@@ -99,7 +99,7 @@ Given a flow \textit{f} in graph G, the \textbf{residual network} $G_f$ is the d
 
 All along this master thesis, we will  consider a capacitated network $G = (V, E)$ with a non negative  capacity $c_{ij}$ associated with each edge $(i, j) \in E$.\\
 
-All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow.\\%TODO Donner un exemple dans la partie FF et en faire reference ici
+All capacities are positives integers. With irrational flow values, the flow might not even converge towards the maximum flow \cite{Zwick1995165}.\\%TODO Donner un exemple dans la partie FF et en faire reference ici
 
 The network is connected. This assumption is important to ensure that there is a path bewteen the source and the sink. If no such path exist, the flow is simply $0$.\\
 
@@ -124,7 +124,7 @@ We have now defined all terms we will use and made all the assumptions needed. T
 
 \section{Applications}
 \label{sec:applications}
-As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problems. In this section, we will describe one applications of the maximum flow problem.
+As we said earlier, the maximum flow problem arise in a wide variety of situations and in several forms. The maximum flow problem is often a subproblem of other more difficult network problems. In this section, we will describe one application of the maximum flow problem \cite{networkflows}.
 
 \subsection{Problem of representatives}
 
