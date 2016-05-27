@@ -53,9 +53,9 @@ The pseudo-code of the augmenting path algorithm is given here :
 \subsection{Ford-Fulkerson and Edmonds-Karp}
 There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). They instantiate in their own way the augmenting path algorithm given that the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
-Ford-Fulkerson uses a depth-first search, looking for long paths. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
+Ford-Fulkerson uses a depth-first search, looking for long paths \cite{lectu5}. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
 
-On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of number of edges). A bigger quantity of flow is thus sent on a smaller number of edges. \newline
+On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of number of edges) \cite{lectu7}. A bigger quantity of flow is thus sent on a smaller number of edges. \newline
 
 
 \subsection{Complexities}
@@ -66,13 +66,13 @@ The max flow problem, being a problem of complexity class P, can be solved in po
 
 This complexity is expressed in terms of the final result, we can reformulate it. Indeed, the maximal flow cannot be greater than $|V|\cdot U$. The time complexity of Ford-Fulkerson is then $O(|E|\cdot |V|\cdot U)$.
 
-Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|\cdot |V|\cdot U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$.}
+Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|\cdot |V|\cdot U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$ \cite{lectu5}.}
 
 \item[Edmonds-Karp]{The breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. We also know that there is a maximum of $|E|$ path of the same length. So we conclude that the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. 
 
 We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|\cdot |E|$ iterations.
 
-We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|\cdot |E|^2)$. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
+We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|\cdot |E|^2)$ \cite{lectu7}. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
 \end{description}
 
 

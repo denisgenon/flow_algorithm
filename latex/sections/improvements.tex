@@ -3,16 +3,16 @@
 In this chapter, we will describe some improvements that can be done on the algorithms of the Chapter~\ref{algos}.
 
 \section{Ford-Fulkerson Scaling}
-The Ford-Fulkerson algorithm has a pseudo-polynomial time complexity, making it very slow when the maximum capacity of the edges is high. But there is a variant of this algorithm which has a polynomial time complexity, the Ford-Fulkerson with scaling. The scaling consists in looking for an augmenting path which has a large enough residual capacity. To do it, we use $G_\Delta$ which is $G$ with only the edges having a capacity greater than or equal to $\Delta$. \\
+The Ford-Fulkerson algorithm has a pseudo-polynomial time complexity, making it very slow when the maximum capacity of the edges is high. But there is a variant of this algorithm which has a polynomial time complexity, the Ford-Fulkerson with scaling. The scaling consists in looking for an augmenting path which has a large enough residual capacity. To do it, we use $G_\Delta$ which is $G$ with only the edges having a capacity greater than or equal to $\Delta$ \cite{lectu5}. \\
 
 As long as there is an augmenting path in $G_\Delta$, we send flow through it. This is a $\Delta$-scaling phase. When a $\Delta$-scaling phase is ended, which means that there are no more augmenting paths in $G_\Delta$, we divide $\Delta$ by 2 and begin the next $\Delta$-scaling phase, looking for new augmenting paths in $G_\Delta$. Initially $\Delta = U$, with $U$ the maximum capacity of the graph.
 
 \subsection{Complexity}
-To compute the complexity of the Ford-Fulkerson Scaling algorithm, we need to know how many $\Delta$-scaling phases are possible, how many augmenting paths can be discovered at most in a $\Delta$-scaling phase and how an augmenting path is found.
+To compute the complexity of the Ford-Fulkerson Scaling algorithm, we need to know how many $\Delta$-scaling phases are possible, how many augmenting paths can be discovered at most in a $\Delta$-scaling phase and how an augmenting path is found \cite{lectu7}.
 
 \begin{itemize}
 \item There is at most $O(log(U))$ $\Delta$-scaling phases because initially $\Delta = U = 2^{log(U)}$ and after each phase, $\Delta=\frac{\Delta}{2}$.
-\item There is at most $O(|E|)$ augmenting paths in each $\Delta$-scaling phase. To prove it, let $f$ be the flow at the end of the $\Delta$-scaling phase and $f^*$ be the maximal flow. At the end of a $\Delta$-scaling phase, the total flow which we can add to $f$ to obtain $f^*$ is less than or equal to $|E| \cdot \Delta$ so $f^*-f \leq |E| \cdot \Delta$. Since we know that in the next $\Delta$-scaling phase, $\Delta'=\frac{\Delta}{2}$, there will be a maximum of $2|E|$ augmentations during the next phase.
+\item There is at most $O(|E|)$ augmenting paths in each $\Delta$-scaling phase. To prove it, let $f$ be the flow at the end of the $\Delta$-scaling phase and $f^*$ be the maximal flow. At the end of a $\Delta$-scaling phase, the total flow which we can add to $f$ to obtain $f^*$ is less than or equal to $|E| \cdot \Delta$ so $f^*-f \leq |E| \cdot \Delta$. Since we know that in the next $\Delta$-scaling phase, $\Delta'=\frac{\Delta}{2}$, there will be a maximum of $2|E|$ augmentations during the next phase \cite{lectu5}.
 \item We know that each augmenting path can be found in $O(|E|)$.
 \end{itemize}
 

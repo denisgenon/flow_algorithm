@@ -1,5 +1,5 @@
 %!TEX root = ../main.tex
-For this master thesis, we want to be able to analyse the difference between several data structures. Moreover, the traditional adjacency matrix is not adapted for the big graphs. Indeed the neighbourhood of a vertex is obtain in $O(|V|)$ given that it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
+For this master thesis, we want to be able to analyse the difference between several data structures. Moreover, the traditional adjacency matrix \cite{lectu5} is not adapted for the big graphs. Indeed the neighbourhood of a vertex is obtain in $O(|V|)$ given that it is necessary to go through the entire line. Furthermore, when the graph is not dense, a big part of the used memory is useless.
 
 As a reminder, an adjacency matrix is a two dimension array, where each line represents a starting vertex and each column represents a ending vertex. The values represent the capacity between both vertices, 0 meaning that there are no edge between them. \newline
 
@@ -23,7 +23,7 @@ Each vertex will have its structure, storing which vertices are neighbours and w
 
 \section{Data structures}
 \subsection{Hash Map}
-A hash map is an unordered associative array, which associates a key with a value. It contains a single array of buckets, where the values are stored. A hash function converts the key into an index, which represents the bucket where the record (key/value) is stored. \newline
+A hash map is an unordered associative array, which associates a key with a value. It contains a single array of buckets, where the values are stored. A hash function converts the key into an index, which represents the bucket where the record (key/value) is stored \cite{datastructures}. \newline
 
 Ideally, the hash function assigns to every key a different bucket but it is possible to have several keys giving the same hash code. This is called a \textit{collision}. One bucket can thus contain several records. \newline
 
@@ -38,7 +38,7 @@ In our case, the key is the id of the nearby vertex and the value is the capacit
 	\includegraphics[width =4cm]{images/Red-Blacktree.png}
 	\captionof{figure}{A Red-Black tree.}
 \end{wrapfigure}
-A tree map, implemented by a Red-Black tree in Java, is a self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each vertex, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a vertex :
+A tree map, implemented by a Red-Black tree in Java\footnote{https://docs.oracle.com/javase/7/docs/api/java/util/TreeMap.html}, is a self-balancing binary search tree. In addition to the restrictions imposed by the binary search tree, which is to have for each vertex, the \textit{left} sub-tree containing only lower keys and the \textit{right} sub-tree only higher keys, the Red-Black tree respects four other conditions thanks to an additional information, the color of a vertex :
 
 \begin{itemize}
 \item A vertex is either red or black
@@ -60,7 +60,7 @@ A simple linked list is one of the simplest data structure. Each node consists o
 
 \subsection{Home-made structures}
 We have implemented two home-made structures based on the sparse set. 
-A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
+A sparse set is composed by two arrays, \textit{dom} and \textit{map}. \textit{map} contains the position of each element in \textit{dom} which contains the data. So $dom[map[i]]$ contains the data related to $i$. An integer value \textit{split} represents the separation between current elements and removed elements \cite{lectu8}. For instance, if the sparse set represent the neighbours of a vertex, \textit{dom} will contains all possible neighbouring vertices (outgoing and incoming edges). All vertices on the left part of \textit{split} are current neighbours while all vertices on the right part aren't. \newline
 
 Here is an example of sparse set : 
 \begin{figure}[H]
@@ -103,7 +103,7 @@ We use 5 functions on our data structures :
 \end{description}
 
 
-This table below represents the complexities with the notation big O, which means "in the worst case". Although for the tree map, the simple linked list and the split array, the worst case is not too penalizing but that is not the case for the hash map and thus for the sparse map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arise. \newline
+This table below represents the complexities with the notation big O, which means "in the worst case". Although for the tree map, the simple linked list and the split array, the worst case is not too penalizing but that is not the case for the hash map and thus for the sparse map. Indeed, we obtain $O(n)$ if every elements of the hash map are in the same bucket. However, with a correct hash function, it should not arise \cite{datastructures}. \newline
 \begin{figure}[H]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
