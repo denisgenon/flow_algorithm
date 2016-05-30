@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-In this chapter, we will describe some improvements that can be done on the algorithms of the Chapter~\ref{algos}.
+In this chapter, we will describe some improvements that can be done on the algorithms presented in Chapter~\ref{algos}.
 
 \section{Ford-Fulkerson Scaling}
 The Ford-Fulkerson algorithm has a pseudo-polynomial time complexity, making it very slow when the maximum capacity of the edges is high. But there is a variant of this algorithm which has a polynomial time complexity, the Ford-Fulkerson with scaling. The scaling consists in looking for an augmenting path which has a large enough residual capacity. To do it, we use $G_\Delta$ which is $G$ with only the edges having a capacity greater than or equal to $\Delta$ \cite{lectu5}. \\
@@ -24,7 +24,7 @@ In Section~\ref{sec:preflow}, we defined the generic preflow-push algorithm. In 
 
 \subsection{FIFO heuristic}
 
-This algorithm examines the active vertices in the first-in, first-out (FIFO) order. The set of the active vertices is now a queue. The algorithm will always choose the first vertex from the queue while there is active vertices. The algorithm terminates when the queue is empty. 
+This algorithm examines the active vertices in the first-in, first-out (FIFO) order. The set of the active vertices is now a queue. The algorithm will always choose the first vertex from the queue while there are active vertices. The algorithm terminates when the queue is empty. 
 
 \subsubsection{Complexity}
 
@@ -65,7 +65,7 @@ By definition, an expensive phase performs at least $\frac{2\cdot|V|}{K}$ non-sa
 
 By balancing the complexity of each case, we obtain the optimal value of $K$ when both are equal: $\frac{|V|^3}{K} = |V|\cdot|E|\cdot K$ or $K = \frac{|V|}{\sqrt{|E|}}$. We have now the number of non-saturing pushes: $O(|V|^2\cdot\sqrt{|E|})$ which is the complexity of our algorithm.\\
 
-Textbooks do not provide a descrition of the data structure used to enforce the highest label heuristic. We implemented a custom data structure based on the idea of Fran\c cois Aubry, PhD student at UCL. We therefore show how to implement such a data structure with $O(1)$ operation.
+Textbooks do not provide a description of the data structure used to enforce the highest label heuristic. We implemented a custom data structure based on the idea of Fran\c cois Aubry, PhD student at UCL. We therefore show how to implement such a data structure with $O(1)$ operation.
 
 \subsubsection{The ActiveSet}
 

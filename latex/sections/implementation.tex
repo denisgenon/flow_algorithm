@@ -20,7 +20,7 @@ In order to implement the different flow algorithms presented, we had to choose 
 
 \section{Structure}
 
-Our project is divided in two core packages: \textit{models} and \textit{solvers}. The first one, is contains all the representations of the network we used. The second contains all the different algorithms we implemented. There is two others packages: \textit{objects} which contains implementation of some data structures and \textit{results} which contains instance generators and results analyzers.
+Our project is divided in two core packages: \textit{models} and \textit{solvers}. The first one contains all the representations of the network we used. The second contains all the different algorithms we implemented. There is two others packages: \textit{objects} which contains implementation of some data structures and \textit{results} which contains instance generators and results analyzers.
 
 \subsection{Package: Models}
 
@@ -72,12 +72,12 @@ This package contains several data structures:
 	\item[\texttt{Node.java}] represent a node in a linked list;
 	\item[\texttt{SplitArray.java}] implementation of the split array;
 	\item[\texttt{SparseMap.java}] implementation of the sparse map;
-	\item[\texttt{TheTower.java}] data structure used to select the highest label in the highest label preflow-push algorithm.
+	\item[\texttt{ActiveSet.java}] data structure used to select the highest label in the highest label preflow-push algorithm.
 \end{description}
 
 \subsection{Package: Results}
 
-This small package contains four classes. The first are the instances generators: \textit{InstanceGeneratorDensity.java} and \textit{InstanceGeneratorSize.java}. The first class generate an instance with different densities and the second with different sizes. The two last classes are \textit{ResultsConverterByDensity.java} and \textit{ResultsConverterBySize.java}. They are used to analyze our results.
+This small package contains four classes. The first are the instances generators: \textit{InstanceGeneratorDensity.java} and \textit{InstanceGeneratorSize.java}. The first class generates a graph class with different densities and the second with different sizes. The two last classes are \textit{ResultsConverterByDensity.java} and \textit{ResultsConverterBySize.java}. They are used to analyze our results.
 
 \subsection{Conclusion}
 
