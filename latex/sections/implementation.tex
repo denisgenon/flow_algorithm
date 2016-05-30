@@ -121,7 +121,7 @@ pr.getResults();
 In order to gather the different run times of all the algorithm we implemented on all the instances we generated, we decided to automate the launch of the different algorithms. We decided to make a script in \textbf{Python}\footnote{https://www.python.org} because it was the easiest way to do it. The Python script launch the different algorithms with the different data structes on all the instance, and store the computations time collected on a text file. A Java program is then used to classify the run times by solver and by instance and store these results in a csv file.
 When we have the run times in the right form, we use the library \textbf{ggplot2}\footnote{http://ggplot2.org} of the \textbf{R}\footnote{https://www.r-project.org} language to plot the different graphs. We choosed this library because the graphs rendered are very customizable and  very nice. \\
 
-All our scripts \textbf{Python} and \textbf{R} are available on the \textbf{Git} (see Section 5.4.1). You can also easily test your own instances thanks to the file BatchMain in the package flowAlgorithm of our java code. It takes 5 arguments :
+All our scripts Python and R are available on the Git (see Section 5.4.1). You can also easily test your own instances thanks to the file BatchMain in the package flowAlgorithm of our Java code. It takes 5 arguments :
 
 \begin{description}
 \item[args 0]{ represents the solver. 'FF' for Ford-Fulkerson with scaling, 'EK' for Edmonds-Karp, 'PR' for Generic Push-Relabel, 'FPR' for FIFO Push-Relabel and 'HLPR' for Highest Label Push-Relabel.}
