@@ -82,7 +82,7 @@ We know that each augmenting path can be found in $O(|E|)$. The time complexity 
 
 \subsection{Introduction}
 
-The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$, where $n$ is the number of vertices in the augmenting path. One example of this  can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the edge $(12, 13)$ in the network. In this case, a better solution is to push directly from the vertice 12, 10 units of flow to the sink. This is the idea behing preflow-push algorithms.
+The drawback of the augmenting path algorithms is the operation of sending flow along a path. The time complexity of this operation in the worst case is $O(n)$, where $n$ is the number of vertices in the augmenting path. One example of this  can be seen in the figure \ref{img:bad_augmenting}. With augmenting path algorithms, only one unit of flow can be pushed at a time on the edge $(12, 13)$ in the network. In this case, a better solution is to push directly from the vertice 12, 10 units of flow to the sink. This is the idea behind preflow-push algorithms \cite{preflowpush}.
 
 \begin{figure}[H]
 \centering
@@ -105,7 +105,7 @@ The \textbf{excess} of each vertex $i \in V$ is
 $$e(i) = \sum\limits_{(j,i) \in E} x_{ji} - \sum\limits_{(i,j) \in E} x_{ij}.$$
 \end{definition}
 
-We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo}.
+We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible \cite{cormen}. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo} \cite{networkflows}.
 
 
 \begin{algorithm}
@@ -153,7 +153,7 @@ We have $O(|V|^2)$ relabel operation, $O(|V|\cdot |E|)$ saturing push and $O(|V|
 
 In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algorithm perfom worse than the Preflow-push algorithm.  The Edmonds-Karp algorithm will find $n+1$ augmenting paths ($s$-$t$, $s$-1-$t$, $s$-1-2-$t$, \dots, $s$-1-\dots-$n$-$t$). It will perfom slower than the Preflow-push algorithm because he will push $n$ times on the edge $(s, 1)$, $n-1$ times on the edge $(1, 2)$, \dots The Preflow-push will be faster, because he will only push once on each edges.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.4]{images/badedmondskarp1.png}
 \caption{Difficult case for the Edmonds-Karp algorithm. $\tau$ is equal to $(\sum\limits_{i=1}^{n+1} i) - 1$.}
@@ -164,7 +164,7 @@ In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algor
 
 \subsubsection{The ping-pong effect}
 
-To describe the ping-pong effect, we will execute the preflow-push algorithm on the network in Figure \ref{img:pingpong1}.
+To describe the ping-pong effect \cite{pingpongeffect}, we will execute the preflow-push algorithm on the network in Figure \ref{img:pingpong1}.
 
 \begin{figure}[h]
 \centering
@@ -184,7 +184,7 @@ After the preprocess, we push a flow along the path 8-7-6-5-4-3-2-1-t. To be abl
 
 The algorithm will now select the vertex 8, relabels it to the height label 5 and push the excess flow from 8 to 7. The vertex 7 is selected, his height label modified to 6 and the excess flow is pushed from 7 to 6. The algorithm repeats those operations for each vertices along the path 6-5-4-3-2-1. We obtain now the residual network described in the figue \ref{img:pingpong4}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{images/pingpong3.png}
 \caption{The only active node is node 8.}
@@ -192,7 +192,7 @@ The algorithm will now select the vertex 8, relabels it to the height label 5 an
 \end{figure}
 
 We obtain a residual network that look like the residual network in the figure \ref{img:pingpong2}. The only differences are the height label of the bottom vertices. The algorithm will relabel and push the vertices along the path 1-2-3-4-5-6-7-8. We have now the residual network described in the figure \ref{img:pingpong5}.
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{images/pingpong4.png}
 \caption{Node 1 is active again.}
@@ -202,7 +202,7 @@ We obtain a residual network that look like the residual network in the figure \
 This round trip between the vertex 1 and the vertex 8 is called the ping-pong effect and is the main drawback of the preflow-push algorithms. This flow exchange terminates when the height label of the vertex 8 become greater than the height label of the source.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.4]{images/pingpong5.png}
 \caption{Node 8 is active again}
