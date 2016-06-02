@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 \section{Augmenting path algorithms}
 The idea behind the augmenting path algorithms is as follows : 
-As long as there is a path from the source to the sink in the residual network, we send flow along this path. And so on until there is no more path from the source to the sink.\newline
+as long as there is a path from the source to the sink in the residual network, we send flow along this path. This process is repeated until there is no more path from the source to the sink.\newline
 
 A directed path from the source to the sink in the \textit{residual network} is called \textit{augmenting path}. \newline
 
@@ -53,9 +53,9 @@ The pseudo-code of the augmenting path algorithm is given here :
 \subsection{Ford-Fulkerson and Edmonds-Karp}
 There are two main augmenting path algorithms, Ford-Fulkerson (published in 1956) and Edmonds-Karp (published in 1972). They instantiate in their own way the augmenting path algorithm given that the unique difference between both is the way of looking for an \textit{augmenting path} in the \textit{residual network}. \newline
 
-Ford-Fulkerson uses a depth-first search, looking for long paths \cite{lectu5}. The flow is thus sent on a large number of edges but a small quantity. Indeed, a long path have a higher chance to contains at least one edge with a low capacity. \newline
+Ford-Fulkerson uses a depth-first search, looking for long paths \cite{lectu5}. The flow is thus potentially sent over a large number of edges but a small quantity. Indeed, a long path has a higher chance to contain at least one edge with a low capacity. \newline
 
-On the other hand, Edmonds-Karp uses a breadth-first search, looking for the shortest path (in terms of number of edges) \cite{lectu7}. A bigger quantity of flow is thus sent on a smaller number of edges. \newline
+On the other hand, Edmonds-Karp uses a breadth-first search to look for the shortest path (in terms of number of edges) \cite{lectu7}. A bigger quantity of flow is thus sent on a smaller number of edges. \newline
 
 
 \subsection{Complexities}
@@ -72,7 +72,7 @@ Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|\cdot |V|\
 
 We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|\cdot |E|$ iterations.
 
-We know that each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|\cdot |E|^2)$ \cite{lectu7}. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
+Each augmenting path can be found in $O(|E|)$. The time complexity of Edmonds-Karp is then $O(|V|\cdot |E|^2)$ \cite{lectu7}. This upper bound complexity is very severe. Indeed, it is rare to find graphs with such features.}
 \end{description}
 
 
@@ -105,7 +105,7 @@ The \textbf{excess} of each vertex $i \in V$ is
 $$e(i) = \sum\limits_{(j,i) \in E} x_{ji} - \sum\limits_{(i,j) \in E} x_{ij}.$$
 \end{definition}
 
-We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible \cite{cormen}. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo} \cite{networkflows}.
+We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible \cite{cormen}. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be exaclty one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo} \cite{networkflows}.
 
 
 \begin{algorithm}
@@ -139,19 +139,19 @@ We call a vertex with positive excess as an \textbf{active vertex}. The fact tha
 
 To compute the complexity of the generic preflow-push algorithm we need to distinguish three kinds of operations: relabels, saturing pushes, non-saturing pushes.
 \begin{itemize}
-\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2\cdot |V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2\cdot |V| - 1) \cdot (|V| - 2) \approx |V|^2$.
+\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2\cdot |V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2\cdot |V| - 1) \cdot (|V| - 2) = O(|V|^2)$.
 
-\item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2\cdot |V| - 1}{2}) \approx O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|\cdot |E|)$.
+\item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2\cdot |V| - 1}{2}) = O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|\cdot |E|)$.
 
-\item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2\cdot |V| - 1)\cdot (|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at least $(2\cdot |V|-1)\cdot (|V|-2) + (2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|) = O(|V|^2\cdot |E|)$ non-saturing push to have $\phi = 0$.
+\item The number of non-saturing pushes is computed with $\phi$, the sum of the height labels of the actives vertices. The relabel increases $\phi$ at maximum $(2\cdot |V| - 1)\cdot (|V|-2)$ (the number of vertices times the maximum height label). The saturing push increase $\phi$ at maximum $(2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|)$. As $\phi$ must be equals to zero at the end of the algorithm, we need at most $(2\cdot |V|-1)\cdot (|V|-2) + (2\cdot |V|-1)\cdot (2\cdot |V|\cdot |E|) = O(|V|^2\cdot |E|)$ non-saturing push to have $\phi = 0$.
 \end{itemize}
-We have $O(|V|^2)$ relabel operation, $O(|V|\cdot |E|)$ saturing push and $O(|V|^2\cdot |E|)$ non-saturing push. Thus, the generic preflow-push algorithm runs in $O(|V|^2) + O(|V|\cdot |E|) + O(|V|^2\cdot |E|) = O(|V|^2 \cdot |E|)$. 
+We have $O(|V|^2)$ relabel operations, $O(|V|\cdot |E|)$ saturing pushes and $O(|V|^2\cdot |E|)$ non-saturing pushes. Thus, the generic preflow-push algorithm runs in $O(|V|^2) + O(|V|\cdot |E|) + O(|V|^2\cdot |E|) = O(|V|^2 \cdot |E|)$. 
 
 \section{Difficult cases}
 
 \subsection{In Edmonds-Karp algorithm}
 
-In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algorithm perfom worse than the Preflow-push algorithm.  The Edmonds-Karp algorithm will find $n+1$ augmenting paths ($s$-$t$, $s$-1-$t$, $s$-1-2-$t$, \dots, $s$-1-\dots-$n$-$t$). It will perfom slower than the Preflow-push algorithm because he will push $n$ times on the edge $(s, 1)$, $n-1$ times on the edge $(1, 2)$, \dots The Preflow-push will be faster, because he will only push once on each edges.
+In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algorithm performs worse than the Preflow-push algorithm.  The Edmonds-Karp algorithm will find $n+1$ augmenting paths ($s$-$t$, $s$-1-$t$, $s$-1-2-$t$, \dots, $s$-1-\dots-$n$-$t$). It will perfom slower than the Preflow-push algorithm because it will push $n$ times on the edge $(s, 1)$, $n-1$ times on the edge $(1, 2)$, \dots The Preflow-push will be faster, because he will only push once on each edges.
 
 \begin{figure}[h]
 \centering

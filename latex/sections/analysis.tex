@@ -232,7 +232,7 @@ On the 3 type of instances, we notice that the $hashmap$ and the $treemap$ offer
 The most adapted data structure for Push-Relabel algorithms is the $split array$.
 
 \subsubsection{Profiler}
-We have profiled our code with all data structures on a complete density instance graph with Highest Label Push-Relabel. The Figure~\ref{fig:pradja} represents the number of invocations and the total run time of the function $getAdjacents$, which is the function that take the most time. Those results highlight the good performances of the $split array$ and the $sparse map$. The total time of the function $parse$, which parse the text file to the data structure, allows us to understand why the $split array$ is better than the $sparse map$. Indeed, the function $parse$ of the $sparse map$ take 1143 ms while the $split array$ take 404 ms. 
+We have profiled our code with all data structures on a complete density instance graph with Highest Label Push-Relabel. The Figure~\ref{fig:pradja} represents the number of invocations and the total run time of the function $getAdjacents$, which is the function that take the most time. Those results highlight the good performances of the $split array$ and the $sparse map$.
 
 \begin{figure}[H]
 \centering

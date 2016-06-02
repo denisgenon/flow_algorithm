@@ -5,7 +5,11 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 
 import interfaces.Graph;
+import models.HashMapGraph;
+import models.LinkedListGraph;
 import models.SparseMapGraph;
+import models.SplitArrayGraph;
+import models.TreeMapGraph;
 import solver.FIFOPushRelabel;
 import solver.FIFOPushRelabelInit;
 import solver.FordFulkersonScaling;
@@ -17,6 +21,7 @@ import solver.Solver;
 
 public class Main {
 	public static void main(String[] args) {
+
 		if (args.length == 0) {
 			System.out.println("no instance file");
 		}
@@ -146,7 +151,7 @@ public class Main {
 
 						j++;
 					}
-					
+
 					PrintWriter writer = new PrintWriter("results/counts/density_correct/mean_relabel.csv", "UTF-8");
 					writer.println("Instances, FIFOPushRelabel, FIFOPushRelabelInit, PushRelabel, PushRelabelInit, HLPushRelabel, HLPushRelabelInit");
 					int density = 5;
@@ -269,7 +274,7 @@ public class Main {
 					Graph g5 = new SparseMapGraph(args[0], true);
 					Solver s5 = new HighestLabelPushRelabel(g5);
 					s5.getResults();
-					
+
 					System.out.println("GENERIC");
 					System.out.println("HM");
 					Graph g = new HashMapGraph(args[0], true);
@@ -335,7 +340,7 @@ public class Main {
 					Graph ggg4 = new TreeMapGraph(args[0], true);
 					Solver sss4 = new HighestLabelPushRelabel(ggg4);
 					sss4.getResults();*/
-					
+
 					/*
 					String instance = "instances/instancesUniquePrct1/instanceuniqueprct100.txt";
 					try {
@@ -343,7 +348,7 @@ public class Main {
 					} catch(InterruptedException ex) {
 					    Thread.currentThread().interrupt();
 					}
-					
+
 					Graph g = new HashMapGraph(instance, true);
 					Solver s = new FordFulkersonScaling(g);
 					s.getResults(); */
