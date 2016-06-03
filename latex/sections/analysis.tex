@@ -175,13 +175,13 @@ When changing the size of the network, we can see that the highest label heurist
 \subsubsection{Matching problem instances}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[scale=0.54]{images/meanmatchingpr.png}
+\includegraphics[scale=0.13]{images/prmatchingres.png}
 \caption{The execution time of the different push relabels on the matching problem classes.}
 \label{fig:mean_matching_pr}
 \end{center}
 \end{figure}
 
-Here, we can observe that the initialization phase makes each heuristic slower. It is because the problem here is simpler and very quick to solve, thus, the initialization phase takes a more important place in the result. The spike on the graph is caused by the data structures used, the \textit{sparsemap} (Section~\ref{sec:datastructuress}). Here, the high label heuristic is the best as well.
+Here, we can observe that the initialization phase makes each heuristic slower. It is because the problem here is simpler and very quick to solve, thus, the initialization phase takes a more important place in the result. Here, the high label heuristic is the best as well.
 
 %%TODO remarque
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -275,7 +275,8 @@ As for the Push-Relabel, the structures based on maps are the least efficient wh
 We can conclude that the most appropriate data structure for Edmonds-Karp is the $split array$.
 \subsubsection{Profiler}
 After profiled our code on a complete density variation graph, several observations can be made. First, we explain the poor performances of the $hashmap$ and the $treemap$ thanks to the Figure~\ref{fig:ekadja} which represents the number of invocations of the function $getAdjacents$.
-\begin{figure}[h]
+
+\begin{figure}[H]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|}
 	\hline
@@ -288,6 +289,7 @@ After profiled our code on a complete density variation graph, several observati
 \caption{The number of invocations of the function $getAdjacents$ and its total time with Edmonds-Karp.}
 \label{fig:ekadja} 
 \end{figure}
+
 The $linkedlist$ is slower than the $sparsemap$ and the $splitarray$ because its function $getCapacity$ is very slow. That is what we can see in the Figure~\ref{fig:ekcapa} which represents the number of invocation and the total time of the function $getCapacity$.
 \begin{figure}[h]
 \centering
@@ -332,6 +334,7 @@ Those figures highlight the poor performance of the $linked list$ while the $has
 The $sparse map$ is the most adapted data structure for Ford-Fulkerson with scaling.
 
 \subsubsection{Profiler}
+
 When we look to the Figure~\ref{fig:ffcapa}, which represents the total time of the function $getCapacity$ and its number of invocations, we understand why the $linkedlist$ is so slow with Ford-Fulkerson with scaling. This figure explains also why the $split array$ and the $treemap$ are not well adapted to this algorithm, its function $getCapacity$ is too slow.
 
 The $hashmap$ has a very fast function $getCapacity$ but its function $getAdjacents$ take too much time compared to the $sparsemap$ (1146 ms for the $hashmap$ and 31 ms for the $sparsemap$). This is why the $sparse map$ is the most adapted data structure for Ford-Fulkerson with scaling.
@@ -362,6 +365,8 @@ The $hashmap$ has a very fast function $getCapacity$ but its function $getAdjace
 \section{Behaviors}
 \subsection{Edmonds-Karp}
 \subsubsection{Density variation instances}
+
+
 One of the most blatant observations on Edmonds-Karp is that it is very regular, what we can observe in the Figure~\ref{fig:EKmean}, which represents the run time on each density variation instance, with its best data structure, the $split array$. Indeed, Edmonds-Karp solves the maximum flow problem on complete graphs with $|V|=1000$ with a run time ranging from 750 to 1000 ms.
 \begin{figure}[H]
 \begin{center}
@@ -370,6 +375,8 @@ One of the most blatant observations on Edmonds-Karp is that it is very regular,
 \label{fig:EKmean}
 \end{center}
 \end{figure}
+
+
 \subsubsection{Size variation instances}
 The Figure~\ref{fig:EKmeansize} represents the run time of Edmonds-Karp on all size variation instances with the $split array$. Edmonds-Karp is regular with a run time ranging from 750 to 1000 ms to solve the maximum flow problem on graphs with $|V|=5000$ and a density of edges equal to 10\% ($|E|=1249750$).
 \begin{figure}[H]
@@ -379,6 +386,8 @@ The Figure~\ref{fig:EKmeansize} represents the run time of Edmonds-Karp on all s
 \label{fig:EKmeansize}
 \end{center}
 \end{figure}
+
+
 \subsubsection{Matching problem instances}
 As usual, Edmonds-Karp remains very regular. We can see that on the Figure~\ref{fig:ekmatching} which represents the run time of Edmonds-Karp on all matching problem instances. It takes an average of 460ms to solve a matching problem instance with a maximum density of edges.
 \begin{figure}[H]
@@ -392,6 +401,7 @@ As usual, Edmonds-Karp remains very regular. We can see that on the Figure~\ref{
 
 \subsection{Ford-Fulkerson with scaling}
 \subsubsection{Density variation instances}
+
 The Figure~\ref{fig:FFmean} represents the run time on each density variation instance, with the $sparsema$p. Although less regular than Edmonds-Karp, Ford-Fulkerson with scaling remains stable with a run time ranging from 500 to 2500 ms to solve the maximum flow problem on complete graphs with $|V|=1000$.
 \begin{figure}[H]
 \begin{center}
@@ -402,6 +412,7 @@ The Figure~\ref{fig:FFmean} represents the run time on each density variation in
 \end{figure}
 
 This graph also highlights the presence of two type of graphs on this type of instances. Indeed, we observe that the run time of instances 2, 4, 9 and 10 are similar. The same clustering is observable with the instances 1, 5 and 7.
+
 \subsubsection{Size variation instances}
 As we can see on the Figure~\ref{fig:FFmeansize} which represents the run time of Ford-Fulkerson with scaling on all size variation instances, it is quite regular but its performances are slightly worse than Edmonds-Karp. Indeed, Ford-Fulkerson with scaling solve the maximum flow problem on graphs with $|V|=5000$ and a density of edges equal to 10\% with a run time ranging from 3000 to 4000 ms.
 \begin{figure}[H]
@@ -411,8 +422,9 @@ As we can see on the Figure~\ref{fig:FFmeansize} which represents the run time o
 \label{fig:FFmeansize}
 \end{center}
 \end{figure}
+
 \subsubsection{Matching problem instances}
-The Figure~\ref{fig:ffmatching} show that Ford-Fulkerson with scaling has a constant run time to solve this kind of instance. The spike present at the end of the graph is due to its data structure. It takes an average of 120ms to solve a matching problem instance with a maximum density of edges.
+The Figure~\ref{fig:ffmatching} show that Ford-Fulkerson with scaling has a constant run time to solve this kind of instance. The spike present at the end of the graph is due to its data structure, the $sparse map$. We also found this behaviour in the Figures \ref{fig:ekmeanmatching} and \ref{fig:ffmeanmatching}, but we haven't found an explaination about this behaviour. It takes an average of 120 ms to solve a matching problem instance with a maximum density of edges.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[scale=0.5]{images/results/ffmatching.png}

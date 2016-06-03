@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-In this chapter, we will describe some improvements that can be done on the algorithms presented in Chapter~\ref{algos}.
+In this chapter, we will describe some improvements found on the literature \cite{scaling,networkflows} that can be done on the algorithms presented in Chapter~\ref{algos}.
 
 \section{Ford-Fulkerson Scaling}
 The Ford-Fulkerson algorithm has a pseudo-polynomial time complexity, making it very slow when the maximum capacity of the edges is high. But there is a variant of this algorithm which has a polynomial time complexity, the Ford-Fulkerson with scaling. The scaling consists in looking for an augmenting path which has a large enough residual capacity. To do it, we use $G_\Delta$ which is $G$ with only the edges having a capacity greater than or equal to $\Delta$ \cite{lectu5}. \\

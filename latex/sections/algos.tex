@@ -68,7 +68,7 @@ This complexity is expressed in terms of the final result, we can reformulate it
 
 Ford-Fulkerson has a pseudo-polynomial time complexity. Indeed, $O(|E|\cdot |V|\cdot U)$ is polynomial in the numeric value of the input but is exponential in the length of the input. The input takes $log(U)$ bits to represent $U$ \cite{lectu5}.}
 
-\item[Edmonds-Karp]{The breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease. We also know that there is a maximum of $|E|$ path of the same length. So we conclude that the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. 
+\item[Edmonds-Karp]{The breadth-first search assures us that after each iteration, the length of the augmenting path can't decrease \cite{edmondKarpComplexity}. We also know that there is a maximum of $|E|$ path of the same length. So we conclude that the length of the augmenting path can stay the same for at most $|E|$ iterations before increasing. 
 
 We know that the length of the augmenting path is between $1$ and $|V|-1$. The length of the augmenting path increase by a least 1 so there is a maximum of $|V|$ possible increases. Thus there are at most $|V|\cdot |E|$ iterations.
 
@@ -92,7 +92,7 @@ The drawback of the augmenting path algorithms is the operation of sending flow 
 \end{figure}
 
 The preflow-push algorithms don't push flow on augmenting path, they push flow on individual vertices. Because of this, preflow-push algorithms does not respect the flow conservation constraint. Indeed, these algorithms permit the flow entering a vertex to exceed the flow leaving the vertex. We call this flow a preflow.
-
+\newpage
 \begin{definition}
 \label{preflow}
 A \textbf{preflow} is a function $x: E \to \mathbb{R}$ that satisfies the capacity constraint and the following relaxation of the flow conservation constraint:
@@ -105,7 +105,7 @@ The \textbf{excess} of each vertex $i \in V$ is
 $$e(i) = \sum\limits_{(j,i) \in E} x_{ji} - \sum\limits_{(i,j) \in E} x_{ij}.$$
 \end{definition}
 
-We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible \cite{cormen}. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is the distance between the vertex and the sink: the algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be exaclty one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo} \cite{networkflows}.
+We call a vertex with positive excess as an \textbf{active vertex}. The fact that there are active vertices means that the current solution is not feasible \cite{cormen}. Thus, the goal of the algorithm is to remove the excess from those vertices. The intuition is to push the flow to the vertex closer to the sink. Each vertex has its own height label which is, in the beginning of the algorithm, the distance between the vertex and the sink. The algorithm only push a flow from a vertex to another if the first one is an active vertex and if his height label is greater than the height label of the other vertex. A popular analogy is that we can only push flow downhill. The difference between the two heights label must be exaclty one. When we can push a flow from a active vertex to another vertex, we call the edge linking the two an \textbf{admissible edge}. This operation is called a \textbf{push operation}. If such scenario cannot be applied, we need to relabel the height label of the vertex. This operation is called the \textbf{relabel operation}. The algorithm terminates when there is no more active vertex. The pseudo code of this algorithm is given in  Algorithm \ref{pralgo} \cite{networkflows}.
 
 
 \begin{algorithm}
@@ -139,7 +139,7 @@ We call a vertex with positive excess as an \textbf{active vertex}. The fact tha
 
 To compute the complexity of the generic preflow-push algorithm we need to distinguish three kinds of operations: relabels, saturing pushes, non-saturing pushes.
 \begin{itemize}
-\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2\cdot |V| - 1$ and we can decrease the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2\cdot |V| - 1) \cdot (|V| - 2) = O(|V|^2)$.
+\item There is a possibility of maximum $|V|^2$ relabel operations. This is because the maximum height is $2\cdot |V| - 1$ \cite{networkflows} and we can increase the label height at minimum one per operation. We know that there is $|V| - 2$ vertices which can be relabeled (the sink and source vertices can't be relabeled). Then, the maximum number of relabelling is $(2\cdot |V| - 1) \cdot (|V| - 2) = O(|V|^2)$.
 
 \item The number of saturing pushes per edge is $O(|V|)$. To make a saturing push on a certain edge again, the label height of the destination vertex must be augmented of 2. Then there is $O(\frac{2\cdot |V| - 1}{2}) = O(|V|)$ saturing push per edge: the number of maximum saturing push is $O(|V|\cdot |E|)$.
 
@@ -164,7 +164,7 @@ In Figure~\ref{img:badedmondskarp}, we show a graph where the Edmonds-Karp algor
 
 \subsubsection{The ping-pong effect}
 
-To describe the ping-pong effect \cite{pingpongeffect}, we will execute the preflow-push algorithm on the network in Figure \ref{img:pingpong1}.
+The ping-pong effect is a phenomen that occurs in preflow-push algorithm that considerably slow it down. To describe the ping-pong effect \cite{pingpongeffect}, we will execute the preflow-push algorithm on the network in Figure \ref{img:pingpong1}.
 
 \begin{figure}[h]
 \centering
@@ -173,7 +173,7 @@ To describe the ping-pong effect \cite{pingpongeffect}, we will execute the pref
 \label{img:pingpong1}
 \end{figure}
 
-After the preprocess, we push a flow along the path 8-7-6-5-4-3-2-1-t. To be able to do this push, the vertices must be relabeled. We obtain the residual network given in the figure \ref{img:pingpong2} with the corresponding labels for each vertices. The vertex 1 is active. The algorithm relabels it with the height 3. Then, the flow is pushed along the path from the vertex 1 to the vertex 8, and relabel the height labels of the visited vertices. After thoses push and relabel operations, we obtain the residual network described in the figure \ref{img:pingpong3}.
+After the preprocess, we push a flow along the path 8-7-6-5-4-3-2-1-t. To be able to do this push, the vertices must be relabeled. We obtain the residual network given in the Figure \ref{img:pingpong2} with the corresponding labels for each vertices. The vertex 1 is active. The algorithm relabels it with the height 3. Then, the flow is pushed along the path from the vertex 1 to the vertex 8, and relabel the height labels of the visited vertices. After thoses push and relabel operations, we obtain the residual network described in the Figure \ref{img:pingpong3}. \\
 
 \begin{figure}[h]
 \centering
@@ -242,7 +242,7 @@ This round trip between the vertex 1 and the vertex 8 is called the ping-pong ef
 \end{table}
 
 In this section, we will present you a simple case (Table~\ref{tabl:case}) where the Preflow-push algorithm perfom very differently between two similar cases. The only difference, as shown in the state 1, is that the capacity of the upper edges of the graph differ by one. In the easy case, the flow is push from $s$ to $t$, then $s$ to $1$, then $1$ to $2$ and so on. When the vertex $3$ become active (with a excedent of 9) it push 4 units of flow to the sink (state 2). The vertex $3$ is still active and will push his flow to $2$ after being relabeled. The vertex $2$ will do the same to the vertex $1$. We are in the state 3 and no more vertices are actives, thus the algorithm terminates. \\
-In the second case, the three firsts states are the same except for the capacity of the upper edges. This cause an excedent of one unit in the vertex $1$. This active vertex prevent the algorithm to terminate. The algorithm then push this excedent to the vertex $2$ after relabeling the vertex $1$. The vertex $2$ will do the same to the vertex $3$. We are now in state 3 and this ping pong effect will occur till the height label of the vertex $1$ is bigger by one than the height label of the source. When this is the case, the vertex $1$ push the excedent to the source and no more vertices are actives: the algorithm terminates. \\
+In the second case, the three firsts states are the same except for the capacity of the upper edges. This cause an excedent of one unit in the vertex $1$. This active vertex prevent the algorithm to terminate. The algorithm then push this excedent to the vertex $2$ after relabeling the vertex $1$. The vertex $2$ will do the same to the vertex $3$. We are now in state 3 and this ping pong effect will occur till the height label of the vertex $1$ is bigger by one than the height label of the source. When this is the case, the vertex $1$ push the excedent to the source and no more vertices are actives: the algorithm terminates. The longer the upper path is, the more time it takes to bring the extra unit of flow back to the source. \\
 
 This simple case demonstrate how the Preflow-push algorithm perfom differently on graphs with small differences.
 
