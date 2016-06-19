@@ -15,7 +15,7 @@ You can import this project in your favorite java IDE, there is no dependances! 
 Graph g = new LinkedListGraph("path", true);
 Solver s = new FordFulkersonScaling(g);
 s.getResults();
-``
+```
 
 Here is the different graph representations already implemented:
 
