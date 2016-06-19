@@ -15,9 +15,10 @@ You can import this project in your favorite java IDE, there is no dependances! 
 Graph g = new LinkedListGraph("path", true);
 Solver s = new FordFulkersonScaling(g);
 s.getResults();
-```
+``
 
 Here is the different graph representations already implemented:
+
 1. HashMapGraph
 2. LinkedListGraph
 3. SparseMaGraph
@@ -25,6 +26,7 @@ Here is the different graph representations already implemented:
 5. TreeMapGraph
 
 Here is the principal solvers already implemented:
+
 1. EdmondsKarp
 2. FordFulkerson
 3. FordFulkersonScaling
