@@ -11,11 +11,11 @@ The goal of this implementation if to provide a flexible and extensible environn
 
 You can import this project in your favorite java IDE, there is no dependances! An example of use (LinkedList representation with FordFulkersonScaling solver) can be found below:
 
-'''java
+```java
 Graph g = new LinkedListGraph("path", true);
 Solver s = new FordFulkersonScaling(g);
 s.getResults();
-'''
+```
 
 Here is the different graph representations already implemented:
 1. HashMapGraph
