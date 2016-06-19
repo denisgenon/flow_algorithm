@@ -1,7 +1,7 @@
 # Maximum Flow Problem
 
 Greetings!
-This is the code we (Victor Velghe & Denis Genon) provided for our master thesis at [UCL](https://wwww.uclouvain.be). 
+This is the code we (Victor Velghe & Denis Genon) provided for our master thesis at [UCL](https://www.uclouvain.be). 
 
 The goal of this implementation if to provide a flexible and extensible environnement to solve the maximum flow problem. Feel free to contribute!
 
